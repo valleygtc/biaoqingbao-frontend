@@ -15,11 +15,20 @@ const useStyles = makeStyles((theme) => ({
   cardImage: {
     height: 250,
   },
-  modalPaper: {
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContent: {
     width: '100vw',
     height: '100vh',
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2, 2),
+    [theme.breakpoints.up('lg')]: {
+      width: '50vw',
+      height: '80vh',
+    },
   },
   closeIcon: {
     alignSelf: 'flex-end',
@@ -61,6 +70,7 @@ export default function ImageCard({
         <Tags tags={imageData.tags} />
       </CardContent>
       <Modal
+        className={classes.modal}
         open={open}
         onClose={handleClose}
         aria-labelledby={`image-${imageData.id}`}
@@ -68,7 +78,7 @@ export default function ImageCard({
       >
         <Grid
           container
-          className={classes.modalPaper}
+          className={classes.modalContent}
           direction="column"
           justify="space-between"
           alignItems="center"
