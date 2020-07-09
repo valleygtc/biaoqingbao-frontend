@@ -1,7 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import ImageBox from './ImageBox';
 import { imageList } from './constants';
@@ -17,10 +18,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ImageWall() {
   const classes = useStyles();
+  const theme = useTheme();
+  const isBigScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={300} cols={2}>
+      <GridList cellHeight={300} cols={isBigScreen ? 4 : 2}>
         {imageList.map((image) => (
           <GridListTile key={image.id} cols={1}>
             <ImageBox imageData={image} />
