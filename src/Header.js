@@ -43,7 +43,7 @@ export default function Header({}) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography className={classes.title} variant="h6" noWrap>
+        <Typography variant="h6" noWrap>
           表情宝
         </Typography>
         <div className={classes.search}>
