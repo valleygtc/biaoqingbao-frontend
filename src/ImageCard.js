@@ -9,6 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 
+import Tags from './Tags';
+
 const useStyles = makeStyles((theme) => ({
   cardImage: {
     height: 250,
@@ -56,7 +58,7 @@ export default function ImageCard({
         />
       </CardActionArea>
       <CardContent>
-        标签Foo
+        <Tags tags={imageData.tags} />
       </CardContent>
       <Modal
         open={open}
@@ -78,9 +80,7 @@ export default function ImageCard({
           </Grid>
           <Grid item>
             <img src={imageData.url} alt={`img-${imageData.id}`} />
-            <div>
-              标签Foo
-            </div>
+            <Tags tags={imageData.tags} />
           </Grid>
           <Grid item>
             分享、删除、打标签
