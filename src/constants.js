@@ -2,7 +2,7 @@ export const imageList = [
   {
     id: 1,
     url: 'https://fakeimg.pl/250x250/',
-    tags: ['abcdefghijklmn', 'hijklmnopq'],
+    tags: [],
   },
   {
     id: 2,
@@ -12,7 +12,7 @@ export const imageList = [
   {
     id: 3,
     url: 'https://fakeimg.pl/250x250/',
-    tags: ['abcdefghijklmn', 'hijklmnopq'],
+    tags: ['abcdefghijklmn'],
   },
   {
     id: 4,
