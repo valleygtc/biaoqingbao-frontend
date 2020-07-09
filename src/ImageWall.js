@@ -4,7 +4,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import ImageBox from './ImageBox';
+import ImageCard from './ImageCard';
 import { imageList } from './constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +26,7 @@ export default function ImageWall() {
       <GridList cellHeight={300} cols={isBigScreen ? 4 : 2}>
         {imageList.map((image) => (
           <GridListTile key={image.id} cols={1}>
-            <ImageBox imageData={image} />
+            <ImageCard imageData={image} />
           </GridListTile>
         ))}
       </GridList>
