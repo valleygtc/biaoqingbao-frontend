@@ -8,6 +8,10 @@ import Modal from '@material-ui/core/Modal';
 import Grid from '@material-ui/core/Grid';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
+import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ShareIcon from '@material-ui/icons/Share';
+import Hidden from '@material-ui/core/Hidden';
 
 import Tags from './Tags';
 
@@ -32,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   closeIcon: {
     alignSelf: 'flex-end',
-  }
+  },
 }));
 
 /**
@@ -92,8 +96,26 @@ export default function ImageCard({
             <img src={imageData.url} alt={`img-${imageData.id}`} />
             <Tags tags={imageData.tags} />
           </Grid>
-          <Grid item>
-            分享、删除、打标签
+          <Grid item container justify="space-around">
+            <Grid item>
+              <IconButton aria-label="tag" color="inherit" onClick={() => console.log('click tag')}>
+                <CreateIcon fontSize="large" />
+                {/* md and mddown hidden */}
+                <Hidden mdDown>打标签</Hidden>
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton aria-label="delete" color="inherit" onClick={() => console.log('click delete')}>
+                <DeleteIcon fontSize="large" />
+                <Hidden mdDown>删除</Hidden>
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton aria-label="share" color="inherit" onClick={() => console.log('click share')}>
+                <ShareIcon fontSize="large" />
+                <Hidden mdDown>分享</Hidden>
+              </IconButton>
+            </Grid>
           </Grid>
         </Grid>
       </Modal>
