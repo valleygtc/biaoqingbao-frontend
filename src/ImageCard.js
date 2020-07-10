@@ -1,41 +1,25 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Modal from '@material-ui/core/Modal';
-import Grid from '@material-ui/core/Grid';
-import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import Hidden from '@material-ui/core/Hidden';
 
+import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
+import DialogContent from './DialogContent';
+import DialogActions from './DialogActions';
 import Tags from './Tags';
 
 const useStyles = makeStyles((theme) => ({
   cardImage: {
     height: 250,
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalContent: {
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(2, 2),
-    [theme.breakpoints.up('lg')]: {
-      width: '50vw',
-      height: '80vh',
-    },
-  },
-  closeIcon: {
-    alignSelf: 'flex-end',
   },
 }));
 
@@ -50,8 +34,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ImageCard({
   imageData,
 }){
-  const [open, setOpen] = useState(false);
   const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -73,52 +60,34 @@ export default function ImageCard({
       <CardContent>
         <Tags tags={imageData.tags} />
       </CardContent>
-      <Modal
-        className={classes.modal}
+      <Dialog
+        fullWidth
+        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
-        aria-labelledby={`image-${imageData.id}`}
-        aria-describedby={`image-${imageData.id}`}
+        aria-labelledby="check-image"
       >
-        <Grid
-          container
-          className={classes.modalContent}
-          direction="column"
-          justify="space-between"
-          alignItems="center"
-        >
-          <Grid item className={classes.closeIcon}>
-            <IconButton aria-label="close modal" color="inherit" onClick={handleClose}>
-              <CloseIcon fontSize="large"/>
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <img src={imageData.url} alt={`img-${imageData.id}`} />
-            <Tags tags={imageData.tags} />
-          </Grid>
-          <Grid item container justify="space-around">
-            <Grid item>
-              <IconButton aria-label="tag" color="inherit" onClick={() => console.log('click tag')}>
-                <CreateIcon fontSize="large" />
-                {/* md and mddown hidden */}
-                <Hidden mdDown>打标签</Hidden>
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <IconButton aria-label="delete" color="inherit" onClick={() => console.log('click delete')}>
-                <DeleteIcon fontSize="large" />
-                <Hidden mdDown>删除</Hidden>
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <IconButton aria-label="share" color="inherit" onClick={() => console.log('click share')}>
-                <ShareIcon fontSize="large" />
-                <Hidden mdDown>分享</Hidden>
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Modal>
+        <DialogTitleWithCloseIcon id="check-image" onClose={handleClose}>查看图片</DialogTitleWithCloseIcon>
+        <DialogContent dividers>
+          <img src={imageData.url} alt={`img-${imageData.id}`} />
+          <Tags tags={imageData.tags} />
+        </DialogContent>
+        <DialogActions>
+          <IconButton aria-label="tag" color="inherit" onClick={() => console.log('click tag')}>
+            <CreateIcon fontSize="large" />
+            {/* sm and smdown hidden */}
+            <Hidden smDown>打标签</Hidden>
+          </IconButton>
+          <IconButton aria-label="delete" color="inherit" onClick={() => console.log('click delete')}>
+            <DeleteIcon fontSize="large" />
+            <Hidden smDown>删除</Hidden>
+          </IconButton>
+          <IconButton aria-label="share" color="inherit" onClick={() => console.log('click share')}>
+            <ShareIcon fontSize="large" />
+            <Hidden smDown>分享</Hidden>
+          </IconButton>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }
