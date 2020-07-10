@@ -11,6 +11,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import Hidden from '@material-ui/core/Hidden';
+import Button from '@material-ui/core/Button';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
@@ -21,6 +22,20 @@ const useStyles = makeStyles((theme) => ({
   cardImage: {
     height: 250,
   },
+  paperFullWidth: {
+    width: '100%',
+    margin: 0,
+  },
+  scrollPaper: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }
+  }
 }));
 
 /**
@@ -48,6 +63,16 @@ export default function ImageCard({
     setOpen(false);
   };
 
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const handleDeleteDialogOpen = () => {
+    setIsDeleteDialogOpen(true);
+  }
+
+  const handleDeleteDialogClose = () => {
+    setIsDeleteDialogOpen(false);
+  }
+
   return (
     <Card>
       <CardActionArea onClick={handleOpen}>
@@ -62,12 +87,15 @@ export default function ImageCard({
       </CardContent>
       <Dialog
         fullWidth
+        maxWidth="sm"
         fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="check-image"
       >
-        <DialogTitleWithCloseIcon id="check-image" onClose={handleClose}>查看图片</DialogTitleWithCloseIcon>
+        <DialogTitleWithCloseIcon id="check-image" onClose={handleClose}>
+          查看图片
+        </DialogTitleWithCloseIcon>
         <DialogContent dividers>
           <img src={imageData.url} alt={`img-${imageData.id}`} />
           <Tags tags={imageData.tags} />
@@ -78,7 +106,7 @@ export default function ImageCard({
             {/* sm and smdown hidden */}
             <Hidden smDown>打标签</Hidden>
           </IconButton>
-          <IconButton aria-label="delete" color="inherit" onClick={() => console.log('click delete')}>
+          <IconButton aria-label="delete" color="inherit" onClick={handleDeleteDialogOpen}>
             <DeleteIcon fontSize="large" />
             <Hidden smDown>删除</Hidden>
           </IconButton>
@@ -87,6 +115,26 @@ export default function ImageCard({
             <Hidden smDown>分享</Hidden>
           </IconButton>
         </DialogActions>
+      </Dialog>
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        classes={{
+          paperFullWidth: classes.paperFullWidth,
+          scrollPaper: classes.scrollPaper,
+        }}
+        open={isDeleteDialogOpen}
+        onClose={handleDeleteDialogClose}
+        aria-labelledby="delete-image-confirm-dialog"
+      >
+        <DialogTitleWithCloseIcon id="delete-image-confirm-dialog" onClose={handleDeleteDialogClose}>
+          确认要删除该图片？
+        </DialogTitleWithCloseIcon>
+        <DialogContent dividers>
+          <Button fullWidth variant="contained" color="primary" onClick={() => console.log('handle delete image')}>
+            删除
+          </Button>
+        </DialogContent>
       </Dialog>
     </Card>
   );
