@@ -53,29 +53,29 @@ export default function ImageCard({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [open, setOpen] = useState(false);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleDetailDialogOpen = () => {
+    setDetailDialogOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleDetailDialogClose = () => {
+    setDetailDialogOpen(false);
   };
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleDeleteDialogOpen = () => {
-    setIsDeleteDialogOpen(true);
+    setDeleteDialogOpen(true);
   }
 
   const handleDeleteDialogClose = () => {
-    setIsDeleteDialogOpen(false);
+    setDeleteDialogOpen(false);
   }
 
   return (
     <Card>
-      <CardActionArea onClick={handleOpen}>
+      <CardActionArea onClick={handleDetailDialogOpen}>
         <CardMedia
           className={classes.cardImage}
           image={imageData.url}
@@ -89,11 +89,11 @@ export default function ImageCard({
         fullWidth
         maxWidth="sm"
         fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
+        open={detailDialogOpen}
+        onClose={handleDetailDialogClose}
         aria-labelledby="check-image"
       >
-        <DialogTitleWithCloseIcon id="check-image" onClose={handleClose}>
+        <DialogTitleWithCloseIcon id="check-image" onClose={handleDetailDialogClose}>
           查看图片
         </DialogTitleWithCloseIcon>
         <DialogContent dividers>
@@ -123,7 +123,7 @@ export default function ImageCard({
           paperFullWidth: classes.paperFullWidth,
           scrollPaper: classes.scrollPaper,
         }}
-        open={isDeleteDialogOpen}
+        open={deleteDialogOpen}
         onClose={handleDeleteDialogClose}
         aria-labelledby="delete-image-confirm-dialog"
       >
