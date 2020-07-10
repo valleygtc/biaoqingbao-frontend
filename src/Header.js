@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -7,14 +7,16 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Modal from '@material-ui/core/Modal';
-import Grid from '@material-ui/core/Grid';
-import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+
+import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
+import DialogContent from './DialogContent';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -43,28 +45,12 @@ const useStyles = makeStyles((theme) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
   },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalContent: {
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(2, 2),
-    [theme.breakpoints.up('lg')]: {
-      width: '50vw',
-      height: '80vh',
-    },
-  },
-  modalCloseIcon: {
-    alignSelf: 'flex-end',
-  },
 }));
 
 export default function Header({}) {
   const classes = useStyles();
+  const theme = useTheme();
+  const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -98,37 +84,30 @@ export default function Header({}) {
           <AddCircleIcon />
         </IconButton>
       </Toolbar>
-      <Modal
-        className={classes.modal}
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        fullScreen={dialogFullScreen}
         open={open}
         onClose={handleClose}
+        aria-labelledby="add-image"
       >
-        <Grid
-          container
-          className={classes.modalContent}
-          direction="column"
-          justify="flex-start"
-          alignItems="center"
-        >
-          <Grid item className={classes.modalCloseIcon}>
-            <IconButton aria-label="close modal" color="inherit" onClick={handleClose}>
-              <CloseIcon fontSize="large"/>
-            </IconButton>
-          </Grid>
-          <Grid item>
-            <form noValidate autoComplete="off">
-              <FormControl required fullWidth margin="normal">
-                <InputLabel shrink htmlFor="image-picker">图片</InputLabel>
-                <Input id="image-picker" type="file" onChange={() => console.log('handle file choose')} />
-              </FormControl>
-              <TextField id="标签" label="标签" fullWidth margin="normal"/>
-              <FormControl margin="normal">
-                <Button variant="contained" color="primary" onClick={() => console.log('handle submit')}>提交</Button>
-              </FormControl>
-            </form>
-          </Grid>
-        </Grid>
-      </Modal>
+        <DialogTitleWithCloseIcon id="add-image" onClose={handleClose}>
+          添加图片
+        </DialogTitleWithCloseIcon>
+        <DialogContent dividers>
+          <form noValidate autoComplete="off">
+            <FormControl required fullWidth margin="normal">
+              <InputLabel shrink htmlFor="image-picker">图片</InputLabel>
+              <Input id="image-picker" type="file" onChange={() => console.log('handle file choose')} />
+            </FormControl>
+            <TextField id="标签" label="标签" fullWidth margin="normal"/>
+            <FormControl margin="normal">
+              <Button variant="contained" color="primary" onClick={() => console.log('handle submit')}>提交</Button>
+            </FormControl>
+          </form>
+        </DialogContent>
+      </Dialog>
     </AppBar>
   );
 }
