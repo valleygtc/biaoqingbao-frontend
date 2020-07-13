@@ -71,6 +71,10 @@ export default function Tags({
     });
   }
 
+  const isChosenTag = (index, content) => {
+    return tag.index === index && tag.content === content;
+  }
+
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const handleOpenEditDialog = () => {
@@ -85,7 +89,7 @@ export default function Tags({
     <div className={classes.root}>
       {tags.map((t, i) => {
         return (
-          <Chip key={i} label={t} onClick={() => handleChooseTag(i, t)} />
+          <Chip key={i} label={t} color={isChosenTag(i, t) ? 'primary': 'default'} onClick={() => handleChooseTag(i, t)} />
         )})}
       <Dialog
         fullWidth
