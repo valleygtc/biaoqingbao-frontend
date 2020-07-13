@@ -5,6 +5,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Header from './Header';
+import SearchBar from './SearchBar';
 import ImageWall from './ImageWall';
 import Footer from './Footer';
 
@@ -38,6 +39,7 @@ export default function App({}) {
   return (
     <div className={classes.root}>
       <Header />
+      <SearchBar onSearch={(text) => console.log(`handle search: ${text}`)} />
       <div className={classes.content}>
         <ImageWall />
         <div className={classes.pagination}>

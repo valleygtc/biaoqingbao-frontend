@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    padding: theme.spacing(1, 0),
   },
   card: {
     width: '50%',
