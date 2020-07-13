@@ -12,6 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
 import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
@@ -73,6 +75,16 @@ export default function ImageCard({
     setDeleteDialogOpen(false);
   }
 
+  const [tagDialogOpen, setTagDialogOpen] = useState(false);
+
+  const handleTagDialogOpen = () => {
+    setTagDialogOpen(true);
+  }
+
+  const handleTagDialogClose = () => {
+    setTagDialogOpen(false);
+  }
+
   return (
     <Card>
       <CardActionArea onClick={handleDetailDialogOpen}>
@@ -101,7 +113,7 @@ export default function ImageCard({
           <Tags tags={imageData.tags} />
         </DialogContent>
         <DialogActions>
-          <IconButton aria-label="tag" color="inherit" onClick={() => console.log('click tag')}>
+          <IconButton aria-label="tag" color="inherit" onClick={handleTagDialogOpen}>
             <CreateIcon fontSize="large" />
             {/* sm and smdown hidden */}
             <Hidden smDown>打标签</Hidden>
@@ -135,6 +147,25 @@ export default function ImageCard({
             删除
           </Button>
         </DialogContent>
+      </Dialog>
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        open={tagDialogOpen}
+        onClose={handleTagDialogClose}
+        aria-labelledby="tag-image"
+      >
+        <DialogTitleWithCloseIcon id="tag-image" onClose={handleTagDialogClose}>
+          添加标签
+        </DialogTitleWithCloseIcon>
+        <DialogContent dividers>
+          <form noValidate autoComplete="off">
+            <TextField fullWidth required id="标签" label="标签" margin="normal"/>
+          </form>
+        </DialogContent>
+        <MuiDialogActions>
+          <Button variant="contained" color="primary" onClick={() => console.log('handle tag confirm')}>确认</Button>
+        </MuiDialogActions>
       </Dialog>
     </Card>
   );
