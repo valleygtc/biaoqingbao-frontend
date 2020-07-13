@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -15,8 +15,18 @@ import Button from '@material-ui/core/Button';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
+import GroupSelect from './GroupSelect';
+
+const useStyles = makeStyles((theme) => ({
+  groupContainer: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 export default function Header({}) {
+  const classes = useStyles();
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
@@ -35,6 +45,9 @@ export default function Header({}) {
         <Typography variant="h6" noWrap>
           表情宝
         </Typography>
+        <div className={classes.groupContainer} >
+          <GroupSelect groups={['全部', '中老年表情包', 'xxxxxx']} />
+        </div>
         <IconButton aria-label="add image" color="inherit" onClick={handleOpen}>
           <AddCircleIcon />
         </IconButton>
