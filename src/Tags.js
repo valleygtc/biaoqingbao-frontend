@@ -95,6 +95,22 @@ export default function Tags({
     });
   }
 
+  const [deleteDialogOpen, setDeleteDialog] = useState(false);
+
+  const handleOpenDeleteDialog = () => {
+    setDeleteDialog(true);
+    setOperateDialogOpen(false);
+  }
+
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialog(false);
+    // reset tag
+    setTag({
+      index: -1,
+      content: '',
+    });
+  }
+
   return (
     <div className={classes.root}>
       {tags.map((t, i) => {
@@ -119,7 +135,7 @@ export default function Tags({
           <Button fullWidth variant="contained" color="primary" onClick={handleOpenEditDialog}>
             编辑标签
           </Button>
-          <Button fullWidth variant="contained" color="primary" onClick={() => console.log(`handle delete tag ${tag.content}`)}>
+          <Button fullWidth variant="contained" color="primary" onClick={handleOpenDeleteDialog}>
             删除标签
           </Button>
         </DialogContent>
@@ -142,6 +158,26 @@ export default function Tags({
         <MuiDialogActions>
           <Button variant="contained" color="primary" onClick={() => console.log('handle submit edit tag dialog')}>确认</Button>
         </MuiDialogActions>
+      </Dialog>
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        classes={{
+          paperFullWidth: classes.paperFullWidth,
+          scrollPaper: classes.scrollPaper,
+        }}
+        open={deleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="delete-tag-confirm-dialog"
+      >
+        <DialogTitleWithCloseIcon id="delete-tag-confirm-dialog" onClose={handleCloseDeleteDialog}>
+          确认要删除该标签？
+        </DialogTitleWithCloseIcon>
+        <DialogContent dividers>
+          <Button fullWidth variant="contained" color="primary" onClick={() => console.log('handle delete tag')}>
+            删除
+          </Button>
+        </DialogContent>
       </Dialog>
     </div>
   );
