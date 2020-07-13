@@ -51,6 +51,7 @@ export default function Tags({
 }) {
   const classes = useStyles();
 
+  const [operateDialogOpen, setOperateDialogOpen] = useState(false);
   // chosen tag
   const [tag, setTag] = useState({
     index: -1,
@@ -62,9 +63,12 @@ export default function Tags({
       index,
       content,
     });
+    setOperateDialogOpen(true);
   }
 
-  const resetTag = () => {
+  const handleCloseOperateDialog = () => {
+    setOperateDialogOpen(false);
+    // reset tag
     setTag({
       index: -1,
       content: '',
@@ -79,10 +83,16 @@ export default function Tags({
 
   const handleOpenEditDialog = () => {
     setEditDialogOpen(true);
+    setOperateDialogOpen(false);
   }
 
   const handleCloseEditDialog = () => {
     setEditDialogOpen(false);
+    // reset tag
+    setTag({
+      index: -1,
+      content: '',
+    });
   }
 
   return (
@@ -98,11 +108,11 @@ export default function Tags({
           paperFullWidth: classes.paperFullWidth,
           scrollPaper: classes.scrollPaper,
         }}
-        open={!!tag.content}
-        onClose={resetTag}
+        open={operateDialogOpen}
+        onClose={handleCloseOperateDialog}
         aria-labelledby="choose-tag-operation"
       >
-        <DialogTitleWithCloseIcon id="choose-tag-operation" onClose={resetTag}>
+        <DialogTitleWithCloseIcon id="choose-tag-operation" onClose={handleCloseOperateDialog}>
           请选择操作
         </DialogTitleWithCloseIcon>
         <DialogContent dividers className={classes.operateDialog}>
