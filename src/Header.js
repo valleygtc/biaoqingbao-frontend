@@ -21,10 +21,15 @@ import GroupSelect from './GroupSelect';
 
 const useStyles = makeStyles((theme) => ({
   groupContainer: {
-    flexGrow: 1,
-    display: 'flex',
-    justifyContent: 'center',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
   },
+  grow: {
+    flexGrow: 1,
+  }
 }));
 
 export default function Header({
@@ -53,6 +58,7 @@ export default function Header({
         <div className={classes.groupContainer} >
           <GroupSelect groups={['全部', '中老年表情包', 'xxxxxx']} />
         </div>
+        <div className={classes.grow}></div>
         {darkMode
           ? (
             <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={() => onToggleDarkMode(false)}>
