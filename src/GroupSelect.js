@@ -72,7 +72,7 @@ export default function GroupSelect({
 
   return (
     <div>
-      <Button disableElevation className={classes.button} aria-describedby={id} variant="contained" color="primary" onClick={handleClickSelector}>
+      <Button disableElevation className={classes.button} aria-describedby={id} color="inherit" onClick={handleClickSelector}>
         <Typography>{group}</Typography>
         <ArrowDropDownIcon/>
       </Button>

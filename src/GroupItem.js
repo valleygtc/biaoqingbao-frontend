@@ -85,7 +85,7 @@ export default function GroupItem({
         }
         <Typography className={classes.text} key={value}>{value}</Typography>
         {selected && !editing
-          ? <CheckIcon color="primary" />
+          ? <CheckIcon color="inherit" />
           : null
         }
         {editing
