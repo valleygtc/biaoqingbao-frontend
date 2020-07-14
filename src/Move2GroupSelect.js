@@ -8,6 +8,9 @@ import Popover from '@material-ui/core/Popover';
 import GroupItem from './GroupItem';
 
 const useStyles = makeStyles((theme) => ({
+  button: {
+    textTransform: 'none',
+  },
   popoverPaper: {
     width: '600px',
     maxWidth: `calc(100% - ${theme.spacing(6)}px)`,
@@ -47,7 +50,7 @@ export default function Move2GroupSelect({
 
   return (
     <span>
-      <Button disableElevation aria-describedby={id} onClick={handleClickSelector}>
+      <Button disableElevation className={classes.button} aria-describedby={id} onClick={handleClickSelector}>
         <Typography>{currentGroup}</Typography>
         <ArrowDropDownIcon/>
       </Button>

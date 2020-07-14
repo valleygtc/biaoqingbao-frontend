@@ -13,6 +13,9 @@ import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
 
 const useStyles = makeStyles((theme) => ({
+  button: {
+    textTransform: 'none',
+  },
   popoverPaper: {
     width: '600px',
     maxWidth: `calc(100% - ${theme.spacing(6)}px)`,
@@ -69,7 +72,7 @@ export default function GroupSelect({
 
   return (
     <div>
-      <Button disableElevation aria-describedby={id} variant="contained" color="primary" onClick={handleClickSelector}>
+      <Button disableElevation className={classes.button} aria-describedby={id} variant="contained" color="primary" onClick={handleClickSelector}>
         <Typography>{group}</Typography>
         <ArrowDropDownIcon/>
       </Button>
