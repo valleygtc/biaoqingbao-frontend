@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import CheckIcon from '@material-ui/icons/Check';
@@ -8,6 +8,13 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import FolderOutlinedIcon from '@material-ui/icons/FolderOutlined';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
+import DialogContent from './DialogContent';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -22,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GroupItem({
+  id,
   value,
   selected,
   editing,
@@ -41,8 +49,16 @@ export default function GroupItem({
     onToggleCheck(false);
   }
 
-  const handleEdit = (e) => {
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const handleOpenEditDialog = (e) => {
     e.stopPropagation();
+    setEditDialogOpen(true);
+  }
+  const handleCloseEditDialog = () => {
+    setEditDialogOpen(false);
+  }
+  const handleEditSubmit = () => {
+    console.log('handle submit edit group dialog');
     onEdit();
   }
 
@@ -74,7 +90,7 @@ export default function GroupItem({
         }
         {editing
           ? (
-            <IconButton size="small" aria-label="edit" onClick={handleEdit}>
+            <IconButton size="small" aria-label="edit" onClick={handleOpenEditDialog}>
               <EditIcon />
             </IconButton>
           )
@@ -82,6 +98,25 @@ export default function GroupItem({
         }
       </div>
       <Divider />
+      <Dialog
+        fullWidth
+        maxWidth="sm"
+        open={editDialogOpen}
+        onClose={handleCloseEditDialog}
+        aria-labelledby="edit-group"
+      >
+        <DialogTitleWithCloseIcon id="edit-group" onClose={handleCloseEditDialog}>
+          编辑组名
+        </DialogTitleWithCloseIcon>
+        <DialogContent dividers>
+          <form noValidate autoComplete="off">
+            <TextField fullWidth required defaultValue={value} id="组名" label="组名" margin="normal" />
+          </form>
+        </DialogContent>
+        <MuiDialogActions>
+          <Button variant="contained" color="primary" onClick={handleEditSubmit}>确认</Button>
+        </MuiDialogActions>
+      </Dialog>
     </div>
   )
 }
