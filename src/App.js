@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { makeStyles, useTheme, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { makeStyles, useTheme, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Divider from '@material-ui/core/Divider';
 import Pagination from '@material-ui/lab/Pagination';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Header from './Header';
 import SearchBar from './SearchBar';
@@ -43,7 +43,8 @@ export default function App({}) {
   const theme = useTheme();
   const bigScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
-  const [darkMode, setDarkMode] = useState(false);
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [darkMode, setDarkMode] = useState(prefersDarkMode);
   const handleToggleDarkMode = (darkMode) => {
     setDarkMode(darkMode);
   };
