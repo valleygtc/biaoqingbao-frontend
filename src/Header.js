@@ -20,6 +20,10 @@ import DialogContent from './DialogContent';
 import GroupSelect from './GroupSelect';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    color: theme.palette.type === 'light' ? null : '#fff',
+    backgroundColor: theme.palette.type === 'light' ? null : '#333',
+  },
   groupContainer: {
     position: 'absolute',
     top: '50%',
@@ -50,7 +54,7 @@ export default function Header({
   };
 
   return (
-    <AppBar position="static">
+    <AppBar className={classes.root} position="static">
       <Toolbar>
         <Typography variant="h6" noWrap>
           表情宝
