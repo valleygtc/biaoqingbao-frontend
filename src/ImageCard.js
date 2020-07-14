@@ -43,17 +43,21 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
+    position: 'relative',
     margin: 0,
     padding: theme.spacing(2),
   },
   groupContainer: {
-    flexGrow: 1,
-    display: 'flex',
-    justifyContent: 'center',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
   },
   closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
 }));
