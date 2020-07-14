@@ -14,11 +14,15 @@ import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
 import DialogActions from './DialogActions';
 import Tags from './Tags';
+import Move2GroupSelect from './Move2GroupSelect';
 
 const useStyles = makeStyles((theme) => ({
   cardImage: {
@@ -37,7 +41,21 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'center',
       justifyContent: 'center',
     }
-  }
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  groupContainer: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  closeButton: {
+    color: theme.palette.grey[500],
+  },
 }));
 
 /**
@@ -105,9 +123,15 @@ export default function ImageCard({
         onClose={handleDetailDialogClose}
         aria-labelledby="check-image"
       >
-        <DialogTitleWithCloseIcon id="check-image" onClose={handleDetailDialogClose}>
-          查看图片
-        </DialogTitleWithCloseIcon>
+        <MuiDialogTitle id="check-image" disableTypography className={classes.header}>
+          <Typography variant="h6">查看图片</Typography>
+          <div className={classes.groupContainer}>
+            <Move2GroupSelect groups={['全部', '中老年表情包', 'xxxxxx']} currentGroup={"全部"} onSelectGroup={() => console.log('handle select group')} />
+          </div>
+          <IconButton aria-label="close" className={classes.closeButton} onClick={handleDetailDialogClose}>
+            <CloseIcon />
+          </IconButton>
+        </MuiDialogTitle>
         <DialogContent dividers>
           <img src={imageData.url} alt={`img-${imageData.id}`} />
           <Tags tags={imageData.tags} />
