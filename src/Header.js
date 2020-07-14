@@ -12,6 +12,8 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
@@ -25,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header({}) {
+export default function Header({
+  darkMode,
+  onToggleDarkMode,
+}) {
   const classes = useStyles();
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -48,6 +53,18 @@ export default function Header({}) {
         <div className={classes.groupContainer} >
           <GroupSelect groups={['全部', '中老年表情包', 'xxxxxx']} />
         </div>
+        {darkMode
+          ? (
+            <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={() => onToggleDarkMode(false)}>
+              <Brightness7Icon />
+            </IconButton>
+          )
+          : (
+            <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={() => onToggleDarkMode(true)}>
+              <Brightness4Icon />
+            </IconButton>
+          )
+        }
         <IconButton aria-label="add image" color="inherit" onClick={handleOpen}>
           <AddCircleIcon />
         </IconButton>
