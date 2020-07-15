@@ -8,6 +8,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import FolderOutlinedIcon from '@material-ui/icons/FolderOutlined';
+import FolderSpecialOutlinedIcon from '@material-ui/icons/FolderSpecialOutlined';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
@@ -62,40 +63,64 @@ export default function GroupItem({
     onEdit();
   }
 
+  const handleClick = () => {
+    if (editing && checked) {
+      onToggleCheck(false);
+    } else if (editing && !checked) {
+      onToggleCheck(true);
+    } else {
+      onSelect();
+    }
+  }
+
+  const getStartIcon = () => {
+    if (value === '全部') {
+      return (
+        <IconButton disabled size="small" aria-label="icon">
+          <FolderSpecialOutlinedIcon />
+        </IconButton>
+      );
+    } else if (editing) {
+      if (checked) {
+        return (
+          <IconButton size="small" aria-label="checkbox" onClick={handleUncheck}>
+            <CheckBoxIcon />
+          </IconButton>
+        );
+      } else {
+        return (
+          <IconButton size="small" aria-label="checkedbox" onClick={handleCheck}>
+            <CheckBoxOutlineBlankIcon />
+          </IconButton>
+        );
+      }
+    } else {
+      return (
+        <IconButton disabled size="small" aria-label="icon">
+          <FolderOutlinedIcon />
+        </IconButton>
+      );
+    }
+  }
+
+  const getEndIcon = () => {
+    if (selected && !editing) {
+      return (<CheckIcon color="inherit" />);
+    } else if (editing && value !== '全部') {
+      return (
+        <IconButton size="small" aria-label="edit" onClick={handleOpenEditDialog}>
+          <EditIcon />
+        </IconButton>
+      );
+    }
+  }
+
   return (
     <div className={classes.root}>
-      <div className={classes.item} onClick={onSelect}>
-        {editing ?
-          checked
-            ? (
-              <IconButton size="small" aria-label="checkbox" onClick={handleUncheck}>
-                <CheckBoxIcon />
-              </IconButton>
-            )
-            : (
-              <IconButton size="small" aria-label="checkedbox" onClick={handleCheck}>
-                <CheckBoxOutlineBlankIcon />
-              </IconButton>
-            )
-          : (
-            <IconButton disabled size="small" aria-label="checkbox" onClick={handleUncheck}>
-              <FolderOutlinedIcon />
-            </IconButton>
-          )
-        }
+      <div className={classes.item} onClick={handleClick}>
+        {getStartIcon()}
         <Typography className={classes.text} key={value}>{value}</Typography>
-        {selected && !editing
-          ? <CheckIcon color="inherit" />
-          : null
-        }
-        {editing
-          ? (
-            <IconButton size="small" aria-label="edit" onClick={handleOpenEditDialog}>
-              <EditIcon />
-            </IconButton>
-          )
-          : null
-        }
+        {getEndIcon()}
       </div>
       <Divider />
       <Dialog
