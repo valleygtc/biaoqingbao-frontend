@@ -14,6 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
@@ -65,19 +66,25 @@ export default function Header({
         <div className={classes.grow}></div>
         {darkMode
           ? (
-            <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={() => onToggleDarkMode(false)}>
-              <Brightness7Icon />
-            </IconButton>
+            <Tooltip title="切换至亮模式">
+              <IconButton aria-label="switch-to-lightmode" color="inherit" onClick={() => onToggleDarkMode(false)}>
+                <Brightness7Icon />
+              </IconButton>
+            </Tooltip>
           )
           : (
-            <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={() => onToggleDarkMode(true)}>
-              <Brightness4Icon />
-            </IconButton>
+            <Tooltip title="切换至暗模式">
+              <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={() => onToggleDarkMode(true)}>
+                <Brightness4Icon />
+              </IconButton>
+            </Tooltip>
           )
         }
-        <IconButton aria-label="add image" color="inherit" onClick={handleOpen}>
-          <AddCircleIcon />
-        </IconButton>
+        <Tooltip title="添加图片">
+          <IconButton aria-label="add image" color="inherit" onClick={handleOpen}>
+            <AddCircleIcon />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
       <Dialog
         fullWidth
