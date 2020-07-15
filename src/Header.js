@@ -67,14 +67,14 @@ export default function Header({
         {darkMode
           ? (
             <Tooltip title="切换至亮模式">
-              <IconButton aria-label="switch-to-lightmode" color="inherit" onClick={() => onToggleDarkMode(false)}>
+              <IconButton aria-label="switch-to-lightmode" color="inherit" onClick={onToggleDarkMode}>
                 <Brightness7Icon />
               </IconButton>
             </Tooltip>
           )
           : (
             <Tooltip title="切换至暗模式">
-              <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={() => onToggleDarkMode(true)}>
+              <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={onToggleDarkMode}>
                 <Brightness4Icon />
               </IconButton>
             </Tooltip>

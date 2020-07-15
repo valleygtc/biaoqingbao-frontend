@@ -45,8 +45,8 @@ export default function App({}) {
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [darkMode, setDarkMode] = useState(prefersDarkMode);
-  const handleToggleDarkMode = (darkMode) => {
-    setDarkMode(darkMode);
+  const handleToggleDarkMode = () => {
+    setDarkMode(!darkMode);
   };
 
   const [page, setPage] = React.useState(1);
