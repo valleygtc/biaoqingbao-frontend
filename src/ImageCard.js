@@ -68,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
  *     "id": [int],
  *     "url": [str],
  *     "tags": [array[str]],
+ *     "group": [str],
  *   }
  */
 export default function ImageCard({
@@ -78,31 +79,25 @@ export default function ImageCard({
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [detailDialogOpen, setDetailDialogOpen] = useState(false);
-
   const handleDetailDialogOpen = () => {
     setDetailDialogOpen(true);
   };
-
   const handleDetailDialogClose = () => {
     setDetailDialogOpen(false);
   };
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
   const handleDeleteDialogOpen = () => {
     setDeleteDialogOpen(true);
   }
-
   const handleDeleteDialogClose = () => {
     setDeleteDialogOpen(false);
   }
 
   const [tagDialogOpen, setTagDialogOpen] = useState(false);
-
   const handleTagDialogOpen = () => {
     setTagDialogOpen(true);
   }
-
   const handleTagDialogClose = () => {
     setTagDialogOpen(false);
   }
@@ -130,7 +125,11 @@ export default function ImageCard({
         <MuiDialogTitle id="check-image" disableTypography className={classes.header}>
           <Typography variant="h6">查看图片</Typography>
           <div className={classes.groupContainer}>
-            <Move2GroupSelect groups={['全部', '中老年表情包', 'xxxxxx']} currentGroup={"全部"} onSelectGroup={() => console.log('handle select group')} />
+            <Move2GroupSelect
+              groups={['全部', '中老年表情包', 'xxxxxx']}
+              imageGroup={imageData.group}
+              onSelectGroup={(value) => console.log(`handle select group: ${value}`)}
+            />
           </div>
           <IconButton aria-label="close" className={classes.closeButton} onClick={handleDetailDialogClose}>
             <CloseIcon />

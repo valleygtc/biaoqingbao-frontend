@@ -24,9 +24,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * props:
+ *   groups [array[str]]
+ *   imageGroup [str]
+ *   onSelectGroup [callback]
+ */
 export default function Move2GroupSelect({
   groups,
-  currentGroup,
+  imageGroup,
   onSelectGroup,
 }) {
   const classes = useStyles();
@@ -51,7 +57,7 @@ export default function Move2GroupSelect({
   return (
     <span>
       <Button disableElevation className={classes.button} aria-describedby={id} onClick={handleClickSelector}>
-        <Typography>{currentGroup}</Typography>
+        <Typography>{imageGroup}</Typography>
         <ArrowDropDownIcon/>
       </Button>
       <Popover
@@ -75,8 +81,8 @@ export default function Move2GroupSelect({
           <GroupItem
             key={value}
             value={value}
-            selected={value === currentGroup}
-            onSelect={handleSelect}
+            selected={value === imageGroup}
+            onSelect={() => handleSelect(value)}
           />
         ))}
       </Popover>

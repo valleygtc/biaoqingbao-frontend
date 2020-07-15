@@ -9,6 +9,7 @@ import Header from './Header';
 import SearchBar from './SearchBar';
 import ImageWall from './ImageWall';
 import Footer from './Footer';
+import { imageList } from './mock';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +63,7 @@ export default function App({}) {
         <Header darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />
         <SearchBar onSearch={(text) => console.log(`handle search: ${text}`)} />
         <div className={classes.content}>
-          <ImageWall />
+          <ImageWall imageList={imageList} />
           <div className={classes.pagination}>
             <Pagination count={10} size={bigScreen ? 'large' : 'medium'} page={page} onChange={handleChange} />
           </div>

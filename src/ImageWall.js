@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import ImageCard from './ImageCard';
-import { imageList } from './constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +21,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ImageWall() {
+/**
+ * props:
+ *   imageList [array[object]]
+ */
+export default function ImageWall({
+  imageList,
+}) {
   const classes = useStyles();
 
   return (
