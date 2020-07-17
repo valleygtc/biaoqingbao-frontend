@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
  * props:
  *   imageList [array[object]]
  */
-export default function ImageWall({
+function ImageWall({
   imageList,
 }) {
   const classes = useStyles();
@@ -40,3 +41,11 @@ export default function ImageWall({
     </Container>
   );
 }
+
+const mapStateToProps = (state) => ({
+  imageList: state.main.imageList,
+});
+
+export default connect(
+  mapStateToProps
+)(ImageWall)
