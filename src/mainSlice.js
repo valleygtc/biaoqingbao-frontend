@@ -27,6 +27,24 @@ export const getImageList = createAsyncThunk(
   }
 )
 
+export const deleteImage = createAsyncThunk(
+  'main/deleteImage',
+  async (id) => {
+    // TODO:
+    console.log('handle delete image: %o', { id });
+    return {};
+  }
+)
+
+export const addTag = createAsyncThunk(
+  'main/addTag',
+  async (imageId, tag) => {
+    // TODO:
+    console.log('handle add tag: %o', { imageId, tag });
+    return {};
+  }
+)
+
 const mainSlice = createSlice({
   name: 'main',
   initialState: {
@@ -45,9 +63,17 @@ const mainSlice = createSlice({
       state.page = action.payload.page;
       state.imageList = action.payload.imageList;
     },
+    [deleteImage.fulfilled]: (state, action) => {
+      // TODO
+    },
+    [addTag.fulfilled]: (state, action) => {
+      // TODO
+    }
   }
 });
 
-export const { changePage } = mainSlice.actions;
+export const {
+  changePage,
+} = mainSlice.actions;
 
 export default mainSlice.reducer;
