@@ -1,24 +1,16 @@
 import React, { useState } from 'react';
-import { useTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Dialog from '@material-ui/core/Dialog';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
-import DialogContent from './DialogContent';
 import GroupSelect from './GroupSelect';
+import AddImageDialog from './AddImageDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,17 +34,8 @@ export default function Header({
   onToggleDarkMode,
 }) {
   const classes = useStyles();
-  const theme = useTheme();
-  const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [addImageDialogOpen, setAddImageDialogOpen] = useState(false);
 
   return (
     <AppBar className={classes.root} position="static">
@@ -81,35 +64,12 @@ export default function Header({
           )
         }
         <Tooltip title="添加图片">
-          <IconButton aria-label="add image" color="inherit" onClick={handleOpen}>
+          <IconButton aria-label="add image" color="inherit" onClick={() => setAddImageDialogOpen(true)}>
             <AddCircleIcon />
           </IconButton>
         </Tooltip>
       </Toolbar>
-      <Dialog
-        fullWidth
-        maxWidth="sm"
-        fullScreen={dialogFullScreen}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="add-image"
-      >
-        <DialogTitleWithCloseIcon id="add-image" onClose={handleClose}>
-          添加图片
-        </DialogTitleWithCloseIcon>
-        <DialogContent dividers>
-          <form noValidate autoComplete="off">
-            <FormControl required fullWidth margin="normal">
-              <InputLabel shrink htmlFor="image-picker">图片</InputLabel>
-              <Input id="image-picker" type="file" onChange={() => console.log('handle file choose')} />
-            </FormControl>
-            <TextField id="标签" label="标签" fullWidth margin="normal"/>
-            <FormControl margin="normal">
-              <Button variant="contained" color="primary" onClick={() => console.log('handle submit')}>提交</Button>
-            </FormControl>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <AddImageDialog open={addImageDialogOpen} onClose={() => setAddImageDialogOpen(false)} />
     </AppBar>
   );
 }
