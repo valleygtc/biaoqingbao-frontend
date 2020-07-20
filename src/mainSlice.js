@@ -47,7 +47,7 @@ export const deleteImage = createAsyncThunk(
 
 export const addTag = createAsyncThunk(
   'main/addTag',
-  async (imageId, tag) => {
+  async ({ imageId, tag }) => {
     // TODO:
     console.log('handle add tag: %o', { imageId, tag });
     return {};
@@ -56,7 +56,7 @@ export const addTag = createAsyncThunk(
 
 export const editTag = createAsyncThunk(
   'main/editTag',
-  async (id, text) => {
+  async ({ id, text }) => {
     // TODO:
     console.log('handle edit tag: %o', { id, text });
     return {};

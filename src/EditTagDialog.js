@@ -16,7 +16,10 @@ function EditTagDialog({
   editTag,
 }) {
   const handleSubmit = () => {
-    editTag(tag.id, 'TODO');
+    editTag({
+      id: tag.id,
+      text: 'TODO',
+    });
     onClose();
   }
 

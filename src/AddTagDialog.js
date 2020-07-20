@@ -15,6 +15,14 @@ function AddTagDialog({
   onClose,
   addTag,
 }){
+  const handleSubmit = () => {
+    addTag({
+      imageId,
+      'tag': 'TODO',
+    });
+    onClose();
+  }
+
   return (
     <Dialog
       fullWidth
@@ -32,7 +40,7 @@ function AddTagDialog({
         </form>
       </DialogContent>
       <MuiDialogActions>
-        <Button variant="contained" color="primary" onClick={() => addTag(imageId, 'TODO')}>确认</Button>
+        <Button variant="contained" color="primary" onClick={handleSubmit}>确认</Button>
       </MuiDialogActions>
     </Dialog>
   );
