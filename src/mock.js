@@ -62,3 +62,14 @@ export const imageList = [
     group: null,
   },
 ];
+
+export const groups = [
+  {
+    id: 1,
+    name: '中老年表情包'
+  },
+  {
+    id: 2,
+    name: 'xxxxxx'
+  }
+];

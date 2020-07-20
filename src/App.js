@@ -10,7 +10,7 @@ import SearchBar from './SearchBar';
 import ImageWall from './ImageWall';
 import Pagination from './Pagination';
 import Footer from './Footer';
-import { getImageList } from './mainSlice';
+import { getImageList, getGroups } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,9 +37,11 @@ const lightTheme = createMuiTheme({
 
 function App({
   getImageList,
+  getGroups,
 }) {
   useEffect(() => {
-    getImageList(1);
+    getImageList();
+    getGroups();
   }, []);
 
   const classes = useStyles();
@@ -67,7 +69,7 @@ function App({
   );
 }
 
-const mapDispatchToProps = { getImageList };
+const mapDispatchToProps = { getImageList, getGroups };
 
 export default connect(
   null,

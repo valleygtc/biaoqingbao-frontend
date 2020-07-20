@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -11,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import GroupItem from './GroupItem';
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
+import { changeGroup, getImageList } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -29,11 +31,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function GroupSelect({
+function GroupSelect({
   groups,
+  currentGroup,
+  changeGroup,
+  getImageList,
 }) {
   const classes = useStyles();
-  const [group, setGroup] = useState('全部');
 
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClickSelector = (event) => {
@@ -46,10 +50,10 @@ export default function GroupSelect({
   const open = Boolean(anchorEl);
   const id = open ? 'group-popover' : undefined;
 
-  const handleSelect = (value) => {
-    setGroup(value);
-    console.log(`handleSelect: ${value}`);
+  const handleSelect = (group) => {
+    changeGroup(group);
     handleCloseSelector();
+    getImageList();
   }
 
   const [editMode, setEditMode] = useState(false);
@@ -60,7 +64,7 @@ export default function GroupSelect({
     setEditMode(false);
   }
 
-  const [checkedGroups, setCheckGroups] = useState([]);
+  const [checkedGroupIds, setCheckGroupIds] = useState([]);
 
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const handleOpenCreateDialog = () => {
@@ -73,7 +77,7 @@ export default function GroupSelect({
   return (
     <div>
       <Button disableElevation className={classes.button} aria-describedby={id} color="inherit" onClick={handleClickSelector}>
-        <Typography>{group}</Typography>
+        <Typography>{currentGroup.name}</Typography>
         <ArrowDropDownIcon/>
       </Button>
       <Popover
@@ -93,23 +97,23 @@ export default function GroupSelect({
           horizontal: 'center',
         }}
       >
-        {groups.map((value) => (
+        {groups.map((g) => (
           <GroupItem
-            key={value}
-            value={value}
-            selected={value === group}
+            key={g.id}
+            value={g.name}
+            selected={g.id === currentGroup.id}
             editing={editMode}
-            checked={checkedGroups.includes(value)}
-            onSelect={() => handleSelect(value)}
+            checked={checkedGroupIds.includes(g.id)}
+            onSelect={() => handleSelect(g)}
             onToggleCheck={(check) => {
-              console.log('handle check toggle: %o', {check, value});
+              console.log('handle check toggle: %o', {check, g});
               if (check) {
-                setCheckGroups([
-                  ...checkedGroups,
-                  value,
+                setCheckGroupIds([
+                  ...checkedGroupIds,
+                  g.id,
                 ]);
               } else {
-                setCheckGroups(checkedGroups.filter((v) => v !== value));
+                setCheckGroupIds(checkedGroupIds.filter((id) => id !== g.id));
               }
             }}
             onEdit={() => console.log('edit button click')}
@@ -136,7 +140,7 @@ export default function GroupSelect({
           {editMode
             ? (<Button
                 disableElevation
-                disabled={checkedGroups.length === 0}
+                disabled={checkedGroupIds.length === 0}
                 size="small"
                 variant="contained"
                 onClick={() => console.log('handle click delete button')}
@@ -174,3 +178,17 @@ export default function GroupSelect({
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  groups: state.main.groups,
+  currentGroup: state.main.groups.find(
+    (g) => g.id === state.main.currentGroupId
+  ),
+});
+
+const mapDispatchToProps = { changeGroup, getImageList };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GroupSelect);

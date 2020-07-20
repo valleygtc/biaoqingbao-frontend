@@ -26,7 +26,7 @@ function Pagination({
 
   const handleChangePage = (event, value) => {
     changePage(value);
-    getImageList(value);
+    getImageList();
   };
 
   return (

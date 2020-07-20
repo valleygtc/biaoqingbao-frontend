@@ -1,24 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
-import { imageList } from 'mock';
+import { imageList, groups } from 'mock';
 
 export const getImageList = createAsyncThunk(
   'main/getImageList',
-  async (page) => {
-    console.log('mock getImageList: %o', { page });
+  async (_, { getState }) => {
+    const { page, currentGroup } = getState();
+
+    console.log('mock getImageList: %o', { page, currentGroup });
     return {
       pages: 10,
-      page: page,
       imageList: imageList,
     };
 
-    const resp = await axios.get('/api/images/');
+    const params = {
+      page,
+    }
+    if (currentGroup.id) {
+      params['groupId'] = currentGroup.id;
+    }
+
+    const resp = await axios.get('/api/images/', { params });
     const data = resp.data;
     if (resp.status === 200) {
       return {
         pages: data.pagination.pages,
-        page: data.pagination.page,
         imageList: data.data,
       };
     } else {
@@ -72,22 +79,51 @@ export const deleteTag = createAsyncThunk(
   }
 )
 
+export const getGroups = createAsyncThunk(
+  'main/getGroups',
+  async () => {
+    console.log('mock getGroups');
+    return {
+      groups,
+    };
+
+    const resp = await axios.get('/api/groups/');
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {
+        groups: data.data,
+      };
+    } else {
+      // TODO
+    }
+  }
+)
+
+const GROUP_ALL = {
+  id: 0,
+  name: '全部',
+}
+
 const mainSlice = createSlice({
   name: 'main',
   initialState: {
-    pages: 0,
-    page: 0,
+    pages: 1,
+    page: 1,
     imageList: [],
+    groups: [GROUP_ALL],
+    currentGroupId: GROUP_ALL.id,
   },
   reducers: {
     changePage: (state, action) => {
       state.page = action.payload;
     },
+    changeGroup: (state, action) => {
+      state.currentGroupId = action.payload.id;
+    },
   },
   extraReducers: {
     [getImageList.fulfilled]: (state, action) => {
       state.pages = action.payload.pages;
-      state.page = action.payload.page;
       state.imageList = action.payload.imageList;
     },
     [addImage.fulfilled]: (state, action) => {
@@ -104,12 +140,19 @@ const mainSlice = createSlice({
     },
     [deleteTag.fulfilled]: (state, action) => {
       // TODO
+    },
+    [getGroups.fulfilled]: (state, action) => {
+      state.groups = [
+        GROUP_ALL,
+        ...action.payload.groups,
+      ];
     }
   }
 });
 
 export const {
   changePage,
+  changeGroup,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;
