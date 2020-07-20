@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { get } from './utils';
+import axios from 'axios';
 import { imageList } from 'mock';
 
 export const getImageList = createAsyncThunk(
@@ -13,13 +13,13 @@ export const getImageList = createAsyncThunk(
       imageList: imageList,
     };
 
-    const resp = await get('/api/images/');
+    const resp = await axios.get('/api/images/');
+    const data = resp.data;
     if (resp.status === 200) {
-      const respJSON = await resp.json();
       return {
-        pages: respJSON.pagination.pages,
-        page: respJSON.pagination.page,
-        imageList: respJSON.data,
+        pages: data.pagination.pages,
+        page: data.pagination.page,
+        imageList: data.data,
       };
     } else {
       // TODO
