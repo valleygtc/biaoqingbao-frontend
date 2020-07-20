@@ -99,6 +99,24 @@ export const getGroups = createAsyncThunk(
   }
 )
 
+export const addGroup = createAsyncThunk(
+  'main/addGroup',
+  async (name) => {
+    console.log('handle add group: %o', { name });
+
+    const resp = await axios.post('/api/groups/add', { name });
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {
+        name,
+        id: data.id
+      };
+    } else {
+      // TODO
+    }
+  }
+)
+
 const GROUP_ALL = {
   id: 0,
   name: '全部',
@@ -146,6 +164,9 @@ const mainSlice = createSlice({
         GROUP_ALL,
         ...action.payload.groups,
       ];
+    },
+    [addGroup.fulfilled]: (state, action) => {
+      state.groups.push(action.payload);
     }
   }
 });

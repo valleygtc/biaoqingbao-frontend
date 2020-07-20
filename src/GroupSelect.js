@@ -5,13 +5,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Popover from '@material-ui/core/Popover';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import TextField from '@material-ui/core/TextField';
 
 import GroupItem from './GroupItem';
-import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
-import DialogContent from './DialogContent';
+import AddGroupDialog from './AddGroupDialog';
 import { changeGroup, getImageList } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
@@ -65,14 +61,7 @@ function GroupSelect({
   }
 
   const [checkedGroupIds, setCheckGroupIds] = useState([]);
-
-  const [createDialogOpen, setCreateDialogOpen] = useState(false);
-  const handleOpenCreateDialog = () => {
-    setCreateDialogOpen(true);
-  }
-  const handleCloseCreateDialog = () => {
-    setCreateDialogOpen(false);
-  }
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   return (
     <div>
@@ -150,31 +139,13 @@ function GroupSelect({
                 disableElevation
                 size="small"
                 variant="contained"
-                onClick={handleOpenCreateDialog}
+                onClick={() => setAddDialogOpen(true)}
               >新建组</Button>
             )
           }
         </div>
       </Popover>
-      <Dialog
-        fullWidth
-        maxWidth="sm"
-        open={createDialogOpen}
-        onClose={handleCloseCreateDialog}
-        aria-labelledby="create-group"
-      >
-        <DialogTitleWithCloseIcon id="create-group" onClose={handleCloseCreateDialog}>
-          新建组
-        </DialogTitleWithCloseIcon>
-        <DialogContent dividers>
-          <form noValidate autoComplete="off">
-            <TextField fullWidth required id="组名" label="组名" margin="normal"/>
-          </form>
-        </DialogContent>
-        <MuiDialogActions>
-          <Button variant="contained" color="primary" onClick={() => console.log('handle create group confirm')}>确认</Button>
-        </MuiDialogActions>
-      </Dialog>
+      <AddGroupDialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)} />
     </div>
   );
 }
