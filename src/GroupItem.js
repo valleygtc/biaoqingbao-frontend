@@ -36,18 +36,19 @@ export default function GroupItem({
   editing,
   checked,
   onSelect,
-  onToggleCheck,
+  onCheck,
+  onUncheck,
   onEdit,
 }) {
   const classes = useStyles();
 
   const handleCheck = (e) => {
     e.stopPropagation();
-    onToggleCheck(true);
+    onCheck();
   }
   const handleUncheck = (e) => {
     e.stopPropagation();
-    onToggleCheck(false);
+    onUncheck();
   }
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -65,9 +66,9 @@ export default function GroupItem({
 
   const handleClick = () => {
     if (editing && checked) {
-      onToggleCheck(false);
+      onUncheck();
     } else if (editing && !checked) {
-      onToggleCheck(true);
+      onCheck();
     } else {
       onSelect();
     }

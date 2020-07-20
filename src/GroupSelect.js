@@ -61,6 +61,17 @@ function GroupSelect({
   }
 
   const [checkedGroupIds, setCheckGroupIds] = useState([]);
+  const handleCheck = (group) => {
+    setCheckGroupIds([
+      ...checkedGroupIds,
+      group.id,
+    ]);
+  }
+  const handleUncheck = (group) => {
+    setCheckGroupIds(
+      checkedGroupIds.filter((id) => id !== group.id)
+    );
+  }
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   return (
@@ -94,17 +105,8 @@ function GroupSelect({
             editing={editMode}
             checked={checkedGroupIds.includes(g.id)}
             onSelect={() => handleSelect(g)}
-            onToggleCheck={(check) => {
-              console.log('handle check toggle: %o', {check, g});
-              if (check) {
-                setCheckGroupIds([
-                  ...checkedGroupIds,
-                  g.id,
-                ]);
-              } else {
-                setCheckGroupIds(checkedGroupIds.filter((id) => id !== g.id));
-              }
-            }}
+            onCheck={() => handleCheck(g)}
+            onUncheck={() => handleUncheck(g)}
             onEdit={() => console.log('edit button click')}
           />
         ))}
