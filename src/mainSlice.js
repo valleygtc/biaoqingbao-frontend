@@ -3,6 +3,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { imageList, groups } from 'mock';
 
+const GROUP_ALL = {
+  id: null,
+  name: '全部',
+}
+
 export const getImageList = createAsyncThunk(
   'main/getImageList',
   async (_, { getState }) => {
@@ -49,6 +54,21 @@ export const deleteImage = createAsyncThunk(
     // TODO:
     console.log('handle delete image: %o', { id });
     return {};
+  }
+)
+
+export const updateImage = createAsyncThunk(
+  'main/updateImage',
+  async ({ id, group }) => {
+    // TODO:
+    const resp = await axios.post('/api/images/update', {
+      id,
+      group_id: group.id,
+    });
+    return {
+      id,
+      group,
+    };
   }
 )
 
@@ -138,11 +158,6 @@ export const updateGroup = createAsyncThunk(
   }
 )
 
-const GROUP_ALL = {
-  id: 0,
-  name: '全部',
-}
-
 const mainSlice = createSlice({
   name: 'main',
   initialState: {
@@ -170,6 +185,9 @@ const mainSlice = createSlice({
     },
     [deleteImage.fulfilled]: (state, action) => {
       // TODO
+    },
+    [updateImage.fulfilled]: (state, action) => {
+      state.imageList.find((image) => image.id === action.payload.id)['group_id'] = action.payload.group.id;
     },
     [addTag.fulfilled]: (state, action) => {
       // TODO

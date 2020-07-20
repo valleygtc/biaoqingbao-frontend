@@ -63,11 +63,7 @@ export default function DetailDialog({
       <MuiDialogTitle id="image-detail" disableTypography className={classes.header}>
         <Typography variant="h6">查看图片</Typography>
         <div className={classes.groupContainer}>
-          <Move2GroupSelect
-            groups={['全部', '中老年表情包', 'xxxxxx']}
-            imageGroup={imageData.group}
-            onSelectGroup={(value) => console.log(`handle select group: ${value}`)}
-          />
+          <Move2GroupSelect imageData={imageData} />
         </div>
         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
           <CloseIcon />

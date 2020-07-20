@@ -3,7 +3,7 @@ export const imageList = [
     id: 1,
     url: 'https://fakeimg.pl/250x250/',
     tags: [],
-    group: null,
+    group_id: null,
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ export const imageList = [
         text: 'hijklmnopq'
       }
     ],
-    group: null,
+    group_id: null,
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ export const imageList = [
         text: 'abcdefghijklmn'
       },
     ],
-    group: null,
+    group_id: null,
   },
   {
     id: 4,
@@ -44,7 +44,7 @@ export const imageList = [
         text: 'hijklmnopq'
       }
     ],
-    group: null,
+    group_id: null,
   },
   {
     id: 5,
@@ -59,7 +59,7 @@ export const imageList = [
         text: 'hijklmnopq'
       }
     ],
-    group: null,
+    group_id: null,
   },
 ];
 
