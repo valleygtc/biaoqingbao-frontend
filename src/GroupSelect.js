@@ -8,7 +8,7 @@ import Popover from '@material-ui/core/Popover';
 
 import GroupItem from './GroupItem';
 import AddGroupDialog from './AddGroupDialog';
-import { changeGroup, getImageList } from './mainSlice';
+import { changeGroup, getImageList, deleteGroups } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -32,6 +32,7 @@ function GroupSelect({
   currentGroup,
   changeGroup,
   getImageList,
+  deleteGroups,
 }) {
   const classes = useStyles();
 
@@ -134,7 +135,7 @@ function GroupSelect({
                 disabled={checkedGroupIds.length === 0}
                 size="small"
                 variant="contained"
-                onClick={() => console.log('handle click delete button')}
+                onClick={() => deleteGroups(checkedGroupIds)}
               >删除</Button>
             )
             : (<Button
@@ -159,7 +160,7 @@ const mapStateToProps = (state) => ({
   ),
 });
 
-const mapDispatchToProps = { changeGroup, getImageList };
+const mapDispatchToProps = { changeGroup, getImageList, deleteGroups };
 
 export default connect(
   mapStateToProps,

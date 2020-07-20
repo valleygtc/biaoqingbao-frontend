@@ -117,6 +117,17 @@ export const addGroup = createAsyncThunk(
   }
 )
 
+export const deleteGroups = createAsyncThunk(
+  'main/deleteGroups',
+  async (ids) => {
+    // TODO:
+    console.log('handle delete groups: %o', { ids });
+    return {
+      ids,
+    };
+  }
+)
+
 const GROUP_ALL = {
   id: 0,
   name: '全部',
@@ -167,7 +178,10 @@ const mainSlice = createSlice({
     },
     [addGroup.fulfilled]: (state, action) => {
       state.groups.push(action.payload);
-    }
+    },
+    [deleteGroups.fulfilled]: (state, action) => {
+      state.groups = state.groups.filter((g) => !action.payload.ids.includes(g.id));
+    },
   }
 });
 
