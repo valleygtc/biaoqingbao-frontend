@@ -102,8 +102,6 @@ export const getGroups = createAsyncThunk(
 export const addGroup = createAsyncThunk(
   'main/addGroup',
   async (name) => {
-    console.log('handle add group: %o', { name });
-
     const resp = await axios.post('/api/groups/add', { name });
     const data = resp.data;
     if (resp.status === 200) {
@@ -124,6 +122,18 @@ export const deleteGroups = createAsyncThunk(
     console.log('handle delete groups: %o', { ids });
     return {
       ids,
+    };
+  }
+)
+
+export const updateGroup = createAsyncThunk(
+  'main/updateGroup',
+  async ({ id, name }) => {
+    // TODO:
+    const resp = await axios.post('/api/groups/update', { id, name });
+    return {
+      id,
+      name,
     };
   }
 )
@@ -182,6 +192,9 @@ const mainSlice = createSlice({
     [deleteGroups.fulfilled]: (state, action) => {
       state.groups = state.groups.filter((g) => !action.payload.ids.includes(g.id));
     },
+    [updateGroup.fulfilled]: (state, action) => {
+      state.groups.find((g) => g.id === action.payload.id)['name'] = action.payload.name;
+    }
   }
 });
 

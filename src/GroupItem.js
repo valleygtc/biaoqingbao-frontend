@@ -9,13 +9,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import FolderOutlinedIcon from '@material-ui/icons/FolderOutlined';
 import FolderSpecialOutlinedIcon from '@material-ui/icons/FolderSpecialOutlined';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 
-import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
-import DialogContent from './DialogContent';
+import EditGroupDialog from './EditGroupDialog';
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -30,15 +25,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GroupItem({
-  id,
-  value,
+  group,
   selected,
   editing,
   checked,
   onSelect,
   onCheck,
   onUncheck,
-  onEdit,
 }) {
   const classes = useStyles();
 
@@ -59,10 +52,6 @@ export default function GroupItem({
   const handleCloseEditDialog = () => {
     setEditDialogOpen(false);
   }
-  const handleEditSubmit = () => {
-    console.log('handle submit edit group dialog');
-    onEdit();
-  }
 
   const handleClick = () => {
     if (editing && checked) {
@@ -75,7 +64,7 @@ export default function GroupItem({
   }
 
   const getStartIcon = () => {
-    if (value === '全部') {
+    if (group.name === '全部') {
       return (
         <IconButton disabled size="small" aria-label="icon">
           <FolderSpecialOutlinedIcon />
@@ -107,7 +96,7 @@ export default function GroupItem({
   const getEndIcon = () => {
     if (selected && !editing) {
       return (<CheckIcon color="inherit" />);
-    } else if (editing && value !== '全部') {
+    } else if (editing && group.name !== '全部') {
       return (
         <IconButton size="small" aria-label="edit" onClick={handleOpenEditDialog}>
           <EditIcon />
@@ -117,32 +106,18 @@ export default function GroupItem({
   }
 
   return (
-    <div className={classes.root}>
+    <div>
       <div className={classes.item} onClick={handleClick}>
         {getStartIcon()}
-        <Typography className={classes.text} key={value}>{value}</Typography>
+        <Typography className={classes.text}>{group.name}</Typography>
         {getEndIcon()}
       </div>
       <Divider />
-      <Dialog
-        fullWidth
-        maxWidth="sm"
+      <EditGroupDialog
+        group={group}
         open={editDialogOpen}
         onClose={handleCloseEditDialog}
-        aria-labelledby="edit-group"
-      >
-        <DialogTitleWithCloseIcon id="edit-group" onClose={handleCloseEditDialog}>
-          编辑组名
-        </DialogTitleWithCloseIcon>
-        <DialogContent dividers>
-          <form noValidate autoComplete="off">
-            <TextField fullWidth required defaultValue={value} id="组名" label="组名" margin="normal" />
-          </form>
-        </DialogContent>
-        <MuiDialogActions>
-          <Button variant="contained" color="primary" onClick={handleEditSubmit}>确认</Button>
-        </MuiDialogActions>
-      </Dialog>
+      />
     </div>
   )
 }

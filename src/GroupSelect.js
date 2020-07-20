@@ -101,7 +101,7 @@ function GroupSelect({
         {groups.map((g) => (
           <GroupItem
             key={g.id}
-            value={g.name}
+            group={g}
             selected={g.id === currentGroup.id}
             editing={editMode}
             checked={checkedGroupIds.includes(g.id)}
