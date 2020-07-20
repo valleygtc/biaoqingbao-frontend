@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
-import Dialog from '@material-ui/core/Dialog';
-import Button from '@material-ui/core/Button';
 
-import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
-import DialogContent from './DialogContent';
 import OperateTagDialog from './OperateTagDialog';
 import EditTagDialog from './EditTagDialog';
+import DeleteTagDialog from './DeleteTagDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,25 +14,6 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0.5),
     },
   },
-  paperFullWidth: {
-    width: '100%',
-    margin: 0,
-  },
-  scrollPaper: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    [theme.breakpoints.up('sm')]: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }
-  },
-  operateDialog: {
-    '& > *': {
-      margin: theme.spacing(1, 0),
-    },
-  }
 }));
 
 /**
@@ -44,8 +22,6 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function Tags({
   tags,
-  editTag,
-  deleteTag,
 }) {
   const classes = useStyles();
 
@@ -103,26 +79,11 @@ export default function Tags({
         tag={chosenTag}
         onClose={handleCloseEditDialog}
       />
-      <Dialog
-        fullWidth
-        maxWidth="sm"
-        classes={{
-          paperFullWidth: classes.paperFullWidth,
-          scrollPaper: classes.scrollPaper,
-        }}
+      <DeleteTagDialog
         open={deleteDialogOpen}
+        tag={chosenTag}
         onClose={handleCloseDeleteDialog}
-        aria-labelledby="delete-tag-confirm-dialog"
-      >
-        <DialogTitleWithCloseIcon id="delete-tag-confirm-dialog" onClose={handleCloseDeleteDialog}>
-          确认要删除该标签？
-        </DialogTitleWithCloseIcon>
-        <DialogContent dividers>
-          <Button fullWidth variant="contained" color="primary" onClick={() => console.log('handle delete tag')}>
-            删除
-          </Button>
-        </DialogContent>
-      </Dialog>
+      />
     </div>
   );
 }

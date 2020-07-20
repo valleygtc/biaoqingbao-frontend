@@ -63,6 +63,15 @@ export const editTag = createAsyncThunk(
   }
 )
 
+export const deleteTag = createAsyncThunk(
+  'main/deleteTag',
+  async (id) => {
+    // TODO:
+    console.log('handle delete tag: %o', { id });
+    return {};
+  }
+)
+
 const mainSlice = createSlice({
   name: 'main',
   initialState: {
@@ -90,6 +99,12 @@ const mainSlice = createSlice({
     [addTag.fulfilled]: (state, action) => {
       // TODO
     },
+    [editTag.fulfilled]: (state, action) => {
+      // TODO
+    },
+    [deleteTag.fulfilled]: (state, action) => {
+      // TODO
+    }
   }
 });
 
