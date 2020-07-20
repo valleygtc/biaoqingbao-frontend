@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
  *   imageData [object]: {
  *     "id": [int],
  *     "url": [str],
- *     "tags": [array[str]],
- *     "group": [str],
+ *     "tags": [array[object]], { "id": <int>, "text": <str> }
+ *     "group": [object] or null, { "id": <int>, "name": <str> }
  *   }
  */
 export default function ImageCard({

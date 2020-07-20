@@ -8,6 +8,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
+import OperateTagDialog from './OperateTagDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,106 +41,64 @@ const useStyles = makeStyles((theme) => ({
 
 /**
  * props:
- *   tags: [array[str]]
- *   onTagEdit [callback]
- *   onTagDelete [callback]
+ *   tags: [array[obj]] { "id": <int>, "text": <text> }
  */
 export default function Tags({
   tags,
-  onTagEdit,
-  onTagDelete,
+  editTag,
+  deleteTag,
 }) {
   const classes = useStyles();
 
   const [operateDialogOpen, setOperateDialogOpen] = useState(false);
   // chosen tag
-  const [tag, setTag] = useState({
-    index: -1,
-    content: '',
-  });
-
-  const handleChooseTag = (index, content) => {
-    setTag({
-      index,
-      content,
-    });
+  const [chosenTag, setChosenTag] = useState({});
+  const handleChooseTag = (tag) => {
+    setChosenTag(tag);
     setOperateDialogOpen(true);
   }
-
   const handleCloseOperateDialog = () => {
     setOperateDialogOpen(false);
-    // reset tag
-    setTag({
-      index: -1,
-      content: '',
-    });
-  }
-
-  const isChosenTag = (index, content) => {
-    return tag.index === index && tag.content === content;
+    setChosenTag({});
   }
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-
   const handleOpenEditDialog = () => {
     setEditDialogOpen(true);
     setOperateDialogOpen(false);
   }
-
   const handleCloseEditDialog = () => {
     setEditDialogOpen(false);
-    // reset tag
-    setTag({
-      index: -1,
-      content: '',
-    });
+    setChosenTag({});
   }
 
   const [deleteDialogOpen, setDeleteDialog] = useState(false);
-
   const handleOpenDeleteDialog = () => {
     setDeleteDialog(true);
     setOperateDialogOpen(false);
   }
-
   const handleCloseDeleteDialog = () => {
     setDeleteDialog(false);
-    // reset tag
-    setTag({
-      index: -1,
-      content: '',
-    });
+    setChosenTag({});
   }
 
   return (
     <div className={classes.root}>
       {tags.map((t, i) => {
         return (
-          <Chip key={i} label={t} color={isChosenTag(i, t) ? 'primary': 'default'} onClick={() => handleChooseTag(i, t)} />
+          <Chip
+            key={t.id}
+            label={t.text}
+            color={t.id === chosenTag.id ? 'primary': 'default'}
+            onClick={() => handleChooseTag(t)}
+          />
         )})}
-      <Dialog
-        fullWidth
-        maxWidth="sm"
-        classes={{
-          paperFullWidth: classes.paperFullWidth,
-          scrollPaper: classes.scrollPaper,
-        }}
+      <OperateTagDialog
         open={operateDialogOpen}
         onClose={handleCloseOperateDialog}
-        aria-labelledby="choose-tag-operation"
-      >
-        <DialogTitleWithCloseIcon id="choose-tag-operation" onClose={handleCloseOperateDialog}>
-          请选择操作
-        </DialogTitleWithCloseIcon>
-        <DialogContent dividers className={classes.operateDialog}>
-          <Button fullWidth variant="contained" color="primary" onClick={handleOpenEditDialog}>
-            编辑标签
-          </Button>
-          <Button fullWidth variant="contained" color="primary" onClick={handleOpenDeleteDialog}>
-            删除标签
-          </Button>
-        </DialogContent>
-      </Dialog>
+        openEditDialog={handleOpenEditDialog}
+        openDeleteDialog={handleOpenDeleteDialog}
+      />
       <Dialog
         fullWidth
         maxWidth="sm"
@@ -152,7 +111,7 @@ export default function Tags({
         </DialogTitleWithCloseIcon>
         <DialogContent dividers>
           <form noValidate autoComplete="off">
-            <TextField fullWidth required defaultValue={tag.content} id="标签" label="标签" margin="normal" />
+            <TextField fullWidth required defaultValue={chosenTag.text} id="标签" label="标签" margin="normal" />
           </form>
         </DialogContent>
         <MuiDialogActions>
