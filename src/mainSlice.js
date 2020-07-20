@@ -11,9 +11,9 @@ const GROUP_ALL = {
 export const getImageList = createAsyncThunk(
   'main/getImageList',
   async (_, { getState }) => {
-    const { page, currentGroup } = getState();
+    const { page, currentGroupId } = getState().main;
 
-    console.log('mock getImageList: %o', { page, currentGroup });
+    console.log('mock getImageList: %o', { page, currentGroupId });
     return {
       pages: 10,
       imageList: imageList,
@@ -22,8 +22,8 @@ export const getImageList = createAsyncThunk(
     const params = {
       page,
     }
-    if (currentGroup.id) {
-      params['groupId'] = currentGroup.id;
+    if (currentGroupId) {
+      params['groupId'] = currentGroupId;
     }
 
     const resp = await axios.get('/api/images/', { params });
