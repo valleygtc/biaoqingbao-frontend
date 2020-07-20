@@ -54,6 +54,15 @@ export const addTag = createAsyncThunk(
   }
 )
 
+export const editTag = createAsyncThunk(
+  'main/editTag',
+  async (id, text) => {
+    // TODO:
+    console.log('handle edit tag: %o', { id, text });
+    return {};
+  }
+)
+
 const mainSlice = createSlice({
   name: 'main',
   initialState: {

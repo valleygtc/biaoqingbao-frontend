@@ -3,12 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
 import OperateTagDialog from './OperateTagDialog';
+import EditTagDialog from './EditTagDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,25 +98,11 @@ export default function Tags({
         openEditDialog={handleOpenEditDialog}
         openDeleteDialog={handleOpenDeleteDialog}
       />
-      <Dialog
-        fullWidth
-        maxWidth="sm"
+      <EditTagDialog
         open={editDialogOpen}
+        tag={chosenTag}
         onClose={handleCloseEditDialog}
-        aria-labelledby="edit-tag"
-      >
-        <DialogTitleWithCloseIcon id="edit-tag" onClose={handleCloseEditDialog}>
-          编辑标签
-        </DialogTitleWithCloseIcon>
-        <DialogContent dividers>
-          <form noValidate autoComplete="off">
-            <TextField fullWidth required defaultValue={chosenTag.text} id="标签" label="标签" margin="normal" />
-          </form>
-        </DialogContent>
-        <MuiDialogActions>
-          <Button variant="contained" color="primary" onClick={() => console.log('handle submit edit tag dialog')}>确认</Button>
-        </MuiDialogActions>
-      </Dialog>
+      />
       <Dialog
         fullWidth
         maxWidth="sm"
