@@ -179,11 +179,15 @@ export const addGroup = createAsyncThunk(
 export const deleteGroups = createAsyncThunk(
   'main/deleteGroups',
   async (ids) => {
-    // TODO:
-    console.log('handle delete groups: %o', { ids });
-    return {
-      ids,
-    };
+    const resp = await axios.post('/api/groups/delete', { ids });
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {
+        ids,
+      };
+    } else {
+      // TODO
+    }
   }
 )
 
