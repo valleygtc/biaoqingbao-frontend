@@ -70,15 +70,19 @@ export const deleteImage = createAsyncThunk(
 export const updateImage = createAsyncThunk(
   'main/updateImage',
   async ({ id, group }) => {
-    // TODO:
     const resp = await axios.post('/api/images/update', {
       id,
       group_id: group.id,
     });
-    return {
-      id,
-      group,
-    };
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {
+        id,
+        group,
+      };
+    } else {
+      // TODO
+    }
   }
 )
 

@@ -48,7 +48,7 @@ function Move2GroupSelect({
     updateImage({
       group,
       id: imageData.id,
-    })
+    });
     handleCloseSelector();
   }
 
