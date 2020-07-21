@@ -18,8 +18,8 @@ function AddTagDialog({
 }){
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => {
-    addTag({
+  const onSubmit = async (data) => {
+    await addTag({
       imageId,
       text: data.text
     });
