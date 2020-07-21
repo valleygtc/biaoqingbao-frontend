@@ -4,6 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import MuiDialogActions from '@material-ui/core/DialogActions';
+import { useForm } from "react-hook-form";
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
@@ -15,10 +16,16 @@ function EditTagDialog({
   onClose,
   updateTag,
 }) {
-  const handleSubmit = () => {
-    updateTag({
+  const { register, handleSubmit, errors } = useForm({
+    defaultValues: {
+      text: tag.text,
+    }
+  });
+
+  const onSubmit = async (data) => {
+    await updateTag({
       id: tag.id,
-      text: 'TODO',
+      text: data.text,
     });
     onClose();
   }
@@ -36,11 +43,21 @@ function EditTagDialog({
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
         <form noValidate autoComplete="off">
-          <TextField fullWidth required defaultValue={tag.text} id="标签" label="标签" margin="normal" />
+          <TextField
+            fullWidth
+            required
+            error={Boolean(errors.text)}
+            id="tag"
+            label="标签"
+            margin="normal"
+            helperText={errors.text ? '标签内容不能为空' : ''}
+            name="text"
+            inputRef={register({ required: true })}
+          />
         </form>
       </DialogContent>
       <MuiDialogActions>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>确认</Button>
+        <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>确认</Button>
       </MuiDialogActions>
     </Dialog>
   );

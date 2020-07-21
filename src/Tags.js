@@ -74,7 +74,9 @@ export default function Tags({
         openEditDialog={handleOpenEditDialog}
         openDeleteDialog={handleOpenDeleteDialog}
       />
+      {/* total controlled component: re-create when chosenTag change */}
       <EditTagDialog
+        key={chosenTag.id}
         open={editDialogOpen}
         tag={chosenTag}
         onClose={handleCloseEditDialog}

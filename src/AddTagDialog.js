@@ -40,13 +40,13 @@ function AddTagDialog({
       <DialogContent dividers>
         <form noValidate>
           <TextField
-            error={Boolean(errors.text)}
             fullWidth
             required
+            error={Boolean(errors.text)}
             id="tag"
             label="标签"
             margin="normal"
-            helperText={errors.text ? '必须输入内容' : ''}
+            helperText={errors.text ? '标签内容不能为空' : ''}
             name="text"
             inputRef={register({ required: true })}
           />
