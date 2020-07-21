@@ -106,8 +106,8 @@ export const addTag = createAsyncThunk(
   }
 )
 
-export const editTag = createAsyncThunk(
-  'main/editTag',
+export const updateTag = createAsyncThunk(
+  'main/updateTag',
   async ({ id, text }) => {
     // TODO:
     console.log('handle edit tag: %o', { id, text });
@@ -221,7 +221,7 @@ const mainSlice = createSlice({
       }
       state.imageList.find((image) => image.id === action.payload.imageId).tags.push(tag)
     },
-    [editTag.fulfilled]: (state, action) => {
+    [updateTag.fulfilled]: (state, action) => {
       // TODO
     },
     [deleteTag.fulfilled]: (state, action) => {

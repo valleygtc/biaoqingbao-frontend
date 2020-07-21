@@ -7,16 +7,16 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
-import { editTag } from './mainSlice';
+import { updateTag } from './mainSlice';
 
 function EditTagDialog({
   open,
   tag,
   onClose,
-  editTag,
+  updateTag,
 }) {
   const handleSubmit = () => {
-    editTag({
+    updateTag({
       id: tag.id,
       text: 'TODO',
     });
@@ -46,7 +46,7 @@ function EditTagDialog({
   );
 }
 
-const mapDispatchToProps = { editTag };
+const mapDispatchToProps = { updateTag };
 
 export default connect(
   null,
