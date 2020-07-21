@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
 import { GROUP_ALL } from './constants';
-import { imageList, groups } from 'mock';
+// import { imageList, groups } from 'mock';
 
 export const getImageList = createAsyncThunk(
   'main/getImageList',
@@ -143,10 +143,10 @@ export const deleteTag = createAsyncThunk(
 export const getGroups = createAsyncThunk(
   'main/getGroups',
   async () => {
-    console.log('mock getGroups');
-    return {
-      groups,
-    };
+    // console.log('mock getGroups');
+    // return {
+    //   groups,
+    // };
 
     const resp = await axios.get('/api/groups/');
     const data = resp.data;
