@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 
+import SearchBar from './SearchBar';
 import ImageCard from './ImageCard';
+import Pagination from './Pagination';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+  cardContainer: {
+    flexGrow: 1,
   },
   card: {
     width: '50%',
@@ -32,13 +33,21 @@ function ImageWall({
   const classes = useStyles();
 
   return (
-    <Container maxWidth="lg" className={classes.root} disableGutters>
-      {imageList.map((image) => (
-        <div key={image.id} className={classes.card}>
-          <ImageCard imageData={image} />
-        </div>
-      ))}
-    </Container>
+    <Grid container direction="column">
+      <Grid item>
+        <SearchBar onSearch={(text) => console.log(`handle search: ${text}`)} />
+      </Grid>
+      <Grid item container className={classes.cardContainer}>
+        {imageList.map((image) => (
+          <div key={image.id} className={classes.card}>
+            <ImageCard imageData={image} />
+          </div>
+        ))}
+      </Grid>
+      <Grid item>
+        <Pagination />
+      </Grid>
+    </Grid>
   );
 }
 
