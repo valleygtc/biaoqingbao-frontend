@@ -16,6 +16,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import { useHistory } from "react-router-dom";
 
 import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.type === 'light' ? null : '#fff',
     backgroundColor: theme.palette.type === 'light' ? null : '#333',
+  },
+  logo: {
+    cursor: 'pointer',
   },
   groupContainer: {
     position: 'absolute',
@@ -45,9 +49,15 @@ export default function Header({
   onToggleDarkMode,
 }) {
   const classes = useStyles();
+  const history = useHistory();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [addImageDialogOpen, setAddImageDialogOpen] = useState(false);
+
+  const gotoImport = () => {
+    history.push('/import');
+    setDrawerOpen(false);
+  }
 
   return (
     <AppBar className={classes.root} position="static">
@@ -60,7 +70,7 @@ export default function Header({
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap>
+        <Typography noWrap variant="h6" className={classes.logo} onClick={() => history.push('/')}>
           表情宝
         </Typography>
         <div className={classes.groupContainer} >
@@ -92,7 +102,7 @@ export default function Header({
       <AddImageDialog open={addImageDialogOpen} onClose={() => setAddImageDialogOpen(false)} />
       <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <List className={classes.drawer} aria-label="drawer">
-          <ListItem button onClick={() => console.log('click upload button')}>
+          <ListItem button onClick={gotoImport}>
             <ListItemIcon>
               <CloudUploadIcon />
             </ListItemIcon>
