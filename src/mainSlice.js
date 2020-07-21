@@ -194,12 +194,17 @@ export const deleteGroups = createAsyncThunk(
 export const updateGroup = createAsyncThunk(
   'main/updateGroup',
   async ({ id, name }) => {
-    // TODO:
     const resp = await axios.post('/api/groups/update', { id, name });
-    return {
-      id,
-      name,
-    };
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {
+        id,
+        name,
+      };
+    } else {
+      // TODO
+    }
+
   }
 )
 
@@ -279,7 +284,8 @@ const mainSlice = createSlice({
       state.groups = state.groups.filter((g) => !action.payload.ids.includes(g.id));
     },
     [updateGroup.fulfilled]: (state, action) => {
-      state.groups.find((g) => g.id === action.payload.id)['name'] = action.payload.name;
+      const group = state.groups.find((g) => g.id === action.payload.id);
+      group.name = action.payload.name;
     }
   }
 });
