@@ -15,7 +15,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
-import { addImage } from './mainSlice';
+import { addImage, getImageList } from './mainSlice';
 import { GROUP_ALL } from './constants';
 
 const defaultValues = {
@@ -27,6 +27,7 @@ function AddImageDialog({
   open,
   onClose,
   addImage,
+  getImageList,
 }) {
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -35,9 +36,17 @@ function AddImageDialog({
     defaultValues,
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    addImage(data);
+  const onSubmit = async (data) => {
+    const image = data['image'][0];
+    const type = image.type.split('/')[1];
+    await addImage({
+      image,
+      type,
+      group_id: data.group.id,
+      tags: [data.tag]
+    });
+    onClose();
+    getImageList();
   }
 
   return (
@@ -92,7 +101,7 @@ const mapStateToProps = (state) => ({
   groups: state.main.groups,
 });
 
-const mapDispatchToProps = { addImage };
+const mapDispatchToProps = { addImage, getImageList };
 
 export default connect(
   mapStateToProps,

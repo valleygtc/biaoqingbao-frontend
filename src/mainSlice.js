@@ -9,14 +9,13 @@ import { imageList, groups } from 'mock';
 export const getImageList = createAsyncThunk(
   'main/getImageList',
   async (_, { getState }) => {
+    // console.log('mock getImageList: %o', { page, currentGroupId });
+    // return {
+    //   pages: 10,
+    //   imageList: imageList,
+    // };
+
     const { page, currentGroupId } = getState().main;
-
-    console.log('mock getImageList: %o', { page, currentGroupId });
-    return {
-      pages: 10,
-      imageList: imageList,
-    };
-
     const params = {
       page,
     }
@@ -39,9 +38,21 @@ export const getImageList = createAsyncThunk(
 
 export const addImage = createAsyncThunk(
   'main/addImage',
-  async (body) => {
-    // TODO:
-    console.log('handle add image: %o', { body });
+  async ({ image, type, group_id, tags }) => {
+    const formData = new FormData();
+    formData.set('image', image);
+    formData.set('metadata', JSON.stringify({
+      type,
+      group_id,
+      tags,
+    }));
+    const resp = await axios.post('/api/images/add', formData);
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {};
+    } else {
+      // TODO
+    }
     return {};
   }
 )
