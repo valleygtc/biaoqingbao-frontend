@@ -52,7 +52,6 @@ function Move2GroupSelect({
     handleCloseSelector();
   }
 
-  console.log(imageData);
   const currentGroup = groups.find((g) => g.id === imageData.group_id);
   return (
     <span>
