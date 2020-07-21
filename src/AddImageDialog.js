@@ -66,7 +66,15 @@ function AddImageDialog({
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <FormControl required fullWidth margin="normal" error={Boolean(errors.image)}>
             <InputLabel shrink htmlFor="image-picker">图片</InputLabel>
-            <Input id="image-picker" type="file" name="image" inputRef={register({ required: true })} />
+            <Input
+              id="image-picker"
+              type="file"
+              inputProps={{
+                accept: 'image/*',
+              }}
+              name="image"
+              inputRef={register({ required: true })}
+            />
             {errors.image && <FormHelperText>必须选择一个图片</FormHelperText>}
           </FormControl>
           <FormControl required fullWidth margin="normal" error={Boolean(errors.group)}>
