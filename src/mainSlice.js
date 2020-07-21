@@ -228,7 +228,8 @@ const mainSlice = createSlice({
       // TODO
     },
     [updateImage.fulfilled]: (state, action) => {
-      state.imageList.find((image) => image.id === action.payload.id)['group_id'] = action.payload.group.id;
+      const image = state.imageList.find((image) => image.id === action.payload.id);
+      image.group_id = action.payload.group.id;
     },
     [addTag.fulfilled]: (state, action) => {
       const tag = {
