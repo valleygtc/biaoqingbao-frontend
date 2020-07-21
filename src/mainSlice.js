@@ -88,10 +88,21 @@ export const updateImage = createAsyncThunk(
 
 export const addTag = createAsyncThunk(
   'main/addTag',
-  async ({ imageId, tag }) => {
-    // TODO:
-    console.log('handle add tag: %o', { imageId, tag });
-    return {};
+  async ({ imageId, text }) => {
+    const resp = await axios.post('/api/tags/add', {
+      text,
+      image_id: imageId,
+    });
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {
+        text,
+        imageId,
+        id: data.id,
+      };
+    } else {
+      // TODO
+    }
   }
 )
 
@@ -204,7 +215,11 @@ const mainSlice = createSlice({
       state.imageList.find((image) => image.id === action.payload.id)['group_id'] = action.payload.group.id;
     },
     [addTag.fulfilled]: (state, action) => {
-      // TODO
+      const tag = {
+        id: action.payload.id,
+        text: action.payload.text,
+      }
+      state.imageList.find((image) => image.id === action.payload.imageId).tags.push(tag)
     },
     [editTag.fulfilled]: (state, action) => {
       // TODO

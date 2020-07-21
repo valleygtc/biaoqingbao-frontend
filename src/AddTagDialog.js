@@ -4,6 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
+import { useForm } from "react-hook-form";
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
@@ -15,10 +16,12 @@ function AddTagDialog({
   onClose,
   addTag,
 }){
-  const handleSubmit = () => {
+  const { register, handleSubmit, errors } = useForm();
+
+  const onSubmit = (data) => {
     addTag({
       imageId,
-      'tag': 'TODO',
+      text: data.text
     });
     onClose();
   }
@@ -35,12 +38,22 @@ function AddTagDialog({
         添加标签
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate autoComplete="off">
-          <TextField fullWidth required id="标签" label="标签" margin="normal"/>
+        <form noValidate>
+          <TextField
+            error={Boolean(errors.text)}
+            fullWidth
+            required
+            id="tag"
+            label="标签"
+            margin="normal"
+            helperText={errors.text ? '必须输入内容' : ''}
+            name="text"
+            inputRef={register({ required: true })}
+          />
         </form>
       </DialogContent>
       <MuiDialogActions>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>确认</Button>
+        <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>确认</Button>
       </MuiDialogActions>
     </Dialog>
   );
