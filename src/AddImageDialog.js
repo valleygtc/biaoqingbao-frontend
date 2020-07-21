@@ -39,11 +39,12 @@ function AddImageDialog({
   const onSubmit = async (data) => {
     const image = data['image'][0];
     const type = image.type.split('/')[1];
+    const tags = data.tag ? [data.tag] : [];
     await addImage({
       image,
       type,
       group_id: data.group.id,
-      tags: [data.tag]
+      tags,
     });
     onClose();
     getImageList();
