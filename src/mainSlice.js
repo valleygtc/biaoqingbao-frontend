@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
+import { GROUP_ALL } from './constants';
 import { imageList, groups } from 'mock';
 
-const GROUP_ALL = {
-  id: null,
-  name: '全部',
-}
+
 
 export const getImageList = createAsyncThunk(
   'main/getImageList',

@@ -10,10 +10,17 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { useForm, Controller } from "react-hook-form";
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
 import { addImage } from './mainSlice';
+import { GROUP_ALL } from './constants';
+
+const defaultValues = {
+  group: GROUP_ALL,
+}
 
 function AddImageDialog({
   groups,
@@ -24,10 +31,14 @@ function AddImageDialog({
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [group, setGroup] = React.useState(String(groups[0].id));
-  const handleChange = (event) => {
-    setGroup(event.target.value);
-  };
+  const { register, handleSubmit, control, errors } = useForm({
+    defaultValues,
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+    addImage(data);
+  }
 
   return (
     <Dialog
@@ -42,27 +53,34 @@ function AddImageDialog({
         添加图片
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate>
-          <FormControl required fullWidth margin="normal">
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <FormControl required fullWidth margin="normal" error={Boolean(errors.image)}>
             <InputLabel shrink htmlFor="image-picker">图片</InputLabel>
-            <Input id="image-picker" type="file" onChange={() => console.log('handle file choose')} />
+            <Input id="image-picker" type="file" name="image" inputRef={register({ required: true })} />
+            {errors.image && <FormHelperText>必须选择一个图片</FormHelperText>}
           </FormControl>
-          <FormControl required fullWidth margin="normal">
+          <FormControl required fullWidth margin="normal" error={Boolean(errors.group)}>
             <InputLabel id="group">组</InputLabel>
-            <Select
-              labelId="group"
-              id="group"
-              value={group}
-              onChange={handleChange}
-            >
-              {groups.map((g) => (
-                <MenuItem key={g.id} value={String(g.id)}>{g.name}</MenuItem>
-              ))}
-            </Select>
+            <Controller
+              as={
+                <Select
+                  labelId="group"
+                  id="group"
+                >
+                  {groups.map((g) => (
+                    <MenuItem key={g.id} value={g}>{g.name}</MenuItem>
+                  ))}
+                </Select>
+              }
+              name="group"
+              control={control}
+              rules={{require: true}}
+            />
+            {errors.image && <FormHelperText>必须选择组</FormHelperText>}
           </FormControl>
-          <TextField id="标签" label="标签" fullWidth margin="normal"/>
+          <TextField id="标签" label="标签" fullWidth margin="normal" name="tag" inputRef={register} />
           <FormControl margin="normal">
-            <Button variant="contained" color="primary" onClick={() => addImage('TODO')}>提交</Button>
+            <Button variant="contained" color="primary" type="submit">提交</Button>
           </FormControl>
         </form>
       </DialogContent>
