@@ -8,6 +8,14 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Tooltip from '@material-ui/core/Tooltip';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
 import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
@@ -26,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   grow: {
     flexGrow: 1,
+  },
+  drawer: {
+    width: 250,
   }
 }));
 
@@ -35,11 +46,20 @@ export default function Header({
 }) {
   const classes = useStyles();
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [addImageDialogOpen, setAddImageDialogOpen] = useState(false);
 
   return (
     <AppBar className={classes.root} position="static">
       <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={() => setDrawerOpen(true)}
+        >
+          <MenuIcon />
+        </IconButton>
         <Typography variant="h6" noWrap>
           表情宝
         </Typography>
@@ -70,6 +90,22 @@ export default function Header({
         </Tooltip>
       </Toolbar>
       <AddImageDialog open={addImageDialogOpen} onClose={() => setAddImageDialogOpen(false)} />
+      <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <List className={classes.drawer} aria-label="drawer">
+          <ListItem button onClick={() => console.log('click upload button')}>
+            <ListItemIcon>
+              <CloudUploadIcon />
+            </ListItemIcon>
+            <ListItemText primary="导入图片" />
+          </ListItem>
+          <ListItem button onClick={() => console.log('click download button')}>
+            <ListItemIcon>
+              <CloudDownloadIcon />
+            </ListItemIcon>
+            <ListItemText primary="导出图片" />
+          </ListItem>
+        </List>
+      </Drawer>
     </AppBar>
   );
 }
