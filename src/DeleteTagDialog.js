@@ -33,8 +33,8 @@ function DeleteTagDialog({
 }) {
   const classes = useStyles();
 
-  const handleSubmit = () => {
-    deleteTag(tag.id);
+  const handleSubmit = async () => {
+    await deleteTag(tag.id);
     onClose();
   }
 

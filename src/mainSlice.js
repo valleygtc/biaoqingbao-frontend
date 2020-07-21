@@ -128,9 +128,15 @@ export const updateTag = createAsyncThunk(
 export const deleteTag = createAsyncThunk(
   'main/deleteTag',
   async (id) => {
-    // TODO:
-    console.log('handle delete tag: %o', { id });
-    return {};
+    const resp = await axios.post('/api/tags/delete', { id });
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {
+        id,
+      };
+    } else {
+      // TODO
+    }
   }
 )
 
@@ -247,7 +253,13 @@ const mainSlice = createSlice({
       }
     },
     [deleteTag.fulfilled]: (state, action) => {
-      // TODO
+      for (const image of state.imageList) {
+        const i = image.tags.findIndex((t) => t.id === action.payload.id);
+        if (i !== -1) {
+          image.tags.splice(i, 1);
+          break;
+        }
+      }
     },
     [getGroups.fulfilled]: (state, action) => {
       state.groups = [
