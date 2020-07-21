@@ -4,8 +4,6 @@ import axios from 'axios';
 import { GROUP_ALL } from './constants';
 import { imageList, groups } from 'mock';
 
-
-
 export const getImageList = createAsyncThunk(
   'main/getImageList',
   async (_, { getState }) => {
@@ -53,16 +51,19 @@ export const addImage = createAsyncThunk(
     } else {
       // TODO
     }
-    return {};
   }
 )
 
 export const deleteImage = createAsyncThunk(
   'main/deleteImage',
   async (id) => {
-    // TODO:
-    console.log('handle delete image: %o', { id });
-    return {};
+    const resp = await axios.post('/api/images/delete', { id });
+    const data = resp.data;
+    if (resp.status === 200) {
+      return {};
+    } else {
+      // TODO
+    }
   }
 )
 

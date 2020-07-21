@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
-import { deleteImage } from './mainSlice';
+import { deleteImage, getImageList } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   paperFullWidth: {
@@ -29,9 +29,18 @@ function DeleteImageDialog({
   imageId,
   open,
   onClose,
+  closeDetailDialog,
   deleteImage,
+  getImageList,
 }){
   const classes = useStyles();
+
+  const handleDelete = async () => {
+    await deleteImage(imageId);
+    onClose();
+    closeDetailDialog();
+    getImageList();
+  }
 
   return (
     <Dialog
@@ -49,7 +58,7 @@ function DeleteImageDialog({
         确认要删除该图片？
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <Button fullWidth variant="contained" color="primary" onClick={() => deleteImage(imageId)}>
+        <Button fullWidth variant="contained" color="primary" onClick={handleDelete}>
           删除
         </Button>
       </DialogContent>
@@ -57,7 +66,7 @@ function DeleteImageDialog({
   );
 }
 
-const mapDispatchToProps = { deleteImage };
+const mapDispatchToProps = { deleteImage, getImageList };
 
 export default connect(
   null,

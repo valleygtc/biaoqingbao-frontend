@@ -97,6 +97,7 @@ export default function DetailDialog({
         imageId={imageData.id}
         open={deleteImageDialogOpen}
         onClose={() => setDeleteImageDialogOpen(false)}
+        closeDetailDialog={onClose}
       />
     </Dialog>
   );
