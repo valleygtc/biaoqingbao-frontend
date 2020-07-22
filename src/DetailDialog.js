@@ -37,6 +37,12 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
+  img: {
+    maxWidth: '100vw',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '600px',
+    }
+  }
 }));
 
 export default function DetailDialog({
@@ -70,7 +76,7 @@ export default function DetailDialog({
         </IconButton>
       </MuiDialogTitle>
       <DialogContent dividers>
-        <img src={imageData.url} alt={`img-${imageData.id}`} />
+        <img className={classes.img} src={imageData.url} alt={`img-${imageData.id}`} />
         <Tags tags={imageData.tags} />
       </DialogContent>
       <DialogActions>
