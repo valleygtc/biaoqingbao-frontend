@@ -94,7 +94,7 @@ function AddImageDialog({
               control={control}
               rules={{require: true}}
             />
-            {errors.image && <FormHelperText>必须选择组</FormHelperText>}
+            {errors.group && <FormHelperText>必须选择组</FormHelperText>}
           </FormControl>
           <TextField id="标签" label="标签" fullWidth margin="normal" name="tag" inputRef={register} />
           <FormControl margin="normal">
