@@ -8,26 +8,18 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Tooltip from '@material-ui/core/Tooltip';
-import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
-import { useHistory } from "react-router-dom";
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
+import ImportDialog from './ImportDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.type === 'light' ? null : '#fff',
     backgroundColor: theme.palette.type === 'light' ? null : '#333',
-  },
-  logo: {
-    cursor: 'pointer',
   },
   groupContainer: {
     position: 'absolute',
@@ -49,28 +41,27 @@ export default function Header({
   onToggleDarkMode,
 }) {
   const classes = useStyles();
-  const history = useHistory();
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const closeMenu = () => {
+    setAnchorEl(null);
+  };
+
   const [addImageDialogOpen, setAddImageDialogOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
 
-  const gotoImport = () => {
-    history.push('/import');
-    setDrawerOpen(false);
+  const handleImportButtonClick = () => {
+    setImportDialogOpen(true);
+    closeMenu();
   }
 
   return (
     <AppBar className={classes.root} position="static">
       <Toolbar>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={() => setDrawerOpen(true)}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography noWrap variant="h6" className={classes.logo} onClick={() => history.push('/')}>
+        <Typography noWrap variant="h6">
           表情宝
         </Typography>
         <div className={classes.groupContainer} >
@@ -98,24 +89,22 @@ export default function Header({
             <AddCircleIcon />
           </IconButton>
         </Tooltip>
+        <IconButton aria-label="more-operation" edge="end" color="inherit" onClick={openMenu}>
+          <MoreIcon />
+        </IconButton>
+        <Menu
+          id="operation-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={closeMenu}
+        >
+          <MenuItem onClick={handleImportButtonClick}>导入图片</MenuItem>
+          <MenuItem onClick={closeMenu}>导出图片</MenuItem>
+        </Menu>
       </Toolbar>
       <AddImageDialog open={addImageDialogOpen} onClose={() => setAddImageDialogOpen(false)} />
-      <Drawer anchor="left" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <List className={classes.drawer} aria-label="drawer">
-          <ListItem button onClick={gotoImport}>
-            <ListItemIcon>
-              <CloudUploadIcon />
-            </ListItemIcon>
-            <ListItemText primary="导入图片" />
-          </ListItem>
-          <ListItem button onClick={() => console.log('click download button')}>
-            <ListItemIcon>
-              <CloudDownloadIcon />
-            </ListItemIcon>
-            <ListItemText primary="导出图片" />
-          </ListItem>
-        </List>
-      </Drawer>
+      <ImportDialog open={importDialogOpen} onClose={() => setImportDialogOpen(false)} />
     </AppBar>
   );
 }

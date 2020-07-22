@@ -6,14 +6,8 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
 
 import Header from './Header';
-import ImportForm from './ImportForm';
 import ImageWall from './ImageWall';
 import Footer from './Footer';
 import { getImageList, getGroups } from './mainSlice';
@@ -68,29 +62,20 @@ function App({
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <Router>
-        <Grid container direction="column" className={classes.root}>
-          <Grid item>
-            <Header darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />
-          </Grid>
-          <Grid item container alignItems="stretch" className={classes.contentGrid}>
-            <Container disableGutters className={classes.contentContainer}  maxWidth="lg" >
-              <Switch>
-                <Route path="/import">
-                  <ImportForm />
-                </Route>
-                <Route path="/">
-                  <ImageWall />
-                </Route>
-              </Switch>
-            </Container>
-          </Grid>
-          <Divider />
-          <Grid item container className={classes.footer}>
-            <Footer />
-          </Grid>
+      <Grid container direction="column" className={classes.root}>
+        <Grid item>
+          <Header darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />
         </Grid>
-      </Router>
+        <Grid item container alignItems="stretch" className={classes.contentGrid}>
+          <Container disableGutters className={classes.contentContainer}  maxWidth="lg" >
+            <ImageWall />
+          </Container>
+        </Grid>
+        <Divider />
+        <Grid item container className={classes.footer}>
+          <Footer />
+        </Grid>
+      </Grid>
     </ThemeProvider>
   );
 }
