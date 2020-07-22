@@ -57,6 +57,10 @@ export default function Header({
     setImportDialogOpen(true);
     closeMenu();
   }
+  const handleExportButtonClick = () => {
+    window.open('/api/images/export');
+    closeMenu();
+  }
 
   return (
     <AppBar className={classes.root} position="static">
@@ -100,7 +104,7 @@ export default function Header({
           onClose={closeMenu}
         >
           <MenuItem onClick={handleImportButtonClick}>导入图片</MenuItem>
-          <MenuItem onClick={closeMenu}>导出图片</MenuItem>
+          <MenuItem onClick={handleExportButtonClick}>导出图片</MenuItem>
         </Menu>
       </Toolbar>
       <AddImageDialog open={addImageDialogOpen} onClose={() => setAddImageDialogOpen(false)} />
