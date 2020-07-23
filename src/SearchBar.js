@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { changePage, changeSearchTag, getImageList } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,8 +38,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar({
-  onSearch,
+function SearchBar({
+  changePage,
+  changeSearchTag,
+  getImageList,
 }) {
   const classes = useStyles();
   const [value, setValue] = useState('');
@@ -46,11 +50,16 @@ export default function SearchBar({
   }
   const handleResetValue = () => {
     setValue('');
+    changePage(1);
+    changeSearchTag('');
+    getImageList();
   }
 
   const handleKeyDown = (e) => {
     if (e.keyCode === 13) { // on press Enter
-      onSearch(value);
+      changePage(1);
+      changeSearchTag(value);
+      getImageList();
     }
   }
 
@@ -81,3 +90,10 @@ export default function SearchBar({
     </div>
   );
 }
+
+const mapDispatchToProps = { changePage, changeSearchTag, getImageList };
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SearchBar);

@@ -13,12 +13,15 @@ export const getImageList = createAsyncThunk(
     //   imageList: imageList,
     // };
 
-    const { page, currentGroupId } = getState().main;
+    const { page, currentGroupId, searchTag } = getState().main;
     const params = {
       page,
     }
     if (currentGroupId) {
       params['groupId'] = currentGroupId;
+    }
+    if (searchTag) {
+      params['tag'] = searchTag;
     }
 
     const resp = await axios.get('/api/images/', { params });
@@ -216,6 +219,7 @@ const mainSlice = createSlice({
     imageList: [],
     groups: [GROUP_ALL],
     currentGroupId: GROUP_ALL.id,
+    searchTag: '',
   },
   reducers: {
     changePage: (state, action) => {
@@ -224,6 +228,9 @@ const mainSlice = createSlice({
     changeGroup: (state, action) => {
       state.currentGroupId = action.payload.id;
     },
+    changeSearchTag: (state, action) => {
+      state.searchTag = action.payload;
+    }
   },
   extraReducers: {
     [getImageList.fulfilled]: (state, action) => {
@@ -293,6 +300,7 @@ const mainSlice = createSlice({
 export const {
   changePage,
   changeGroup,
+  changeSearchTag,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;
