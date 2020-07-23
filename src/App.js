@@ -1,34 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import Container from '@material-ui/core/Container';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 
-import Header from './Header';
-import ImageWall from './ImageWall';
-import Footer from './Footer';
-import { getImageList, getGroups } from './mainSlice';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    minHeight: '100vh',
-  },
-  contentGrid: {
-    flexGrow: '1',
-  },
-  contentContainer: {
-    display: 'flex',
-    alignItems: 'stretch',
-  },
-  footer: {
-    height: '10vh',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-}));
+import Main from './Main';
+import SignUp from './SignUp';
+import SignIn from './SignIn';
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -42,16 +24,7 @@ const lightTheme = createMuiTheme({
   }
 });
 
-function App({
-  getImageList,
-  getGroups,
-}) {
-  useEffect(() => {
-    getImageList();
-    getGroups();
-  }, []);
-
-  const classes = useStyles();
+export default function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const [darkMode, setDarkMode] = useState(prefersDarkMode);
@@ -62,27 +35,19 @@ function App({
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <Grid container direction="column" className={classes.root}>
-        <Grid item>
-          <Header darkMode={darkMode} onToggleDarkMode={handleToggleDarkMode} />
-        </Grid>
-        <Grid item container alignItems="stretch" className={classes.contentGrid}>
-          <Container disableGutters className={classes.contentContainer}  maxWidth="lg" >
-            <ImageWall />
-          </Container>
-        </Grid>
-        <Divider />
-        <Grid item container className={classes.footer}>
-          <Footer />
-        </Grid>
-      </Grid>
+      <Router>
+        <Switch>
+          <Route path="/signin">
+            <SignIn />
+          </Route>
+          <Route path="/signup">
+            <SignUp />
+          </Route>
+          <Route path="/">
+            <Main darkMode={darkMode} toggleDarkMode={handleToggleDarkMode} />
+          </Route>
+        </Switch>
+      </Router>
     </ThemeProvider>
   );
 }
-
-const mapDispatchToProps = { getImageList, getGroups };
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(App);
