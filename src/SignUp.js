@@ -9,6 +9,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useForm } from "react-hook-form";
 
 import Copyright from './Copyright';
 
@@ -35,6 +36,14 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    // submit
+    // jump to signin
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -44,29 +53,32 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           注册
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
+                variant="outlined"
                 id="email"
                 label="Email Address"
-                name="email"
+                type="email"
                 autoComplete="email"
+                name="email"
+                inputRef={register({ required: true })}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
-                name="password"
+                variant="outlined"
+                id="password"
                 label="Password"
                 type="password"
-                id="password"
                 autoComplete="new-password"
+                name="password"
+                inputRef={register({ required: true })}
               />
             </Grid>
           </Grid>
