@@ -181,10 +181,14 @@ export const addGroup = createAsyncThunk(
 
 export const deleteGroups = createAsyncThunk(
   'main/deleteGroups',
-  async (ids) => {
+  async (ids, { getState, dispatch }) => {
     const resp = await axios.post('/api/groups/delete', { ids });
-    const data = resp.data;
     if (resp.status === 200) {
+      const { currentGroupId } = getState().main;
+      if (ids.includes(currentGroupId)) {
+        dispatch(changeGroup(GROUP_ALL));
+        dispatch(getImageList());
+      }
       return {
         ids,
       };

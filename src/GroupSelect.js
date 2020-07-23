@@ -73,6 +73,11 @@ function GroupSelect({
       checkedGroupIds.filter((id) => id !== group.id)
     );
   }
+  const handleDeleteGroups = async () => {
+    await deleteGroups(checkedGroupIds);
+    setEditMode(false);
+  }
+
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   return (
@@ -135,7 +140,7 @@ function GroupSelect({
                 disabled={checkedGroupIds.length === 0}
                 size="small"
                 variant="contained"
-                onClick={() => deleteGroups(checkedGroupIds)}
+                onClick={handleDeleteGroups}
               >删除</Button>
             )
             : (<Button
