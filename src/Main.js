@@ -7,7 +7,7 @@ import Container from '@material-ui/core/Container';
 
 import Header from './Header';
 import ImageWall from './ImageWall';
-import Footer from './Footer';
+import Copyright from './Copyright';
 import { getImageList, getGroups } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +53,7 @@ function Main({
       </Grid>
       <Divider />
       <Grid item container className={classes.footer}>
-        <Footer />
+        <Copyright />
       </Grid>
     </Grid>
   );
