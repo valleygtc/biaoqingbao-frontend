@@ -339,16 +339,30 @@ export const getGroups = createAsyncThunk(
 
 export const addGroup = createAsyncThunk(
   'main/addGroup',
-  async (name) => {
-    const resp = await axios.post('/api/groups/add', { name });
-    const data = resp.data;
-    if (resp.status === 200) {
+  async (name, { dispatch }) => {
+    try {
+      const resp = await axios.post('/api/groups/add', { name });
       return {
         name,
-        id: data.id
+        id: resp.data.id
       };
-    } else {
-      // TODO
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `添加组失败：${data.error || '未知错误'}`,
+        }));
+      }
+      throw error;
     }
   }
 )

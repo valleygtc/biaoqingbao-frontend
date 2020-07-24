@@ -18,8 +18,10 @@ function AddGroupDialog({
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data) => {
-    await addGroup(data.name);
-    onClose();
+    const resultAction = await addGroup(data.name);
+    if (!resultAction.error) {
+      onClose();
+    }
   }
 
   return (
