@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,8 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
+import { useHistory } from 'react-router-dom';
 
 import Copyright from './Copyright';
+import { registerUser } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,15 +36,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Register() {
+function Register({
+  registerUser,
+}) {
   const classes = useStyles();
 
   const { register, handleSubmit } = useForm();
+  const history = useHistory();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // submit
-    // jump to login
+    const action = await registerUser(data);
+    if (!action.error) {
+      history.replace('/login');
+    }
   }
 
   return (
@@ -106,3 +113,11 @@ export default function Register() {
     </Container>
   );
 }
+
+
+const mapDispatchToProps = { registerUser };
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Register);

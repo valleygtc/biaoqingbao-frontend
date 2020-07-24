@@ -4,6 +4,29 @@ import axios from 'axios';
 import { GROUP_ALL } from './constants';
 // import { imageList, groups } from 'mock';
 
+export const registerUser = createAsyncThunk(
+  'main/register',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const resp = await axios.post('/api/register', { email, password });
+      return resp.data;
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        const data = error.response.data;
+        return rejectWithValue({
+          severity: 'warning',
+          content: data.error,
+        });
+      } else {
+        return rejectWithValue({
+          severity: 'error',
+          content: '发生未知错误，请重试',
+        });
+      }
+    }
+  }
+)
+
 export const getImageList = createAsyncThunk(
   'main/getImageList',
   async (_, { getState }) => {
@@ -224,6 +247,11 @@ const mainSlice = createSlice({
     groups: [GROUP_ALL],
     currentGroupId: GROUP_ALL.id,
     searchTag: '',
+    message: {
+      open: false,
+      content: '',
+      severity: '',
+    }
   },
   reducers: {
     changePage: (state, action) => {
@@ -234,9 +262,22 @@ const mainSlice = createSlice({
     },
     changeSearchTag: (state, action) => {
       state.searchTag = action.payload;
+    },
+    changeMessage: (state, action) => {
+      state.message = action.payload;
     }
   },
   extraReducers: {
+    [registerUser.fulfilled]: (state, action) => {
+      state.message.open = true;
+      state.message.content = '注册成功，请登录';
+      state.message.severity = 'success';
+    },
+    [registerUser.rejected]: (state, action) => {
+      state.message.open = true;
+      state.message.content = action.payload.content;
+      state.message.severity = action.payload.severity;
+    },
     [getImageList.fulfilled]: (state, action) => {
       state.pages = action.payload.pages;
       state.imageList = action.payload.imageList;
@@ -305,6 +346,7 @@ export const {
   changePage,
   changeGroup,
   changeSearchTag,
+  changeMessage,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

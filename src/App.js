@@ -11,6 +11,7 @@ import {
 import Main from './Main';
 import Register from './Register';
 import Login from './Login';
+import Message from './Message';
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -48,6 +49,7 @@ export default function App() {
           </Route>
         </Switch>
       </Router>
+      <Message />
     </ThemeProvider>
   );
 }
