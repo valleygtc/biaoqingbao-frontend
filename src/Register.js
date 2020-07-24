@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from 'react-router-dom';
 
 import Copyright from './Copyright';
-import { registerUser } from './mainSlice';
+import { registerUser, changeMessage } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Register({
   registerUser,
+  changeMessage,
 }) {
   const classes = useStyles();
 
@@ -45,8 +46,11 @@ function Register({
   const history = useHistory();
 
   const onSubmit = async (data) => {
-    const action = await registerUser(data);
-    if (!action.error) {
+    const resultAction = await registerUser(data);
+    if (resultAction.error) {
+      changeMessage({ open: true, ...resultAction.payload });
+    } else {
+      changeMessage({ open: true, severity: 'success', content: '注册成功，请登录' });
       history.replace('/login');
     }
   }
@@ -115,7 +119,7 @@ function Register({
 }
 
 
-const mapDispatchToProps = { registerUser };
+const mapDispatchToProps = { registerUser, changeMessage };
 
 export default connect(
   null,

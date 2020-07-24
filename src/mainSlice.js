@@ -291,16 +291,6 @@ const mainSlice = createSlice({
     }
   },
   extraReducers: {
-    [registerUser.fulfilled]: (state, action) => {
-      state.message.open = true;
-      state.message.content = '注册成功，请登录';
-      state.message.severity = 'success';
-    },
-    [registerUser.rejected]: (state, action) => {
-      state.message.open = true;
-      state.message.content = action.payload.content;
-      state.message.severity = action.payload.severity;
-    },
     [login.fulfilled]: (state, action) => {
       state.message.open = true;
       state.message.content = action.payload.msg;
