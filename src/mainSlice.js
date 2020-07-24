@@ -1,30 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
-import { push } from 'connected-react-router';
+import { push, replace } from 'connected-react-router';
 import { GROUP_ALL } from './constants';
 // import { imageList, groups } from 'mock';
 
 export const registerUser = createAsyncThunk(
-  'main/register',
-  async ({ email, password }, { rejectWithValue }) => {
+  'main/registerUser',
+  async ({ email, password }, { dispatch }) => {
+    let resp;
     try {
-      const resp = await axios.post('/api/register', { email, password });
-      return resp.data;
+      resp = await axios.post('/api/register', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        const data = error.response.data;
-        return rejectWithValue({
-          severity: 'warning',
-          content: data.error,
-        });
+        dispatch(changeMessage({ open: true, severity: 'warning', content: '此邮箱已被使用' }));
       } else {
-        return rejectWithValue({
-          severity: 'error',
-          content: '发生未知错误，请重试',
-        });
+        dispatch(changeMessage({ open: true, severity: 'error', content: '注册失败：发生未知错误，请重试' }));
       }
+      throw error
     }
+    dispatch(changeMessage({ open: true, severity: 'success', content: '注册成功，请登录' }));
+    dispatch(replace('/login'));
+    return resp.data;
   }
 )
 

@@ -11,10 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
-import { useHistory } from 'react-router-dom';
 
 import Copyright from './Copyright';
-import { registerUser, changeMessage } from './mainSlice';
+import { registerUser } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,22 +37,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Register({
   registerUser,
-  changeMessage,
 }) {
   const classes = useStyles();
 
   const { register, handleSubmit } = useForm();
-  const history = useHistory();
-
-  const onSubmit = async (data) => {
-    const resultAction = await registerUser(data);
-    if (resultAction.error) {
-      changeMessage({ open: true, ...resultAction.payload });
-    } else {
-      changeMessage({ open: true, severity: 'success', content: '注册成功，请登录' });
-      history.replace('/login');
-    }
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -64,7 +51,7 @@ function Register({
         <Typography component="h1" variant="h5">
           注册
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={classes.form} onSubmit={handleSubmit(registerUser)}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -119,7 +106,7 @@ function Register({
 }
 
 
-const mapDispatchToProps = { registerUser, changeMessage };
+const mapDispatchToProps = { registerUser };
 
 export default connect(
   null,
