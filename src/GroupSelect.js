@@ -74,8 +74,11 @@ function GroupSelect({
     );
   }
   const handleDeleteGroups = async () => {
-    await deleteGroups(checkedGroupIds);
-    setEditMode(false);
+    const resultAction = await deleteGroups(checkedGroupIds);
+    if (!resultAction.error) {
+      setEditMode(false);
+      setCheckGroupIds([]);
+    }
   }
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);

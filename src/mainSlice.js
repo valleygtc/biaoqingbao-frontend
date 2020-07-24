@@ -370,19 +370,32 @@ export const addGroup = createAsyncThunk(
 export const deleteGroups = createAsyncThunk(
   'main/deleteGroups',
   async (ids, { getState, dispatch }) => {
-    const resp = await axios.post('/api/groups/delete', { ids });
-    if (resp.status === 200) {
-      const { currentGroupId } = getState().main;
-      if (ids.includes(currentGroupId)) {
-        dispatch(changeGroup(GROUP_ALL));
-        dispatch(getImageList());
+    try {
+      await axios.post('/api/groups/delete', { ids });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `删除组失败：${data.error || '未知错误'}`,
+        }));
       }
-      return {
-        ids,
-      };
-    } else {
-      // TODO
+      throw error;
     }
+    const { currentGroupId } = getState().main;
+    if (ids.includes(currentGroupId)) {
+      dispatch(changeGroup(GROUP_ALL));
+      dispatch(getImageList());
+    }
+    return { ids };
   }
 )
 
