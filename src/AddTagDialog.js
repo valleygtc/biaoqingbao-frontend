@@ -19,11 +19,13 @@ function AddTagDialog({
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data) => {
-    await addTag({
+    const resultAction = await addTag({
       imageId,
       text: data.text
     });
-    onClose();
+    if (!resultAction.error) {
+      onClose();
+    }
   }
 
   return (

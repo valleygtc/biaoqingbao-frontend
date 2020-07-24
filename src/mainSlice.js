@@ -213,20 +213,34 @@ export const updateImage = createAsyncThunk(
 
 export const addTag = createAsyncThunk(
   'main/addTag',
-  async ({ imageId, text }) => {
-    const resp = await axios.post('/api/tags/add', {
-      text,
-      image_id: imageId,
-    });
-    const data = resp.data;
-    if (resp.status === 200) {
+  async ({ imageId, text }, { dispatch }) => {
+    try {
+      const resp = await axios.post('/api/tags/add', {
+        text,
+        image_id: imageId,
+      });
       return {
         text,
         imageId,
-        id: data.id,
+        id: resp.data.id,
       };
-    } else {
-      // TODO
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `添加标签失败：${data.error || '未知错误'}`,
+        }));
+      }
+      throw error;
     }
   }
 )
