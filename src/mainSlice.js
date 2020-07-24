@@ -13,13 +13,25 @@ export const registerUser = createAsyncThunk(
       resp = await axios.post('/api/register', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        dispatch(changeMessage({ open: true, severity: 'warning', content: '此邮箱已被使用' }));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '此邮箱已被使用'
+        }));
       } else {
-        dispatch(changeMessage({ open: true, severity: 'error', content: '注册失败：发生未知错误，请重试' }));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: '注册失败：发生未知错误，请重试'
+        }));
       }
       throw error;
     }
-    dispatch(changeMessage({ open: true, severity: 'success', content: '注册成功，请登录' }));
+    dispatch(changeMessage({
+      open: true,
+      severity: 'success',
+      content: '注册成功，请登录'
+    }));
     dispatch(replace('/login'));
     return resp.data;
   }
@@ -33,13 +45,25 @@ export const login = createAsyncThunk(
       resp = await axios.post('/api/login', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        dispatch(changeMessage({ open: true, severity: 'warning', content: '账号或密码错误' }));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '账号或密码错误'
+        }));
       } else {
-        dispatch(changeMessage({ open: true, severity: 'error', content: '登录失败：发生未知错误，请重试' }));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: '登录失败：发生未知错误，请重试'
+        }));
       }
       throw error;
     }
-    dispatch(changeMessage({ open: true, severity: 'success', content: '登陆成功' }));
+    dispatch(changeMessage({
+      open: true,
+      severity: 'success',
+      content: '登陆成功'
+    }));
     dispatch(replace('/'));
     return resp.data;
   }
@@ -71,9 +95,17 @@ export const getImageList = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({ open: true, severity: 'warning', content: '请先登录' }));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
       } else {
-        dispatch(changeMessage({ open: true, severity: 'error', content: '获取图片列表失败，请刷新页面重试' }));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: '获取图片列表失败，请刷新页面重试'
+        }));
       }
       throw error;
     }
