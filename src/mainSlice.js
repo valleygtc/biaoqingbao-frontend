@@ -307,20 +307,32 @@ export const deleteTag = createAsyncThunk(
 
 export const getGroups = createAsyncThunk(
   'main/getGroups',
-  async () => {
+  async (_, { dispatch }) => {
     // console.log('mock getGroups');
     // return {
     //   groups,
     // };
 
-    const resp = await axios.get('/api/groups/');
-    const data = resp.data;
-    if (resp.status === 200) {
-      return {
-        groups: data.data,
-      };
-    } else {
-      // TODO
+    try {
+      const resp = await axios.get('/api/groups/');
+      return resp.data;
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `获取组列表失败：${data.error || '未知错误'}`,
+        }));
+      }
+      throw error;
     }
   }
 )
@@ -451,9 +463,10 @@ const mainSlice = createSlice({
       }
     },
     [getGroups.fulfilled]: (state, action) => {
+      const data = action.payload;
       state.groups = [
         GROUP_ALL,
-        ...action.payload.groups,
+        ...data.data,
       ];
     },
     [addGroup.fulfilled]: (state, action) => {
