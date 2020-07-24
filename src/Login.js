@@ -9,7 +9,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useForm } from "react-hook-form";
 
 import Copyright from './Copyright';
 
@@ -26,23 +25,15 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
 }));
 
-export default function SignUp() {
+export default function Login() {
   const classes = useStyles();
-
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = async (data) => {
-    console.log(data);
-    // submit
-    // jump to signin
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,37 +42,31 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          注册
+          登录
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                variant="outlined"
-                id="email"
-                label="Email Address"
-                type="email"
-                autoComplete="email"
-                name="email"
-                inputRef={register({ required: true })}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                variant="outlined"
-                id="password"
-                label="Password"
-                type="password"
-                autoComplete="new-password"
-                name="password"
-                inputRef={register({ required: true })}
-              />
-            </Grid>
-          </Grid>
+        <form className={classes.form} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
           <Button
             type="submit"
             fullWidth
@@ -89,18 +74,23 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            注册
+            登录
           </Button>
-          <Grid container justify="flex-end">
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                忘记密码？
+              </Link>
+            </Grid>
             <Grid item>
-              <Link href="/signin" variant="body2">
-                已有账号？点此登录
+              <Link href="/register" variant="body2">
+                没有账号？点此注册
               </Link>
             </Grid>
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
+      <Box mt={8}>
         <Copyright />
       </Box>
     </Container>

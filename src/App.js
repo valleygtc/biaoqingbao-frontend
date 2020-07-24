@@ -9,8 +9,8 @@ import {
 } from "react-router-dom";
 
 import Main from './Main';
-import SignUp from './SignUp';
-import SignIn from './SignIn';
+import Register from './Register';
+import Login from './Login';
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -37,11 +37,11 @@ export default function App() {
       <CssBaseline />
       <Router>
         <Switch>
-          <Route path="/signin">
-            <SignIn />
+          <Route path="/register">
+            <Register />
           </Route>
-          <Route path="/signup">
-            <SignUp />
+          <Route path="/login">
+            <Login />
           </Route>
           <Route path="/">
             <Main darkMode={darkMode} toggleDarkMode={handleToggleDarkMode} />
