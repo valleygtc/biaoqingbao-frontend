@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,8 +10,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useForm } from "react-hook-form";
+import { useHistory } from 'react-router-dom';
 
 import Copyright from './Copyright';
+import { login } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,8 +36,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+function Login({
+  login,
+}) {
   const classes = useStyles();
+
+  const { register, handleSubmit } = useForm();
+  const history = useHistory();
+
+  const onSubmit = async (data) => {
+    const action = await login(data);
+    if (!action.error) {
+      history.replace('/');
+    }
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -44,28 +60,30 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           登录
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
           <TextField
-            variant="outlined"
-            margin="normal"
             required
             fullWidth
+            variant="outlined"
+            margin="normal"
             id="email"
             label="Email Address"
-            name="email"
             autoComplete="email"
             autoFocus
+            name="email"
+            inputRef={register({ required: true })}
           />
           <TextField
-            variant="outlined"
-            margin="normal"
             required
             fullWidth
-            name="password"
+            variant="outlined"
+            margin="normal"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
+            name="password"
+            inputRef={register({ required: true })}
           />
           <Button
             type="submit"
@@ -96,3 +114,10 @@ export default function Login() {
     </Container>
   );
 }
+
+const mapDispatchToProps = { login };
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

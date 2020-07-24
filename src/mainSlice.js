@@ -27,6 +27,29 @@ export const registerUser = createAsyncThunk(
   }
 )
 
+export const login = createAsyncThunk(
+  'main/login',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const resp = await axios.post('/api/login', { email, password });
+      return resp.data;
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        const data = error.response.data;
+        return rejectWithValue({
+          severity: 'warning',
+          content: data.error,
+        });
+      } else {
+        return rejectWithValue({
+          severity: 'error',
+          content: '发生未知错误，请重试',
+        });
+      }
+    }
+  }
+)
+
 export const getImageList = createAsyncThunk(
   'main/getImageList',
   async (_, { getState }) => {
@@ -274,6 +297,16 @@ const mainSlice = createSlice({
       state.message.severity = 'success';
     },
     [registerUser.rejected]: (state, action) => {
+      state.message.open = true;
+      state.message.content = action.payload.content;
+      state.message.severity = action.payload.severity;
+    },
+    [login.fulfilled]: (state, action) => {
+      state.message.open = true;
+      state.message.content = action.payload.msg;
+      state.message.severity = 'success';
+    },
+    [login.rejected]: (state, action) => {
       state.message.open = true;
       state.message.content = action.payload.content;
       state.message.severity = action.payload.severity;
