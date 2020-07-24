@@ -73,7 +73,7 @@ export const getImageList = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(changeMessage({ open: true, severity: 'warning', content: '请先登录' }));
       } else {
-        dispatch(changeMessage({ open: true, severity: 'error', content: '获取图片列表失败：请刷新页面重试' }));
+        dispatch(changeMessage({ open: true, severity: 'error', content: '获取图片列表失败，请刷新页面重试' }));
       }
       throw error;
     }
@@ -82,7 +82,7 @@ export const getImageList = createAsyncThunk(
 
 export const addImage = createAsyncThunk(
   'main/addImage',
-  async ({ image, type, group_id, tags }) => {
+  async ({ image, type, group_id, tags }, { dispatch }) => {
     const formData = new FormData();
     formData.set('image', image);
     formData.set('metadata', JSON.stringify({
@@ -90,12 +90,25 @@ export const addImage = createAsyncThunk(
       group_id,
       tags,
     }));
-    const resp = await axios.post('/api/images/add', formData);
-    const data = resp.data;
-    if (resp.status === 200) {
-      return {};
-    } else {
-      // TODO
+    try {
+      const resp = await axios.post('/api/images/add', formData);
+      return resp.data;
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: '添加图片失败，请重试'
+        }));
+      }
+      throw error;
     }
   }
 )
@@ -292,9 +305,6 @@ const mainSlice = createSlice({
       const data = action.payload;
       state.pages = data.pagination.pages;
       state.imageList = data.data;
-    },
-    [addImage.fulfilled]: (state, action) => {
-      // TODO
     },
     [deleteImage.fulfilled]: (state, action) => {
       // TODO
