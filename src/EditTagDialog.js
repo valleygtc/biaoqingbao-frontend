@@ -23,11 +23,13 @@ function EditTagDialog({
   });
 
   const onSubmit = async (data) => {
-    await updateTag({
+    const resultAction = await updateTag({
       id: tag.id,
       text: data.text,
     });
-    onClose();
+    if (!resultAction.error) {
+      onClose();
+    }
   }
 
   return (

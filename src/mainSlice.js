@@ -247,19 +247,33 @@ export const addTag = createAsyncThunk(
 
 export const updateTag = createAsyncThunk(
   'main/updateTag',
-  async ({ id, text }) => {
-    const resp = await axios.post('/api/tags/update', {
-      id,
-      text,
-    });
-    const data = resp.data;
-    if (resp.status === 200) {
+  async ({ id, text }, { dispatch }) => {
+    try {
+      const resp = await axios.post('/api/tags/update', {
+        id,
+        text,
+      });
       return {
         id,
         text,
       };
-    } else {
-      // TODO
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `编辑标签失败：${data.error || '未知错误'}`,
+        }));
+      }
+      throw error;
     }
   }
 )
