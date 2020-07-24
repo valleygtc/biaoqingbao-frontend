@@ -401,18 +401,31 @@ export const deleteGroups = createAsyncThunk(
 
 export const updateGroup = createAsyncThunk(
   'main/updateGroup',
-  async ({ id, name }) => {
-    const resp = await axios.post('/api/groups/update', { id, name });
-    const data = resp.data;
-    if (resp.status === 200) {
-      return {
-        id,
-        name,
-      };
-    } else {
-      // TODO
+  async ({ id, name }, { dispatch }) => {
+    try {
+      await axios.post('/api/groups/update', { id, name });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `重命名组失败：${data.error || '未知错误'}`,
+        }));
+      }
+      throw error;
     }
-
+    return {
+      id,
+      name,
+    };
   }
 )
 

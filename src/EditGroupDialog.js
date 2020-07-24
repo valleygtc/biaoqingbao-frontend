@@ -23,11 +23,13 @@ function EditGroupDialog({
   });
 
   const onSubmit = async (data) => {
-    await updateGroup({
+    const resultAction = await updateGroup({
       id: group.id,
       name: data.name,
     });
-    onClose();
+    if (!resultAction.error) {
+      onClose();
+    }
   }
 
   return (
