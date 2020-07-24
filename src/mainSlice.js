@@ -291,16 +291,6 @@ const mainSlice = createSlice({
     }
   },
   extraReducers: {
-    [login.fulfilled]: (state, action) => {
-      state.message.open = true;
-      state.message.content = action.payload.msg;
-      state.message.severity = 'success';
-    },
-    [login.rejected]: (state, action) => {
-      state.message.open = true;
-      state.message.content = action.payload.content;
-      state.message.severity = action.payload.severity;
-    },
     [getImageList.fulfilled]: (state, action) => {
       state.pages = action.payload.pages;
       state.imageList = action.payload.imageList;
