@@ -34,8 +34,10 @@ function DeleteTagDialog({
   const classes = useStyles();
 
   const handleSubmit = async () => {
-    await deleteTag(tag.id);
-    onClose();
+    const resultAction = await deleteTag(tag.id);
+    if (!resultAction.error) {
+      onClose();
+    }
   }
 
   return (

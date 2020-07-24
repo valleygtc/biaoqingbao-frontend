@@ -280,15 +280,27 @@ export const updateTag = createAsyncThunk(
 
 export const deleteTag = createAsyncThunk(
   'main/deleteTag',
-  async (id) => {
-    const resp = await axios.post('/api/tags/delete', { id });
-    const data = resp.data;
-    if (resp.status === 200) {
-      return {
-        id,
-      };
-    } else {
-      // TODO
+  async (id, { dispatch }) => {
+    try {
+      await axios.post('/api/tags/delete', { id });
+      return { id };
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `删除标签失败：${data.error || '未知错误'}`,
+        }));
+      }
+      throw error;
     }
   }
 )
