@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
+import { push } from 'connected-react-router';
 import { GROUP_ALL } from './constants';
 // import { imageList, groups } from 'mock';
 
@@ -52,7 +53,7 @@ export const login = createAsyncThunk(
 
 export const getImageList = createAsyncThunk(
   'main/getImageList',
-  async (_, { getState }) => {
+  async (_, { getState, dispatch }) => {
     // console.log('mock getImageList: %o', { page, currentGroupId });
     // return {
     //   pages: 10,
@@ -70,15 +71,17 @@ export const getImageList = createAsyncThunk(
       params['tag'] = searchTag;
     }
 
-    const resp = await axios.get('/api/images/', { params });
-    const data = resp.data;
-    if (resp.status === 200) {
-      return {
-        pages: data.pagination.pages,
-        imageList: data.data,
-      };
-    } else {
-      // TODO
+    try {
+      const resp = await axios.get('/api/images/', { params });
+      return resp.data;
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({ open: true, severity: 'warning', content: '请先登录' }));
+      } else {
+        dispatch(changeMessage({ open: true, severity: 'error', content: '获取图片列表失败：请刷新页面重试' }));
+      }
+      throw error;
     }
   }
 )
@@ -292,8 +295,9 @@ const mainSlice = createSlice({
   },
   extraReducers: {
     [getImageList.fulfilled]: (state, action) => {
-      state.pages = action.payload.pages;
-      state.imageList = action.payload.imageList;
+      const data = action.payload;
+      state.pages = data.pagination.pages;
+      state.imageList = data.data;
     },
     [addImage.fulfilled]: (state, action) => {
       // TODO
