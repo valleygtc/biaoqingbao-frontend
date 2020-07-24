@@ -17,7 +17,7 @@ export const registerUser = createAsyncThunk(
       } else {
         dispatch(changeMessage({ open: true, severity: 'error', content: '注册失败：发生未知错误，请重试' }));
       }
-      throw error
+      throw error;
     }
     dispatch(changeMessage({ open: true, severity: 'success', content: '注册成功，请登录' }));
     dispatch(replace('/login'));
@@ -27,24 +27,21 @@ export const registerUser = createAsyncThunk(
 
 export const login = createAsyncThunk(
   'main/login',
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password }, { dispatch }) => {
+    let resp;
     try {
-      const resp = await axios.post('/api/login', { email, password });
-      return resp.data;
+      resp = await axios.post('/api/login', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        const data = error.response.data;
-        return rejectWithValue({
-          severity: 'warning',
-          content: data.error,
-        });
+        dispatch(changeMessage({ open: true, severity: 'warning', content: '账号或密码错误' }));
       } else {
-        return rejectWithValue({
-          severity: 'error',
-          content: '发生未知错误，请重试',
-        });
+        dispatch(changeMessage({ open: true, severity: 'error', content: '登录失败：发生未知错误，请重试' }));
       }
+      throw error;
     }
+    dispatch(changeMessage({ open: true, severity: 'success', content: '登陆成功' }));
+    dispatch(replace('/'));
+    return resp.data;
   }
 )
 

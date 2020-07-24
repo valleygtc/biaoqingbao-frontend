@@ -11,10 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
-import { useHistory } from 'react-router-dom';
 
 import Copyright from './Copyright';
-import { login, changeMessage } from './mainSlice';
+import { login } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,22 +37,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Login({
   login,
-  changeMessage
 }) {
   const classes = useStyles();
 
   const { register, handleSubmit } = useForm();
-  const history = useHistory();
-
-  const onSubmit = async (data) => {
-    const resultAction = await login(data);
-    if (resultAction.error) {
-      changeMessage({ open: true, ...resultAction.payload });
-    } else {
-      changeMessage({ open: true, severity: 'success', content: '登陆成功' });
-      history.replace('/');
-    }
-  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -64,7 +51,7 @@ function Login({
         <Typography component="h1" variant="h5">
           登录
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+        <form className={classes.form} onSubmit={handleSubmit(login)}>
           <TextField
             required
             fullWidth
@@ -119,7 +106,7 @@ function Login({
   );
 }
 
-const mapDispatchToProps = { login, changeMessage };
+const mapDispatchToProps = { login };
 
 export default connect(
   null,
