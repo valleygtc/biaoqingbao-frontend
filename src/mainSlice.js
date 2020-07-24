@@ -115,14 +115,34 @@ export const addImage = createAsyncThunk(
 
 export const deleteImage = createAsyncThunk(
   'main/deleteImage',
-  async (id) => {
-    const resp = await axios.post('/api/images/delete', { id });
-    const data = resp.data;
-    if (resp.status === 200) {
-      return {};
-    } else {
-      // TODO
+  async (id, { dispatch }) => {
+    let resp
+    try {
+      resp = await axios.post('/api/images/delete', { id });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(changeMessage({
+          open: true,
+          severity: 'warning',
+          content: '请先登录'
+        }));
+      } else {
+        const data = error.response.data;
+        dispatch(changeMessage({
+          open: true,
+          severity: 'error',
+          content: `删除图片失败：${data.error || '未知错误'}`,
+        }));
+      }
+      throw error;
     }
+    dispatch(changeMessage({
+      open: true,
+      severity: 'success',
+      content: '成功删除图片',
+    }));
+    return resp.data;
   }
 )
 

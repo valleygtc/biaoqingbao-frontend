@@ -39,13 +39,15 @@ function DeleteImageDialog({
   const classes = useStyles();
 
   const handleDelete = async () => {
-    await deleteImage(imageId);
-    onClose();
-    closeDetailDialog();
-    if (imageList.length === 1 && page !== 1) {
-      changePage(page - 1);
+    const resultAction = await deleteImage(imageId);
+    if (!resultAction.error) {
+      onClose();
+      closeDetailDialog();
+      if (imageList.length === 1 && page !== 1) {
+        changePage(page - 1);
+      }
+      getImageList();
     }
-    getImageList();
   }
 
   return (
