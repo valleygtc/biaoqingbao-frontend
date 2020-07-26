@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,6 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
+import { openDialog as openImportDialog } from './importSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,9 +38,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Header({
+function Header({
   darkMode,
   onToggleDarkMode,
+  openImportDialog,
 }) {
   const classes = useStyles();
 
@@ -51,10 +54,9 @@ export default function Header({
   };
 
   const [addImageDialogOpen, setAddImageDialogOpen] = useState(false);
-  const [importDialogOpen, setImportDialogOpen] = useState(false);
 
   const handleImportButtonClick = () => {
-    setImportDialogOpen(true);
+    openImportDialog();
     closeMenu();
   }
   const handleExportButtonClick = () => {
@@ -108,7 +110,14 @@ export default function Header({
         </Menu>
       </Toolbar>
       <AddImageDialog open={addImageDialogOpen} onClose={() => setAddImageDialogOpen(false)} />
-      <ImportDialog open={importDialogOpen} onClose={() => setImportDialogOpen(false)} />
+      <ImportDialog />
     </AppBar>
   );
 }
+
+const mapDispatchToProps = { openImportDialog };
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Header);

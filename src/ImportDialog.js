@@ -14,7 +14,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
-import { addImage, getImageList } from './mainSlice';
+import { closeDialog, importImages, stop } from './importSlice';
+import { getImageList } from './mainSlice';
+import { isEmpty } from 'lodash';
 import { GROUP_ALL } from './constants';
 
 const defaultValues = {
@@ -24,29 +26,74 @@ const defaultValues = {
 function ImportDialog({
   groups,
   open,
-  onClose,
-  addImage,
+  loading,
+  imageStatusObj,
+  closeDialog,
+  importImages,
+  stop,
   getImageList,
 }) {
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { register, handleSubmit, control, errors } = useForm({ defaultValues });
+  const { register, handleSubmit, control, errors, getValues } = useForm({ defaultValues });
 
   const onSubmit = async (data) => {
-    const images = data['images'];
-    for (const image of images) {
-      const type = image.type.split('/')[1];
-      await addImage({
-        image,
-        type,
-        group_id: data.group.id,
-        tags: [],
-      });
-    }
-    onClose();
-    getImageList();
+    importImages({
+      images: Object.fromEntries(Array.from(data['images']).entries()),
+      group_id: data['group'].id
+    });
   }
+
+  const handleClose = () => {
+    if (Object.values(imageStatusObj).some((status) => status === 'ok')) {
+      getImageList();
+    }
+    closeDialog();
+  }
+
+  const handleContinue = () => {
+    const allImages = Array.from(getValues('images'));
+    const images = {};
+    for (const [key, image] of allImages.entries()) {
+      if (imageStatusObj[key] !== 'ok') {
+        images[key] = image;
+      }
+    }
+    const group = getValues('group');
+    importImages({
+      images,
+      group_id: group.id,
+    });
+  }
+
+  const buttonItem = (() => {
+    if (loading) {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => stop()}
+        >停止</Button>
+      );
+    } else if (isEmpty(imageStatusObj)) {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+        >提交</Button>
+      );
+    } else {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleContinue}
+        >续传</Button>
+      );
+    }
+  })()
 
   return (
     <Dialog
@@ -54,11 +101,11 @@ function ImportDialog({
       maxWidth="sm"
       fullScreen={dialogFullScreen}
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       aria-labelledby="import-images"
     >
-      <DialogTitleWithCloseIcon id="import-images" onClose={onClose}>
-        添加图片
+      <DialogTitleWithCloseIcon id="import-images" onClose={handleClose}>
+        批量导入图片
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -95,8 +142,16 @@ function ImportDialog({
             />
             {errors.group && <FormHelperText>必须选择组</FormHelperText>}
           </FormControl>
+          {!isEmpty(imageStatusObj)
+            ? <ul>
+                <li>总计：{Object.keys(imageStatusObj).length}</li>
+                <li>成功：{Object.values(imageStatusObj).filter((status) => status === 'ok').length}</li>
+                <li>失败：{Object.values(imageStatusObj).filter((status) => status === 'error').length}</li>
+              </ul>
+            : null
+          }
           <FormControl margin="normal">
-            <Button variant="contained" color="primary" type="submit">提交</Button>
+            {buttonItem}
           </FormControl>
         </form>
       </DialogContent>
@@ -105,10 +160,13 @@ function ImportDialog({
 }
 
 const mapStateToProps = (state) => ({
+  open: state.import.open,
+  loading: state.import.loading,
+  imageStatusObj: state.import.imageStatusObj,
   groups: state.main.groups,
 });
 
-const mapDispatchToProps = { addImage, getImageList };
+const mapDispatchToProps = { closeDialog, importImages, stop, getImageList };
 
 export default connect(
   mapStateToProps,
