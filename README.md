@@ -7,7 +7,8 @@ $ yarn start
 ## 自动部署：
 ```
 $ yarn build
-$ fab -H 39.106.194.240 upgrade
+$ cd deploy
+$ pyinfra -v inventory.py deploy.py
 ```
 
 ## 手动部署：
