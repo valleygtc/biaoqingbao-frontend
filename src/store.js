@@ -4,6 +4,7 @@ import { createBrowserHistory } from 'history';
 
 import mainReducer from './mainSlice';
 import importReducer from './importSlice';
+import msgReducer from './msgSlice';
 
 export const history = createBrowserHistory();
 
@@ -11,6 +12,7 @@ const createRootReducer = (history) => combineReducers({
   router: connectRouter(history),
   main: mainReducer,
   import: importReducer,
+  msg: msgReducer,
 })
 
 export default configureStore({

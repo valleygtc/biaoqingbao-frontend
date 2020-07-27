@@ -15,7 +15,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
 import { closeDialog, importImages, stop } from './importSlice';
-import { getImageList, changeMessage } from './mainSlice';
+import { getImageList } from './mainSlice';
+import { showWarning } from './msgSlice';
 import { isEmpty } from 'lodash';
 import { GROUP_ALL } from './constants';
 
@@ -32,7 +33,7 @@ function ImportDialog({
   importImages,
   stop,
   getImageList,
-  changeMessage,
+  showWarning,
 }) {
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -48,7 +49,7 @@ function ImportDialog({
 
   const handleClose = () => {
     if (loading) {
-      changeMessage({ open: true, severity: 'warning', content: '上传过程中禁止关闭对话框' });
+      showWarning('上传过程中禁止关闭对话框');
       return;
     }
     if (Object.values(imageStatusObj).some((status) => status === 'ok')) {
@@ -171,7 +172,7 @@ const mapStateToProps = (state) => ({
   groups: state.main.groups,
 });
 
-const mapDispatchToProps = { closeDialog, importImages, stop, getImageList, changeMessage };
+const mapDispatchToProps = { closeDialog, importImages, stop, getImageList, showWarning };
 
 export default connect(
   mapStateToProps,

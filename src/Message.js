@@ -3,35 +3,38 @@ import { connect } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
-import { changeMessage } from './mainSlice';
+import { close } from './msgSlice';
 
 function Message({
-  message,
-  changeMessage,
+  open,
+  severity,
+  content,
+  close,
 }) {
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    changeMessage({
-      open: false,
-    })
+
+    close();
   };
 
   return (
-    <Snackbar open={message.open} autoHideDuration={5000} onClose={handleClose}>
-      <Alert elevation={6} variant="filled"  onClose={handleClose} severity={message.severity}>
-        {message.content}
+    <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+      <Alert elevation={6} variant="filled"  onClose={handleClose} severity={severity}>
+        {content}
       </Alert>
     </Snackbar>
   );
 }
 
 const mapStateToProps = (state) => ({
-  message: state.main.message,
+  open: state.msg.open,
+  severity: state.msg.severity,
+  content: state.msg.content,
 });
 
-const mapDispatchToProps = { changeMessage };
+const mapDispatchToProps = { close };
 
 export default connect(
   mapStateToProps,

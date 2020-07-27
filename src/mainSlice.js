@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
 import { push, replace } from 'connected-react-router';
+import { showSuccess, showWarning, showError } from './msgSlice';
 import { GROUP_ALL } from './constants';
 // import { imageList, groups } from 'mock';
 
@@ -13,25 +14,13 @@ export const registerUser = createAsyncThunk(
       resp = await axios.post('/api/register', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '此邮箱已被使用'
-        }));
+        dispatch(showWarning('此邮箱已被使用'));
       } else {
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: '注册失败：发生未知错误，请重试'
-        }));
+        dispatch(showError('注册失败：发生未知错误，请重试'));
       }
       throw error;
     }
-    dispatch(changeMessage({
-      open: true,
-      severity: 'success',
-      content: '注册成功，请登录'
-    }));
+    dispatch(showSuccess('注册成功，请登录'));
     dispatch(replace('/login'));
     return resp.data;
   }
@@ -45,25 +34,13 @@ export const login = createAsyncThunk(
       resp = await axios.post('/api/login', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '账号或密码错误'
-        }));
+        dispatch(showWarning('账号或密码错误'));
       } else {
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: '登录失败：发生未知错误，请重试'
-        }));
+        dispatch(showError('登录失败：发生未知错误，请重试'));
       }
       throw error;
     }
-    dispatch(changeMessage({
-      open: true,
-      severity: 'success',
-      content: '登陆成功'
-    }));
+    dispatch(showSuccess('登陆成功'));
     dispatch(replace('/'));
     return resp.data;
   }
@@ -95,17 +72,9 @@ export const getImageList = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: '获取图片列表失败，请刷新页面重试'
-        }));
+        dispatch(showError('获取图片列表失败，请刷新页面重试'));
       }
       throw error;
     }
@@ -128,17 +97,9 @@ export const addImage = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: '添加图片失败，请重试'
-        }));
+        dispatch(showError('添加图片失败，请重试'));
       }
       throw error;
     }
@@ -154,26 +115,14 @@ export const deleteImage = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `删除图片失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`删除图片失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
-    dispatch(changeMessage({
-      open: true,
-      severity: 'success',
-      content: '成功删除图片',
-    }));
+    dispatch(showSuccess('成功删除图片'));
     return resp.data;
   }
 )
@@ -189,18 +138,10 @@ export const updateImage = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `更新图片失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`更新图片失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -227,18 +168,10 @@ export const addTag = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `添加标签失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`添加标签失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -260,18 +193,10 @@ export const updateTag = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `编辑标签失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`编辑标签失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -287,18 +212,10 @@ export const deleteTag = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `删除标签失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`删除标签失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -319,18 +236,10 @@ export const getGroups = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `获取组列表失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`获取组列表失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -349,18 +258,10 @@ export const addGroup = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `添加组失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`添加组失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -375,18 +276,10 @@ export const deleteGroups = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `删除组失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`删除组失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -407,18 +300,10 @@ export const updateGroup = createAsyncThunk(
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
-        dispatch(changeMessage({
-          open: true,
-          severity: 'warning',
-          content: '请先登录'
-        }));
+        dispatch(showWarning('请先登录'));
       } else {
         const data = error.response.data;
-        dispatch(changeMessage({
-          open: true,
-          severity: 'error',
-          content: `重命名组失败：${data.error || '未知错误'}`,
-        }));
+        dispatch(showError(`重命名组失败：${data.error || '未知错误'}`));
       }
       throw error;
     }
@@ -438,11 +323,6 @@ const mainSlice = createSlice({
     groups: [GROUP_ALL],
     currentGroupId: GROUP_ALL.id,
     searchTag: '',
-    message: {
-      open: false,
-      content: '',
-      severity: '',
-    }
   },
   reducers: {
     changePage: (state, action) => {
@@ -454,12 +334,6 @@ const mainSlice = createSlice({
     changeSearchTag: (state, action) => {
       state.searchTag = action.payload;
     },
-    changeMessage: (state, action) => {
-      state.message = {
-        ...state.message,
-        ...action.payload,
-      };
-    }
   },
   extraReducers: {
     [getImageList.fulfilled]: (state, action) => {
@@ -529,7 +403,6 @@ export const {
   changePage,
   changeGroup,
   changeSearchTag,
-  changeMessage,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;
