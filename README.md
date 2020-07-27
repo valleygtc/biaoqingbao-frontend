@@ -4,6 +4,12 @@ $ yarn # 安装依赖
 $ yarn start
 ```
 
+## 自动部署：
+```
+$ yarn build
+$ fab -H 39.106.194.240 upgrade
+```
+
 ## 手动部署：
 ```
 $ yarn build
