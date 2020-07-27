@@ -455,7 +455,10 @@ const mainSlice = createSlice({
       state.searchTag = action.payload;
     },
     changeMessage: (state, action) => {
-      state.message = action.payload;
+      state.message = {
+        ...state.message,
+        ...action.payload,
+      };
     }
   },
   extraReducers: {
