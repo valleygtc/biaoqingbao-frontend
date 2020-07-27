@@ -72,7 +72,7 @@ function ImportDialog({
       return (
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           onClick={() => stop()}
         >停止</Button>
       );
