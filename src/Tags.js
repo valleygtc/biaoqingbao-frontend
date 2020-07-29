@@ -5,6 +5,7 @@ import Chip from '@material-ui/core/Chip';
 import OperateTagDialog from './OperateTagDialog';
 import EditTagDialog from './EditTagDialog';
 import DeleteTagDialog from './DeleteTagDialog';
+import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,26 +22,32 @@ const useStyles = makeStyles((theme) => ({
  *   tags: [array[obj]] { "id": <int>, "text": <text> }
  */
 export default function Tags({
+  imageId,
   tags,
 }) {
   const classes = useStyles();
 
-  const [operateDialogOpen, setOperateDialogOpen] = useState(false);
+  const {
+    open: operateDialogOpen,
+    handleOpen: openOperateDialog,
+    handleClose: closeOperateDialog,
+  } = useDialog(`operate-tag-${imageId}`);
+
   // chosen tag
   const [chosenTag, setChosenTag] = useState({});
   const handleChooseTag = (tag) => {
     setChosenTag(tag);
-    setOperateDialogOpen(true);
+    openOperateDialog();
   }
   const handleCloseOperateDialog = () => {
-    setOperateDialogOpen(false);
+    closeOperateDialog();
     setChosenTag({});
   }
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const handleOpenEditDialog = () => {
     setEditDialogOpen(true);
-    setOperateDialogOpen(false);
+    closeOperateDialog();
   }
   const handleCloseEditDialog = () => {
     setEditDialogOpen(false);
@@ -50,7 +57,7 @@ export default function Tags({
   const [deleteDialogOpen, setDeleteDialog] = useState(false);
   const handleOpenDeleteDialog = () => {
     setDeleteDialog(true);
-    setOperateDialogOpen(false);
+    closeOperateDialog();
   }
   const handleCloseDeleteDialog = () => {
     setDeleteDialog(false);

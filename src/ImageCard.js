@@ -55,7 +55,7 @@ export default function ImageCard({
         />
       </CardActionArea>
       <CardContent>
-        <Tags tags={imageData.tags} />
+        <Tags imageId={imageData.id} tags={imageData.tags} />
       </CardContent>
       <DetailDialog
         imageData={imageData}
