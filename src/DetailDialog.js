@@ -17,6 +17,7 @@ import DialogActions from './DialogActions';
 import Tags from './Tags';
 import DeleteImageDialog from 'DeleteImageDialog';
 import AddTagDialog from 'AddTagDialog';
+import { useHeapedDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -54,8 +55,19 @@ export default function DetailDialog({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [addTagDialogOpen, setAddTagDialogOpen] = useState(false);
-  const [deleteImageDialogOpen, setDeleteImageDialogOpen] = useState(false);
+  const {
+    open: addTagDialogOpen,
+    handleOpen: openAddTagDialog,
+    handleClose: closeAddTagDialog,
+  } = useHeapedDialog(`add-tag-${imageData.id}`);
+
+  const {
+    open: deleteImageDialogOpen,
+    handleOpen: openDeleteImageDialog,
+    handleClose: closeDeleteImageDialog,
+  } = useHeapedDialog(`delete-image-${imageData.id}`);
+
+  const [setDeleteImageDialogOpen] = useState(false);
 
   return (
     <Dialog
@@ -80,12 +92,12 @@ export default function DetailDialog({
         <Tags tags={imageData.tags} />
       </DialogContent>
       <DialogActions>
-        <IconButton aria-label="tag" color="inherit" onClick={() => setAddTagDialogOpen(true)}>
+        <IconButton aria-label="tag" color="inherit" onClick={openAddTagDialog}>
           <CreateIcon fontSize="large" />
           {/* sm and smdown hidden */}
           <Hidden smDown>打标签</Hidden>
         </IconButton>
-        <IconButton aria-label="delete" color="inherit" onClick={() => setDeleteImageDialogOpen(true)}>
+        <IconButton aria-label="delete" color="inherit" onClick={openDeleteImageDialog}>
           <DeleteIcon fontSize="large" />
           <Hidden smDown>删除</Hidden>
         </IconButton>
@@ -97,12 +109,12 @@ export default function DetailDialog({
       <AddTagDialog
         imageId={imageData.id}
         open={addTagDialogOpen}
-        onClose={() => setAddTagDialogOpen(false)}
+        onClose={closeAddTagDialog}
       />
       <DeleteImageDialog
         imageId={imageData.id}
         open={deleteImageDialogOpen}
-        onClose={() => setDeleteImageDialogOpen(false)}
+        onClose={closeDeleteImageDialog}
         closeDetailDialog={onClose}
       />
     </Dialog>

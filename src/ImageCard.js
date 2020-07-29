@@ -7,7 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 import Tags from './Tags';
 import DetailDialog from './DetailDialog';
-import { useDialog } from './hooks';
+import { useHeapedDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   cardImage: {
@@ -43,7 +43,7 @@ export default function ImageCard({
 }){
   const classes = useStyles();
 
-  const { open, handleOpen, handleClose } = useDialog(`image-detail-${imageData.id}`);
+  const { open, handleOpen, handleClose } = useHeapedDialog(`image-detail-${imageData.id}`);
 
   return (
     <Card>
