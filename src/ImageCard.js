@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 import Tags from './Tags';
 import DetailDialog from './DetailDialog';
+import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   cardImage: {
@@ -42,11 +43,11 @@ export default function ImageCard({
 }){
   const classes = useStyles();
 
-  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const { open, handleOpen, handleClose } = useDialog(`image-detail-${imageData.id}`);
 
   return (
     <Card>
-      <CardActionArea onClick={() => setDetailDialogOpen(true)}>
+      <CardActionArea onClick={handleOpen}>
         <CardMedia
           className={classes.cardImage}
           image={imageData.url}
@@ -58,8 +59,8 @@ export default function ImageCard({
       </CardContent>
       <DetailDialog
         imageData={imageData}
-        open={detailDialogOpen}
-        onClose={() => setDetailDialogOpen(false)}
+        open={open}
+        onClose={handleClose}
       />
     </Card>
   );
