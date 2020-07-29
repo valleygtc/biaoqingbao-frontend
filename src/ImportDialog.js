@@ -11,6 +11,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useForm, Controller } from "react-hook-form";
 import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
@@ -22,6 +24,7 @@ import { GROUP_ALL } from './constants';
 
 const defaultValues = {
   group: GROUP_ALL,
+  useFilename: false,
 }
 
 function ImportDialog({
@@ -43,7 +46,8 @@ function ImportDialog({
   const onSubmit = async (data) => {
     importImages({
       images: Object.fromEntries(Array.from(data['images']).entries()),
-      group_id: data['group'].id
+      group_id: data['group'].id,
+      useFilename: data['useFilename'],
     });
   }
 
@@ -147,6 +151,12 @@ function ImportDialog({
               rules={{require: true}}
             />
             {errors.group && <FormHelperText>必须选择组</FormHelperText>}
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <FormControlLabel
+              control={<Checkbox name="useFilename" inputRef={register} />}
+              label="使用文件名作为标签"
+            />
           </FormControl>
           {!isEmpty(imageStatusObj)
             ? <ul>

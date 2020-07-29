@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
 import axios from 'axios';
 import { isEmpty } from 'lodash';
+
+import { getFilenameWithoutExt } from './utils';
 
 export const importImages = createAsyncThunk(
   'main/importImages',
@@ -9,15 +10,20 @@ export const importImages = createAsyncThunk(
    * images [Object]: { "<key>": [File], ...... }
    * group_id: [Number]
    */
-  async ({ images, group_id }, { dispatch, getState }) => {
+  async ({ images, group_id, useFilename }, { dispatch, getState }) => {
     for (const [key, image] of Object.entries(images)) {
       const type = image.type.split('/')[1];
       const formData = new FormData();
       formData.set('image', image);
-      formData.set('metadata', JSON.stringify({
+      const metadata = {
         type,
         group_id,
-      }));
+      };
+      if (useFilename) {
+        const filename = getFilenameWithoutExt(image.name);
+        metadata.tags = [filename];
+      }
+      formData.set('metadata', JSON.stringify(metadata));
       try {
         await axios.post('/api/images/add', formData);
         dispatch(importOk(key));
