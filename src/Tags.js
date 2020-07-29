@@ -5,7 +5,7 @@ import Chip from '@material-ui/core/Chip';
 import OperateTagDialog from './OperateTagDialog';
 import EditTagDialog from './EditTagDialog';
 import DeleteTagDialog from './DeleteTagDialog';
-import { useDialog } from './hooks';
+import { useHeapedDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +31,7 @@ export default function Tags({
     open: operateDialogOpen,
     handleOpen: openOperateDialog,
     handleClose: closeOperateDialog,
-  } = useDialog(`operate-tag-${imageId}`);
+  } = useHeapedDialog(`operate-tag-${imageId}`);
 
   // chosen tag
   const [chosenTag, setChosenTag] = useState({});

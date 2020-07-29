@@ -67,8 +67,6 @@ export default function DetailDialog({
     handleClose: closeDeleteImageDialog,
   } = useHeapedDialog(`delete-image-${imageData.id}`);
 
-  const [setDeleteImageDialogOpen] = useState(false);
-
   return (
     <Dialog
       fullWidth
@@ -89,7 +87,7 @@ export default function DetailDialog({
       </MuiDialogTitle>
       <DialogContent dividers>
         <img className={classes.img} src={imageData.url} alt={`img-${imageData.id}`} />
-        <Tags tags={imageData.tags} />
+        <Tags imageId={imageData.id} tags={imageData.tags} />
       </DialogContent>
       <DialogActions>
         <IconButton aria-label="tag" color="inherit" onClick={openAddTagDialog}>
