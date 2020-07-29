@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -9,6 +9,7 @@ import Popover from '@material-ui/core/Popover';
 import GroupItem from './GroupItem';
 import AddGroupDialog from './AddGroupDialog';
 import { changeGroup, getImageList, deleteGroups } from './mainSlice';
+import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -36,20 +37,17 @@ function GroupSelect({
 }) {
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClickSelector = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseSelector = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'group-popover' : undefined;
+  const {
+    open: panelOpen,
+    handleOpen: openPanel,
+    handleClose: closePanel,
+  } = useDialog('group-panel');
+  const anchorRef = useRef(null);
+  const panelId = panelOpen ? 'group-panel' : undefined;
 
   const handleSelect = (group) => {
     changeGroup(group);
-    handleCloseSelector();
+    closePanel();
     getImageList();
   }
 
@@ -85,7 +83,14 @@ function GroupSelect({
 
   return (
     <div>
-      <Button disableElevation className={classes.button} aria-describedby={id} color="inherit" onClick={handleClickSelector}>
+      <Button
+        disableElevation
+        className={classes.button}
+        aria-describedby={panelId}
+        color="inherit"
+        ref={anchorRef}
+        onClick={openPanel}
+      >
         <Typography>{currentGroup.name}</Typography>
         <ArrowDropDownIcon/>
       </Button>
@@ -93,10 +98,10 @@ function GroupSelect({
         classes={{
           paper: classes.popoverPaper,
         }}
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleCloseSelector}
+        id={panelId}
+        open={panelOpen}
+        anchorEl={anchorRef.current}
+        onClose={closePanel}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
