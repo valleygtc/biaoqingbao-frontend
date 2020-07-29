@@ -16,7 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
-import { closeDialog, importImages, stop } from './importSlice';
+import { importImages, stop, reset } from './importSlice';
 import { getImageList } from './mainSlice';
 import { showWarning } from './msgSlice';
 import { isEmpty } from 'lodash';
@@ -32,9 +32,10 @@ function ImportDialog({
   open,
   loading,
   imageStatusObj,
-  closeDialog,
+  onClose,
   importImages,
   stop,
+  reset,
   getImageList,
   showWarning,
 }) {
@@ -59,7 +60,8 @@ function ImportDialog({
     if (Object.values(imageStatusObj).some((status) => status === 'ok')) {
       getImageList();
     }
-    closeDialog();
+    reset();
+    onClose();
   }
 
   const handleContinue = () => {
@@ -176,13 +178,12 @@ function ImportDialog({
 }
 
 const mapStateToProps = (state) => ({
-  open: state.import.open,
   loading: state.import.loading,
   imageStatusObj: state.import.imageStatusObj,
   groups: state.main.groups,
 });
 
-const mapDispatchToProps = { closeDialog, importImages, stop, getImageList, showWarning };
+const mapDispatchToProps = { importImages, stop, reset, getImageList, showWarning };
 
 export default connect(
   mapStateToProps,

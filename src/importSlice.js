@@ -41,19 +41,10 @@ export const importImages = createAsyncThunk(
 const importSlice = createSlice({
   name: 'import',
   initialState: {
-    open: false,
     loading: false,
     imageStatusObj: {}, // { key: "wait" | "ok" | "error" }
   },
   reducers: {
-    openDialog: (state, action) => {
-      state.open = true;
-    },
-    closeDialog: (state, action) => {
-      state.open = false;
-      state.loading = false;
-      state.imageStatusObj = {};
-    },
     importOk: (state, action) => {
       const key = action.payload;
       state.imageStatusObj[key] = 'ok';
@@ -64,6 +55,10 @@ const importSlice = createSlice({
     },
     stop: (state, action) => {
       state.loading = false;
+    },
+    reset: (state, action) => {
+      state.loading = false;
+      state.imageStatusObj = {};
     },
   },
   extraReducers: {
@@ -86,11 +81,10 @@ const importSlice = createSlice({
 });
 
 export const {
-  openDialog,
-  closeDialog,
   importOk,
   importError,
   stop,
+  reset,
 } = importSlice.actions;
 
 export default importSlice.reducer;
