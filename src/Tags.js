@@ -6,6 +6,7 @@ import OperateTagDialog from './OperateTagDialog';
 import EditTagDialog from './EditTagDialog';
 import DeleteTagDialog from './DeleteTagDialog';
 import { useHeapedDialog } from './hooks';
+import { delay } from './utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,23 +45,39 @@ export default function Tags({
     setChosenTag({});
   }
 
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const handleOpenEditDialog = () => {
-    setEditDialogOpen(true);
+  const {
+    open: editDialogOpen,
+    handleOpen: openEditDialog,
+    handleClose: closeEditDialog,
+  } = useHeapedDialog(`edit-tag-${imageId}`);
+
+  const handleOpenEditDialog = async () => {
     closeOperateDialog();
+    // fix: windows.history.back is not sync.
+    // it queue a task.
+    // we should await a 0, to assure openEditDialog after closeOperateDialog.
+    // ref: https://stackoverflow.com/a/25543725/7499223
+    await delay(0);
+    openEditDialog();
   }
   const handleCloseEditDialog = () => {
-    setEditDialogOpen(false);
+    closeEditDialog();
     setChosenTag({});
   }
 
-  const [deleteDialogOpen, setDeleteDialog] = useState(false);
-  const handleOpenDeleteDialog = () => {
-    setDeleteDialog(true);
+  const {
+    open: deleteDialogOpen,
+    handleOpen: openDeleteDialog,
+    handleClose: closeDeleteDialog,
+  } = useHeapedDialog(`delete-tag-${imageId}`);
+
+  const handleOpenDeleteDialog = async () => {
     closeOperateDialog();
+    await delay(0);
+    openDeleteDialog();
   }
   const handleCloseDeleteDialog = () => {
-    setDeleteDialog(false);
+    closeDeleteDialog();
     setChosenTag({});
   }
 
