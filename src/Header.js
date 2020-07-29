@@ -17,6 +17,7 @@ import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
 import { openDialog as openImportDialog } from './importSlice';
+import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,7 +54,11 @@ function Header({
     setAnchorEl(null);
   };
 
-  const [addImageDialogOpen, setAddImageDialogOpen] = useState(false);
+  const {
+    open: addImageDialogOpen,
+    handleOpen: openAddImageDialog,
+    handleClose: closeAddImageDialog,
+  } = useDialog('add-image');
 
   const handleImportButtonClick = () => {
     openImportDialog();
@@ -91,7 +96,7 @@ function Header({
           )
         }
         <Tooltip title="添加图片">
-          <IconButton aria-label="add image" color="inherit" onClick={() => setAddImageDialogOpen(true)}>
+          <IconButton aria-label="add image" color="inherit" onClick={openAddImageDialog}>
             <AddCircleIcon />
           </IconButton>
         </Tooltip>
@@ -109,7 +114,7 @@ function Header({
           <MenuItem onClick={handleExportButtonClick}>导出图片</MenuItem>
         </Menu>
       </Toolbar>
-      <AddImageDialog open={addImageDialogOpen} onClose={() => setAddImageDialogOpen(false)} />
+      <AddImageDialog open={addImageDialogOpen} onClose={closeAddImageDialog} />
       <ImportDialog />
     </AppBar>
   );
