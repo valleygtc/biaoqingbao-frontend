@@ -9,7 +9,7 @@ import Popover from '@material-ui/core/Popover';
 import GroupItem from './GroupItem';
 import AddGroupDialog from './AddGroupDialog';
 import { changeGroup, getImageList, deleteGroups } from './mainSlice';
-import { useDialog } from './hooks';
+import { useHeapedDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -41,7 +41,7 @@ function GroupSelect({
     open: panelOpen,
     handleOpen: openPanel,
     handleClose: closePanel,
-  } = useDialog('group-panel');
+  } = useHeapedDialog('group-panel');
   const anchorRef = useRef(null);
   const panelId = panelOpen ? 'group-panel' : undefined;
 
@@ -79,7 +79,11 @@ function GroupSelect({
     }
   }
 
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const {
+    open: addDialogOpen,
+    handleOpen: openAddDialog,
+    handleClose: closeAddDialog,
+  } = useHeapedDialog('add-group');
 
   return (
     <div>
@@ -155,13 +159,13 @@ function GroupSelect({
                 disableElevation
                 size="small"
                 variant="contained"
-                onClick={() => setAddDialogOpen(true)}
+                onClick={openAddDialog}
               >新建组</Button>
             )
           }
         </div>
       </Popover>
-      <AddGroupDialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)} />
+      <AddGroupDialog open={addDialogOpen} onClose={closeAddDialog} />
     </div>
   );
 }
