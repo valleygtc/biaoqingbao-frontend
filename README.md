@@ -26,6 +26,7 @@ nginx 配置备忘：
 ```nginx.conf
 location / {
     root /opt/www/biaoqingbao-frontend/build;
+    try_files $uri /index.html;
     expires 24h;
 }
 ```
