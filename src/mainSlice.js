@@ -182,7 +182,7 @@ export const updateTag = createAsyncThunk(
   'main/updateTag',
   async ({ id, text }, { dispatch }) => {
     try {
-      const resp = await axios.post('/api/tags/update', {
+      await axios.post('/api/tags/update', {
         id,
         text,
       });
