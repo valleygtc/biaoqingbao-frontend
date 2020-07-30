@@ -40,6 +40,7 @@ function AddGroupDialog({
           <TextField
             fullWidth
             required
+            autoFocus
             error={Boolean(errors.name)}
             id="组名"
             label="组名"
