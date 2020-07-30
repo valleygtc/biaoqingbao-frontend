@@ -48,6 +48,7 @@ function EditTagDialog({
           <TextField
             fullWidth
             required
+            autoFocus
             error={Boolean(errors.text)}
             id="tag"
             label="标签"
