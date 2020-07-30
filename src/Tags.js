@@ -88,7 +88,7 @@ export default function Tags({
           <Chip
             key={t.id}
             label={t.text}
-            color={t.id === chosenTag.id ? 'primary': 'default'}
+            color={(t.id === chosenTag.id) && (operateDialogOpen || editDialogOpen || deleteDialogOpen) ? 'primary': 'default'}
             onClick={() => handleChooseTag(t)}
           />
         )})}
