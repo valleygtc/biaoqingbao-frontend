@@ -22,9 +22,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'stretch',
   },
   footer: {
-    height: '10vh',
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: theme.spacing(2),
   }
 }));
 
@@ -52,7 +50,7 @@ function Main({
         </Container>
       </Grid>
       <Divider />
-      <Grid item container className={classes.footer}>
+      <Grid item className={classes.footer}>
         <Copyright />
       </Grid>
     </Grid>
