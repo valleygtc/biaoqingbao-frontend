@@ -59,6 +59,7 @@ function Login({
             margin="normal"
             id="email"
             label="Email Address"
+            type="email"
             autoComplete="email"
             autoFocus
             name="email"
@@ -87,7 +88,7 @@ function Login({
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/reset-password" variant="body2">
                 忘记密码？
               </Link>
             </Grid>

@@ -11,6 +11,7 @@ import {
 import Main from './Main';
 import Register from './Register';
 import Login from './Login';
+import ResetPassword from './ResetPassword';
 import Message from './Message';
 import { history } from './store';
 
@@ -44,6 +45,9 @@ export default function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/reset-password">
+            <ResetPassword />
           </Route>
           <Route path="/">
             <Main darkMode={darkMode} toggleDarkMode={handleToggleDarkMode} />

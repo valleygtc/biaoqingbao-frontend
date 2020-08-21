@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history';
 import mainReducer from './mainSlice';
 import importReducer from './importSlice';
 import msgReducer from './msgSlice';
+import resetPasswordReducer from './resetPasswordSlice';
 
 export const history = createBrowserHistory();
 
@@ -13,6 +14,7 @@ const createRootReducer = (history) => combineReducers({
   main: mainReducer,
   import: importReducer,
   msg: msgReducer,
+  resetPassword: resetPasswordReducer,
 })
 
 export default configureStore({
