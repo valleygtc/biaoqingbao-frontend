@@ -60,7 +60,7 @@ function ResetPassword({
     const email = getValues('email');
     const result = await trigger('email');
     if (result) {
-      const resultAction = await sendPasscode(email);
+      const resultAction = await sendPasscode({ email });
       if (!resultAction.error) {
         setDisableTimeClock({ seconds: 20 });
       }
