@@ -8,7 +8,7 @@ import Popover from '@material-ui/core/Popover';
 
 import GroupItem from './GroupItem';
 import AddGroupDialog from './AddGroupDialog';
-import { changeGroup, getImageList, deleteGroups } from './mainSlice';
+import { changeGroup, changePage, getImageList, deleteGroups } from './mainSlice';
 import { useHeapedDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +32,7 @@ function GroupSelect({
   groups,
   currentGroup,
   changeGroup,
+  changePage,
   getImageList,
   deleteGroups,
 }) {
@@ -47,6 +48,7 @@ function GroupSelect({
 
   const handleSelect = (group) => {
     changeGroup(group);
+    changePage(1);
     closePanel();
     getImageList();
   }
@@ -177,7 +179,7 @@ const mapStateToProps = (state) => ({
   ),
 });
 
-const mapDispatchToProps = { changeGroup, getImageList, deleteGroups };
+const mapDispatchToProps = { changeGroup, changePage, getImageList, deleteGroups };
 
 export default connect(
   mapStateToProps,
