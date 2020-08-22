@@ -12,7 +12,8 @@ export const sendPasscode = createAsyncThunk(
     try {
       resp = await axios.post('/api/send-passcode', { email });
     } catch (error) {
-      dispatch(showError('发送验证码失败：发生未知错误，请重试'));
+      const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+      dispatch(showError(errMsg));
       throw error;
     }
     dispatch(showSuccess('验证码已发送至电子邮箱'));
@@ -39,14 +40,11 @@ export const resetPassword = createAsyncThunk(
     try {
       resp = await axios.post('/api/reset-password', { email, passcode, password });
     } catch (error) {
-      if (error.response && error.response.status === 403) {
-        dispatch(showWarning('验证码错误'));
-      } else {
-        dispatch(showError('提交失败：发生未知错误，请重试'));
-      }
+      const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+      dispatch(showError(errMsg));
       throw error;
     }
-    dispatch(showSuccess('重置成功'));
+    dispatch(showSuccess('密码重置成功，请登录'));
     dispatch(push('/login'));
     return resp.data;
   }
