@@ -16,6 +16,7 @@ export default function Copyright() {
             textDecoration: 'none',
           }}
           target="_blank"
+          rel="noopener noreferrer"
           href="https://beian.miit.gov.cn/"
         >
           <Typography variant="body2" color="textSecondary">
@@ -29,6 +30,7 @@ export default function Copyright() {
             textDecoration: 'none',
           }}
           target="_blank"
+          rel="noopener noreferrer"
           href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=13068202000127"
         >
           <img src="/police.png" style={{ float: 'left' }} alt="police-picture"/>
