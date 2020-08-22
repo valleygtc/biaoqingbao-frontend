@@ -11,7 +11,8 @@ import { useHeapedDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   cardImage: {
-    height: 250,
+    height: 0,
+    paddingTop: '100%', // 1:1 ratio
   },
   paperFullWidth: {
     width: '100%',
