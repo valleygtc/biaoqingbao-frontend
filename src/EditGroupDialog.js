@@ -44,7 +44,7 @@ function EditGroupDialog({
         编辑组名
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate autoComplete="off">
+        <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             required

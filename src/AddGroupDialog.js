@@ -36,7 +36,7 @@ function AddGroupDialog({
         新建组
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate autoComplete="off">
+        <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             required
