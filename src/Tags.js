@@ -57,7 +57,7 @@ export default function Tags({
     // it queue a task.
     // we should await a 0, to assure openEditDialog after closeOperateDialog.
     // ref: https://stackoverflow.com/a/25543725/7499223
-    await delay(0);
+    await delay(100);
     openEditDialog();
   }
   const handleCloseEditDialog = () => {
