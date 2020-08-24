@@ -73,7 +73,7 @@ export default function Tags({
 
   const handleOpenDeleteDialog = async () => {
     closeOperateDialog();
-    await delay(0);
+    await delay(100);
     openDeleteDialog();
   }
   const handleCloseDeleteDialog = () => {
