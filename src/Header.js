@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
+import ExportDialog from './ExportDialog';
 import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,13 +63,18 @@ export default function Header({
     handleOpen: openImportDialog,
     handleClose: closeImportDialog,
   } = useDialog('import-dialog');
-
   const handleImportButtonClick = () => {
     openImportDialog();
     closeMenu();
   }
+
+  const {
+    open: exportDialogOpen,
+    handleOpen: openExportDialog,
+    handleClose: closeExportDialog,
+  } = useDialog('export-dialog');
   const handleExportButtonClick = () => {
-    window.open('/api/images/export');
+    openExportDialog();
     closeMenu();
   }
 
@@ -119,6 +125,7 @@ export default function Header({
       </Toolbar>
       <AddImageDialog open={addImageDialogOpen} onClose={closeAddImageDialog} />
       <ImportDialog open={importDialogOpen} onClose={closeImportDialog} />
+      <ExportDialog open={exportDialogOpen} onClose={closeExportDialog} />
     </AppBar>
   );
 }
