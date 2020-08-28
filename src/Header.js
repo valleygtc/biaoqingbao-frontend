@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,11 +12,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import CheckIcon from '@material-ui/icons/Check';
 
 import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
 import ExportDialog from './ExportDialog';
+import { toggleCompactMode } from './mainSlice';
 import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,13 +36,16 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  drawer: {
-    width: 250,
+  menuItem: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   }
 }));
 
-export default function Header({
+function Header({
+  compactMode,
   darkMode,
+  toggleCompactMode,
   onToggleDarkMode,
 }) {
   const classes = useStyles();
@@ -75,6 +81,11 @@ export default function Header({
   } = useDialog('export-dialog');
   const handleExportButtonClick = () => {
     openExportDialog();
+    closeMenu();
+  }
+
+  const handleToggleCompactMode = () => {
+    toggleCompactMode();
     closeMenu();
   }
 
@@ -119,8 +130,15 @@ export default function Header({
           open={Boolean(anchorEl)}
           onClose={closeMenu}
         >
-          <MenuItem onClick={handleImportButtonClick}>导入图片</MenuItem>
-          <MenuItem onClick={handleExportButtonClick}>导出图片</MenuItem>
+          <MenuItem className={classes.menuItem} onClick={handleImportButtonClick}>导入图片</MenuItem>
+          <MenuItem className={classes.menuItem} onClick={handleExportButtonClick}>导出图片</MenuItem>
+          <MenuItem className={classes.menuItem} onClick={handleToggleCompactMode}>
+            {compactMode
+              ? (<CheckIcon fontSize="small" />)
+              : null
+            }
+            紧凑模式
+          </MenuItem>
         </Menu>
       </Toolbar>
       <AddImageDialog open={addImageDialogOpen} onClose={closeAddImageDialog} />
@@ -129,3 +147,14 @@ export default function Header({
     </AppBar>
   );
 }
+
+const mapStateToProps = (state) => ({
+  compactMode: state.main.compactMode,
+});
+
+const mapDispatchToProps = { toggleCompactMode };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Header);

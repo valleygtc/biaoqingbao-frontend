@@ -323,6 +323,7 @@ const mainSlice = createSlice({
     groups: [GROUP_ALL],
     currentGroupId: GROUP_ALL.id,
     searchTag: '',
+    compactMode: false,
   },
   reducers: {
     changePage: (state, action) => {
@@ -334,6 +335,9 @@ const mainSlice = createSlice({
     changeSearchTag: (state, action) => {
       state.searchTag = action.payload;
     },
+    toggleCompactMode: (state, action) => {
+      state.compactMode = !state.compactMode;
+    }
   },
   extraReducers: {
     [getImageList.fulfilled]: (state, action) => {
@@ -403,6 +407,7 @@ export const {
   changePage,
   changeGroup,
   changeSearchTag,
+  toggleCompactMode,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

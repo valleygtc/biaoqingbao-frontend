@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
  *   imageList [array[object]]
  */
 function ImageWall({
+  compactMode,
   imageList,
 }) {
   const classes = useStyles();
@@ -39,7 +40,7 @@ function ImageWall({
       </Grid>
       <Grid item container className={classes.cardContainer}>
         {imageList.map((image) => (
-          <div key={image.id} className={classes.card}>
+          <div key={image.id} className={classes.card} style={compactMode ? {width: '25%'} : null}>
             <ImageCard imageData={image} />
           </div>
         ))}
@@ -52,6 +53,7 @@ function ImageWall({
 }
 
 const mapStateToProps = (state) => ({
+  compactMode: state.main.compactMode,
   imageList: state.main.imageList,
 });
 
