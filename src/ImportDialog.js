@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -29,6 +29,7 @@ const defaultValues = {
 
 function ImportDialog({
   groups,
+  currentGroup,
   open,
   loading,
   imageStatusObj,
@@ -42,7 +43,13 @@ function ImportDialog({
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { register, handleSubmit, control, errors, getValues } = useForm({ defaultValues });
+  const { register, handleSubmit, control, errors, getValues, setValue } = useForm({ defaultValues });
+
+  useEffect(() => {
+    // setValue after open render(register called).
+    // https://stackoverflow.com/a/59547360/7499223
+    setTimeout(() => setValue('group', currentGroup), 0);
+  }, [currentGroup, open]);
 
   const onSubmit = async (data) => {
     importImages({
@@ -178,9 +185,10 @@ function ImportDialog({
 }
 
 const mapStateToProps = (state) => ({
+  groups: state.main.groups,
+  currentGroup: state.main.groups.find((g) => g.id === state.main.currentGroupId),
   loading: state.import.loading,
   imageStatusObj: state.import.imageStatusObj,
-  groups: state.main.groups,
 });
 
 const mapDispatchToProps = { importImages, stop, reset, getImageList, showWarning };

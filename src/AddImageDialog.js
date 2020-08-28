@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -24,6 +24,7 @@ const defaultValues = {
 
 function AddImageDialog({
   groups,
+  currentGroup,
   open,
   onClose,
   addImage,
@@ -32,9 +33,15 @@ function AddImageDialog({
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { register, handleSubmit, control, errors } = useForm({
+  const { register, handleSubmit, control, errors, setValue } = useForm({
     defaultValues,
   });
+
+  useEffect(() => {
+    // setValue after open render(register called).
+    // https://stackoverflow.com/a/59547360/7499223
+    setTimeout(() => setValue('group', currentGroup), 0);
+  }, [currentGroup, open]);
 
   const onSubmit = async (data) => {
     const image = data['image'][0];
@@ -110,6 +117,7 @@ function AddImageDialog({
 
 const mapStateToProps = (state) => ({
   groups: state.main.groups,
+  currentGroup: state.main.groups.find((g) => g.id === state.main.currentGroupId),
 });
 
 const mapDispatchToProps = { addImage, getImageList };
