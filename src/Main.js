@@ -27,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Main({
-  darkMode,
-  toggleDarkMode,
   getImageList,
   getGroups,
 }) {
@@ -42,7 +40,7 @@ function Main({
   return (
     <Grid container direction="column" className={classes.root}>
       <Grid item>
-        <Header darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
+        <Header />
       </Grid>
       <Grid item container alignItems="stretch" className={classes.contentGrid}>
         <Container disableGutters className={classes.contentContainer}  maxWidth="lg" >

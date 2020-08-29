@@ -6,8 +6,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Tooltip from '@material-ui/core/Tooltip';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
@@ -18,7 +16,7 @@ import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
 import ExportDialog from './ExportDialog';
-import { toggleCompactMode } from './mainSlice';
+import { toggleDarkMode, toggleCompactMode } from './mainSlice';
 import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header({
-  compactMode,
   darkMode,
+  compactMode,
+  toggleDarkMode,
   toggleCompactMode,
-  onToggleDarkMode,
 }) {
   const classes = useStyles();
 
@@ -84,6 +82,11 @@ function Header({
     closeMenu();
   }
 
+  const handleToggleDarkMode = () => {
+    toggleDarkMode();
+    closeMenu();
+  }
+
   const handleToggleCompactMode = () => {
     toggleCompactMode();
     closeMenu();
@@ -99,22 +102,6 @@ function Header({
           <GroupSelect groups={['全部', '中老年表情包', 'xxxxxx']} />
         </div>
         <div className={classes.grow}></div>
-        {darkMode
-          ? (
-            <Tooltip title="切换至亮模式">
-              <IconButton aria-label="switch-to-lightmode" color="inherit" onClick={onToggleDarkMode}>
-                <Brightness7Icon />
-              </IconButton>
-            </Tooltip>
-          )
-          : (
-            <Tooltip title="切换至暗模式">
-              <IconButton aria-label="switch-to-darkmode" color="inherit" onClick={onToggleDarkMode}>
-                <Brightness4Icon />
-              </IconButton>
-            </Tooltip>
-          )
-        }
         <Tooltip title="添加图片">
           <IconButton aria-label="add image" color="inherit" onClick={openAddImageDialog}>
             <AddCircleIcon />
@@ -132,6 +119,13 @@ function Header({
         >
           <MenuItem className={classes.menuItem} onClick={handleImportButtonClick}>导入图片</MenuItem>
           <MenuItem className={classes.menuItem} onClick={handleExportButtonClick}>导出图片</MenuItem>
+          <MenuItem className={classes.menuItem} onClick={handleToggleDarkMode}>
+            {darkMode
+              ? (<CheckIcon fontSize="small" />)
+              : null
+            }
+            暗色模式
+          </MenuItem>
           <MenuItem className={classes.menuItem} onClick={handleToggleCompactMode}>
             {compactMode
               ? (<CheckIcon fontSize="small" />)
@@ -149,10 +143,11 @@ function Header({
 }
 
 const mapStateToProps = (state) => ({
+  darkMode: state.main.darkMode,
   compactMode: state.main.compactMode,
 });
 
-const mapDispatchToProps = { toggleCompactMode };
+const mapDispatchToProps = { toggleDarkMode, toggleCompactMode };
 
 export default connect(
   mapStateToProps,

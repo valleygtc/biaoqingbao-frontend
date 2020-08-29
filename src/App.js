@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -13,6 +14,7 @@ import Register from './Register';
 import Login from './Login';
 import ResetPassword from './ResetPassword';
 import Message from './Message';
+import { changeDarkMode } from './mainSlice';
 import { history } from './store';
 
 const darkTheme = createMuiTheme({
@@ -27,13 +29,17 @@ const lightTheme = createMuiTheme({
   }
 });
 
-export default function App() {
+function App({
+  darkMode,
+  changeDarkMode,
+}) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const [darkMode, setDarkMode] = useState(prefersDarkMode);
-  const handleToggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  useEffect(() => {
+    if (prefersDarkMode) {
+      changeDarkMode(true);
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -50,7 +56,7 @@ export default function App() {
             <ResetPassword />
           </Route>
           <Route path="/">
-            <Main darkMode={darkMode} toggleDarkMode={handleToggleDarkMode} />
+            <Main />
           </Route>
         </Switch>
       </ConnectedRouter>
@@ -58,3 +64,14 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+const mapStateToProps = (state) => ({
+  darkMode: state.main.darkMode,
+});
+
+const mapDispatchToProps = { changeDarkMode };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

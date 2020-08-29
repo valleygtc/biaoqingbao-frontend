@@ -323,6 +323,7 @@ const mainSlice = createSlice({
     groups: [GROUP_ALL],
     currentGroupId: GROUP_ALL.id,
     searchTag: '',
+    darkMode: false,
     compactMode: false,
   },
   reducers: {
@@ -334,6 +335,12 @@ const mainSlice = createSlice({
     },
     changeSearchTag: (state, action) => {
       state.searchTag = action.payload;
+    },
+    changeDarkMode: (state, action) => {
+      state.darkMode = action.payload;
+    },
+    toggleDarkMode: (state, action) => {
+      state.darkMode = !state.darkMode;
     },
     toggleCompactMode: (state, action) => {
       state.compactMode = !state.compactMode;
@@ -407,6 +414,8 @@ export const {
   changePage,
   changeGroup,
   changeSearchTag,
+  changeDarkMode,
+  toggleDarkMode,
   toggleCompactMode,
 } = mainSlice.actions;
 
