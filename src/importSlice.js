@@ -66,7 +66,7 @@ const importSlice = createSlice({
       state.loading = true;
       if (isEmpty(state.imageStatusObj)) {
         const images = action.meta.arg.images;
-        for (const [key, image] of Object.entries(images)) {
+        for (const key of Object.keys(images)) {
           state.imageStatusObj[key] = "wait";
         }
       }

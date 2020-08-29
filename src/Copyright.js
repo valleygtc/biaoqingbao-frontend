@@ -33,7 +33,7 @@ export default function Copyright() {
           rel="noopener noreferrer"
           href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=13068202000127"
         >
-          <img src="/police.png" style={{ float: 'left' }} alt="police-picture"/>
+          <img src="/police.png" style={{ float: 'left' }} alt="Chinese Public Security Badge"/>
           <Typography style={{
             float: 'left',
             margin: '0px 0px 0px 5px',
