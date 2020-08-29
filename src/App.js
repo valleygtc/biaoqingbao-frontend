@@ -14,7 +14,7 @@ import Register from './Register';
 import Login from './Login';
 import ResetPassword from './ResetPassword';
 import Message from './Message';
-import { changeDarkMode } from './mainSlice';
+import { loadConfig } from './mainSlice';
 import { history } from './store';
 
 const darkTheme = createMuiTheme({
@@ -31,14 +31,12 @@ const lightTheme = createMuiTheme({
 
 function App({
   darkMode,
-  changeDarkMode,
+  loadConfig,
 }) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   useEffect(() => {
-    if (prefersDarkMode) {
-      changeDarkMode(true);
-    }
+    loadConfig({ prefersDarkMode });
   }, []);
 
   return (
@@ -69,7 +67,7 @@ const mapStateToProps = (state) => ({
   darkMode: state.main.darkMode,
 });
 
-const mapDispatchToProps = { changeDarkMode };
+const mapDispatchToProps = { loadConfig };
 
 export default connect(
   mapStateToProps,
