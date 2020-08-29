@@ -3,7 +3,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest || []);
 
 // cache image
 workbox.routing.registerRoute(
-  new RegExp('/api/images/.+'),
+  new RegExp('/api/images/\\d+'),
   new workbox.strategies.CacheFirst({
     cacheName: 'images',
     plugins: [
