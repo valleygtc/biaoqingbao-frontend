@@ -14,4 +14,15 @@ workbox.routing.registerRoute(
   }),
 );
 
-// TODO: cache getImageList, getGroups, NetworkFirst
+// cache api requests
+workbox.routing.registerRoute(
+  ({ url }) => url.pathname.startsWith('/api/images/') || url.pathname.startsWith('/api/groups/'),
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'requests',
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200],
+      }),
+    ],
+  }),
+);
