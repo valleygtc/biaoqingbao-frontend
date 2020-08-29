@@ -16,7 +16,7 @@ import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
 import ExportDialog from './ExportDialog';
-import { toggleDarkMode, toggleCompactMode } from './mainSlice';
+import { toggleDarkMode, toggleCompactMode } from './configSlice';
 import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -143,8 +143,8 @@ function Header({
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.main.darkMode,
-  compactMode: state.main.compactMode,
+  darkMode: state.config.darkMode,
+  compactMode: state.config.compactMode,
 });
 
 const mapDispatchToProps = { toggleDarkMode, toggleCompactMode };

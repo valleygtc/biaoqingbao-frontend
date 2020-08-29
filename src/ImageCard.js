@@ -75,7 +75,7 @@ function ImageCard({
 }
 
 const mapStateToProps = (state) => ({
-  compactMode: state.main.compactMode,
+  compactMode: state.config.compactMode,
 });
 
 export default connect(

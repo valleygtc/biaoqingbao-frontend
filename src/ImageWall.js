@@ -53,7 +53,7 @@ function ImageWall({
 }
 
 const mapStateToProps = (state) => ({
-  compactMode: state.main.compactMode,
+  compactMode: state.config.compactMode,
   imageList: state.main.imageList,
 });
 

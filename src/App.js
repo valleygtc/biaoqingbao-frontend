@@ -14,7 +14,7 @@ import Register from './Register';
 import Login from './Login';
 import ResetPassword from './ResetPassword';
 import Message from './Message';
-import { loadConfig } from './mainSlice';
+import { loadConfig } from './configSlice';
 import { history } from './store';
 
 const darkTheme = createMuiTheme({
@@ -64,7 +64,7 @@ function App({
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.main.darkMode,
+  darkMode: state.config.darkMode,
 });
 
 const mapDispatchToProps = { loadConfig };
