@@ -1,7 +1,13 @@
 ## 开发：
-```bashs
+```bash
 $ yarn # 安装依赖
 $ yarn start
+```
+
+Debug PWA service worker:
+```
+$ yarn build
+$ node serve.js
 ```
 
 ## 自动部署：
