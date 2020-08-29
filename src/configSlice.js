@@ -7,25 +7,23 @@ import {
 export const loadConfig = createAsyncThunk(
   'main/loadConfig',
   async ({ prefersDarkMode }) => {
-    const config = {
-      darkMode: Boolean(prefersDarkMode),
-    };
+    const config = {};
+    let darkMode;
     try {
-      const darkMode = await idbGet('darkMode');
-      if (darkMode !== undefined) {
-        config.darkMode = darkMode;
-      }
+      darkMode = await idbGet('darkMode');
     } catch (error) {
       console.error('loadConfig "darkMode" error: ', error);
     }
+    config.darkMode = darkMode !== undefined ? darkMode : prefersDarkMode;
 
+    let compactMode;
     try {
-      const compactMode = await idbGet('compactMode');
-      if (compactMode !== undefined) {
-        config.compactMode = compactMode;
-      }
+      compactMode = await idbGet('compactMode');
     } catch (error) {
       console.error('loadConfig "compactMode" error: ', error);
+    }
+    if (compactMode !== undefined) {
+      config.compactMode = compactMode;
     }
 
     return config;
