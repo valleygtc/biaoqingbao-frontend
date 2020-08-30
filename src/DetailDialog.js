@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -17,6 +18,7 @@ import DialogActions from './DialogActions';
 import Tags from './Tags';
 import DeleteImageDialog from 'DeleteImageDialog';
 import AddTagDialog from 'AddTagDialog';
+import { shareImage } from './mainSlice';
 import { useHeapedDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,10 +48,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function DetailDialog({
+function DetailDialog({
   imageData,
   open,
   onClose,
+  shareImage,
 }){
   const classes = useStyles();
   const theme = useTheme();
@@ -99,7 +102,7 @@ export default function DetailDialog({
           <DeleteIcon fontSize="large" />
           <Hidden smDown>删除</Hidden>
         </IconButton>
-        <IconButton aria-label="share" color="inherit" onClick={() => console.log('click share')}>
+        <IconButton aria-label="share" color="inherit" onClick={() => shareImage(imageData)}>
           <ShareIcon fontSize="large" />
           <Hidden smDown>分享</Hidden>
         </IconButton>
@@ -118,3 +121,10 @@ export default function DetailDialog({
     </Dialog>
   );
 }
+
+const mapDispatchToProps = { shareImage };
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(DetailDialog);

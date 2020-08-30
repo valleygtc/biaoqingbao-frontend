@@ -314,6 +314,61 @@ export const updateGroup = createAsyncThunk(
   }
 )
 
+export const shareImage = createAsyncThunk(
+  'main/shareImage',
+  async (imageData, { dispatch }) => {
+    let image;
+    if (window.caches) {
+      const cache = await caches.open('images');
+      const resp = await cache.match(`/api/images/${imageData.id}`, { ignoreSearch: true, ignoreVary: true });
+      if (resp) {
+        image = await resp.blob();
+        console.debug('cache found: ', image);
+      }
+    }
+
+    if (!image) {
+      console.debug('no cache found, retrive through network');
+      try {
+        const resp = await axios.get(`/api/images/${imageData.id}`, { responseType: 'blob' });
+        image = resp.data;
+        console.debug('get image: ', image);
+      } catch (error) {
+        dispatch(showWarning('网络异常'));
+        throw error;
+      }
+    }
+    console.assert(image);
+
+    if (!navigator.canShare) {
+      dispatch(showWarning('您的浏览器不支持分享功能'));
+      return;
+    }
+
+    const imageName = imageData.tags[0]?.text || `image-${imageData.id}`;
+    const imageType = image.type.split('/')[1] || '';
+    const fileName = imageName + '.' + imageType;
+    const file = new File([image], fileName, { type: image.type });
+    const images = [file];
+    if (navigator.canShare({ files: images })) {
+      try {
+        await navigator.share({
+          files: images,
+          title: fileName,
+          text: fileName,
+        });
+      } catch (error) {
+        console.debug('Sharing failed: ', error);
+        throw error;
+      }
+      console.debug('Share was successful: ', images);
+    } else {
+      dispatch(showWarning('文件分享受限'));
+      throw Error('文件分享受限');
+    }
+  }
+)
+
 const mainSlice = createSlice({
   name: 'main',
   initialState: {
