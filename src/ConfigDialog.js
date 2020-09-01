@@ -37,10 +37,6 @@ function ConfigDialog({
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleChangeOrder = (event) => {
-    changeOrder(event.target.value);
-  }
-
   return (
     <Dialog
       fullWidth
@@ -74,33 +70,35 @@ function ConfigDialog({
             图片排序
           </Typography>
         </Box>
-        <Box display="flex" alignItems="center" py={1}>
-          <Typography variant="body1">
-            正序
-          </Typography>
-          <Box flexGrow={1} />
-          <Radio
-            checked={order === ORDER.asc}
-            onChange={handleChangeOrder}
-            value={ORDER.asc}
-            name="asc-order"
-            inputProps={{ 'aria-label': 'asc order' }}
-          />
-        </Box>
+        <ButtonBase onClick={() => changeOrder(ORDER.asc)}>
+          <Box display="flex" alignItems="center" width="100%" py={1}>
+            <Typography variant="body1">
+              正序
+            </Typography>
+            <Box flexGrow={1} />
+            <Radio
+              checked={order === ORDER.asc}
+              value={ORDER.asc}
+              name="asc-order"
+              inputProps={{ 'aria-label': 'asc order' }}
+            />
+          </Box>
+        </ButtonBase>
         <Divider />
-        <Box display="flex" alignItems="center" py={1}>
-          <Typography variant="body1">
-            倒序
-          </Typography>
-          <Box flexGrow={1} />
-          <Radio
-            checked={order === ORDER.desc}
-            onChange={handleChangeOrder}
-            value={ORDER.desc}
-            name="desc-order"
-            inputProps={{ 'aria-label': 'desc order' }}
-          />
-        </Box>
+        <ButtonBase onClick={() => changeOrder(ORDER.desc)}>
+          <Box display="flex" alignItems="center" width="100%" py={1}>
+            <Typography variant="body1">
+              倒序
+            </Typography>
+            <Box flexGrow={1} />
+            <Radio
+              checked={order === ORDER.desc}
+              value={ORDER.desc}
+              name="desc-order"
+              inputProps={{ 'aria-label': 'desc order' }}
+            />
+          </Box>
+        </ButtonBase>
         <Divider />
         <Box my={2} />
         <ButtonBase onClick={() => console.log('click about.')}>
