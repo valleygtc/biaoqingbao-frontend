@@ -4,6 +4,8 @@ import {
   get as idbGet,
 } from 'idb-keyval';
 
+import { ORDER } from './constants';
+
 export const loadConfig = createAsyncThunk(
   'main/loadConfig',
   async ({ prefersDarkMode }) => {
@@ -26,6 +28,16 @@ export const loadConfig = createAsyncThunk(
       config.compactMode = compactMode;
     }
 
+    let order;
+    try {
+      order = await idbGet('order');
+    } catch (error) {
+      console.error('loadConfig "order" error: ', error);
+    }
+    if (order !== undefined) {
+      config.order = order;
+    }
+
     return config;
   }
 )
@@ -35,6 +47,7 @@ const configSlice = createSlice({
   initialState: {
     darkMode: false,
     compactMode: false,
+    order: ORDER.desc,
   },
   reducers: {
     changeDarkMode: (state, action) => {
@@ -54,18 +67,27 @@ const configSlice = createSlice({
       idbSet('compactMode', state.compactMode)
         .then(() => console.log('Store "compactMode" success.'))
         .catch((err) => console.error('Store "compactMode" faile!', err));
-    }
+    },
+    changeOrder: (state, action) => {
+      state.order = action.payload;
+      idbSet('order', action.payload)
+        .then(() => console.log('Store "order" success.'))
+        .catch((err) => console.error('Store "order" faile!', err));
+    },
   },
   extraReducers: {
     [loadConfig.fulfilled]: (state, action) => {
-      const { darkMode, compactMode } = action.payload;
+      const { darkMode, compactMode, order } = action.payload;
       if (darkMode !== undefined) {
         state.darkMode = darkMode;
       }
       if (compactMode !== undefined) {
         state.compactMode = compactMode;
       }
-    }
+      if (order !== undefined) {
+        state.order = order;
+      }
+    },
   }
 });
 
@@ -73,6 +95,7 @@ export const {
   changeDarkMode,
   toggleDarkMode,
   toggleCompactMode,
+  changeOrder,
 } = configSlice.actions;
 
 export default configSlice.reducer;

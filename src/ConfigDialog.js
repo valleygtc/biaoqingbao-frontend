@@ -15,7 +15,8 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
-import { toggleDarkMode } from './configSlice';
+import { toggleDarkMode, changeOrder } from './configSlice';
+import { ORDER } from './constants';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -26,13 +27,19 @@ const useStyles = makeStyles((theme) => ({
 
 function ConfigDialog({
   darkMode,
+  order,
   toggleDarkMode,
+  changeOrder,
   open,
   onClose,
 }) {
   const classes = useStyles();
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const handleChangeOrder = (event) => {
+    changeOrder(event.target.value);
+  }
 
   return (
     <Dialog
@@ -73,9 +80,9 @@ function ConfigDialog({
           </Typography>
           <Box flexGrow={1} />
           <Radio
-            checked={false}
-            onChange={(event) => console.log('change asc order: ', event.target.value)}
-            value="asc"
+            checked={order === ORDER.asc}
+            onChange={handleChangeOrder}
+            value={ORDER.asc}
             name="asc-order"
             inputProps={{ 'aria-label': 'asc order' }}
           />
@@ -87,9 +94,9 @@ function ConfigDialog({
           </Typography>
           <Box flexGrow={1} />
           <Radio
-            checked={true}
-            onChange={(event) => console.log('change asc order: ', event.target.value)}
-            value="desc"
+            checked={order === ORDER.desc}
+            onChange={handleChangeOrder}
+            value={ORDER.desc}
             name="desc-order"
             inputProps={{ 'aria-label': 'desc order' }}
           />
@@ -118,9 +125,10 @@ function ConfigDialog({
 
 const mapStateToProps = (state) => ({
   darkMode: state.config.darkMode,
+  order: state.config.order,
 });
 
-const mapDispatchToProps = { toggleDarkMode };
+const mapDispatchToProps = { toggleDarkMode, changeOrder };
 
 export default connect(
   mapStateToProps,

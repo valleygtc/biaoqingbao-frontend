@@ -27,13 +27,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Main({
+  order,
   getImageList,
   getGroups,
 }) {
   useEffect(() => {
-    getImageList();
     getGroups();
-  }, []);
+  }, [])
+
+  useEffect(() => {
+    getImageList();
+  }, [order]);
 
   const classes = useStyles();
 
@@ -55,9 +59,13 @@ function Main({
   );
 }
 
+const mapStateToProps = (state) => ({
+  order: state.config.order,
+});
+
 const mapDispatchToProps = { getImageList, getGroups };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Main);

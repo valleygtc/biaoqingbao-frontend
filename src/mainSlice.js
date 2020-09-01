@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { push, replace } from 'connected-react-router';
 import { showSuccess, showWarning, showError } from './msgSlice';
-import { GROUP_ALL } from './constants';
+import { GROUP_ALL, ORDER } from './constants';
 // import { imageList, groups } from 'mock';
 
 export const registerUser = createAsyncThunk(
@@ -56,6 +56,7 @@ export const getImageList = createAsyncThunk(
     // };
 
     const { page, currentGroupId, searchTag } = getState().main;
+    const { order } = getState().config;
     const params = {
       page,
     }
@@ -64,6 +65,9 @@ export const getImageList = createAsyncThunk(
     }
     if (searchTag) {
       params['tag'] = searchTag;
+    }
+    if (order === ORDER.asc) {
+      params['asc_order'] = 1;
     }
 
     try {
