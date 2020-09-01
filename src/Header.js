@@ -16,7 +16,8 @@ import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
 import ExportDialog from './ExportDialog';
-import { toggleDarkMode, toggleCompactMode } from './configSlice';
+import ConfigDialog from './ConfigDialog';
+import { toggleCompactMode } from './configSlice';
 import { useDialog } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,16 +35,10 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  menuItem: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  }
 }));
 
 function Header({
-  darkMode,
   compactMode,
-  toggleDarkMode,
   toggleCompactMode,
 }) {
   const classes = useStyles();
@@ -82,8 +77,13 @@ function Header({
     closeMenu();
   }
 
-  const handleToggleDarkMode = () => {
-    toggleDarkMode();
+  const {
+    open: configDialogOpen,
+    handleOpen: openConfigDialog,
+    handleClose: closeConfigDialog,
+  } = useDialog('config-dialog');
+  const handleConfigButtonClick = () => {
+    openConfigDialog();
     closeMenu();
   }
 
@@ -117,37 +117,31 @@ function Header({
           open={Boolean(anchorEl)}
           onClose={closeMenu}
         >
-          <MenuItem className={classes.menuItem} onClick={handleImportButtonClick}>导入图片</MenuItem>
-          <MenuItem className={classes.menuItem} onClick={handleExportButtonClick}>导出图片</MenuItem>
-          <MenuItem className={classes.menuItem} onClick={handleToggleDarkMode}>
-            {darkMode
-              ? (<CheckIcon fontSize="small" />)
-              : null
-            }
-            暗色模式
-          </MenuItem>
-          <MenuItem className={classes.menuItem} onClick={handleToggleCompactMode}>
+          <MenuItem onClick={handleImportButtonClick}>导入图片</MenuItem>
+          <MenuItem onClick={handleExportButtonClick}>导出图片</MenuItem>
+          <MenuItem onClick={handleToggleCompactMode}>
+            紧凑模式
             {compactMode
               ? (<CheckIcon fontSize="small" />)
               : null
             }
-            紧凑模式
           </MenuItem>
+          <MenuItem onClick={handleConfigButtonClick}>设置</MenuItem>
         </Menu>
       </Toolbar>
       <AddImageDialog open={addImageDialogOpen} onClose={closeAddImageDialog} />
       <ImportDialog open={importDialogOpen} onClose={closeImportDialog} />
       <ExportDialog open={exportDialogOpen} onClose={closeExportDialog} />
+      <ConfigDialog open={configDialogOpen} onClose={closeConfigDialog} />
     </AppBar>
   );
 }
 
 const mapStateToProps = (state) => ({
-  darkMode: state.config.darkMode,
   compactMode: state.config.compactMode,
 });
 
-const mapDispatchToProps = { toggleDarkMode, toggleCompactMode };
+const mapDispatchToProps = { toggleCompactMode };
 
 export default connect(
   mapStateToProps,
