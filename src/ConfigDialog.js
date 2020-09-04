@@ -16,6 +16,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import { toggleDarkMode, changeOrder } from './configSlice';
+import { logout } from './userSlice';
 import { ORDER } from './constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +31,7 @@ function ConfigDialog({
   order,
   toggleDarkMode,
   changeOrder,
+  logout,
   open,
   onClose,
 }) {
@@ -112,7 +114,7 @@ function ConfigDialog({
         </ButtonBase>
         <Divider />
         <Box display="flex" justifyContent="center" alignItems="center" mt={4} py={1}>
-          <Button fullWidth variant="contained" color="secondary" onClick={() => console.log('logout')}>
+          <Button fullWidth variant="contained" color="secondary" onClick={() => logout()}>
             退出登录
           </Button>
         </Box>
@@ -126,7 +128,7 @@ const mapStateToProps = (state) => ({
   order: state.config.order,
 });
 
-const mapDispatchToProps = { toggleDarkMode, changeOrder };
+const mapDispatchToProps = { toggleDarkMode, changeOrder, logout };
 
 export default connect(
   mapStateToProps,

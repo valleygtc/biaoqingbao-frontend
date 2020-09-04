@@ -45,6 +45,22 @@ export const login = createAsyncThunk(
   }
 )
 
+export const logout = createAsyncThunk(
+  'user/logout',
+  async (_, { dispatch }) => {
+    let resp;
+    try {
+      resp = await axios.get('/api/logout');
+    } catch (error) {
+      dispatch(showError('退出登录失败：发生未知错误，请重试'));
+      throw error;
+    }
+    dispatch(showSuccess('已退出登录'));
+    dispatch(replace('/login'));
+    return resp.data;
+  }
+)
+
 export const sendPasscode = createAsyncThunk(
   'user/sendPasscode',
   async ({ email }, { dispatch }) => {
