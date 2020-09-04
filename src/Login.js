@@ -4,6 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -88,12 +89,12 @@ function Login({
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="/reset-password" variant="body2">
+              <Link component={RouterLink} to="/reset-password" variant="body2">
                 忘记密码？
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
+              <Link component={RouterLink} to="/register" variant="body2">
                 没有账号？点此注册
               </Link>
             </Grid>

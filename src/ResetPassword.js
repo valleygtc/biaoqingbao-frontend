@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from "react-router-dom";
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -161,7 +162,7 @@ function ResetPassword({
           >
             提交
           </Button>
-          <Link href="/register" variant="body2">
+          <Link component={RouterLink} to="/register" variant="body2">
             没有账号？点此注册
           </Link>
         </form>
