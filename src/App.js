@@ -38,7 +38,8 @@ function App({
   useEffect(() => {
     loadConfig({ prefersDarkMode });
     // fix: clean hash, to make Dialog state sync with url hash state.
-    history.replace('');
+    // from: https://stackoverflow.com/a/49373716/7499223
+    window.history.replaceState(null, null, ' ');
   }, []);
 
   return (
