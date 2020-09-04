@@ -17,7 +17,7 @@ import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
 
 import Copyright from './Copyright';
-import { sendPasscode, setDisableTimeClock, resetPassword } from './resetPasswordSlice';
+import { sendPasscode, setDisableTimeClock, resetPassword } from './userSlice';
 import { emailPattern } from 'utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -174,7 +174,7 @@ function ResetPassword({
 }
 
 const mapStateToProps = (state) => ({
-  disableTime: state.resetPassword.disableTime,
+  disableTime: state.user.disableTime,
 });
 
 const mapDispatchToProps = { sendPasscode, setDisableTimeClock, resetPassword };

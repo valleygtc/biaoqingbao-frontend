@@ -1,12 +1,52 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
 import axios from 'axios';
-import { push } from 'connected-react-router';
+import { replace, push } from 'connected-react-router';
 import { showSuccess, showWarning, showError } from './msgSlice';
+
 import { delay } from './utils';
 
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  async ({ email, password }, { dispatch }) => {
+    let resp;
+    try {
+      resp = await axios.post('/api/register', { email, password });
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        dispatch(showWarning('此邮箱已被使用'));
+      } else {
+        dispatch(showError('注册失败：发生未知错误，请重试'));
+      }
+      throw error;
+    }
+    dispatch(showSuccess('注册成功，请登录'));
+    dispatch(replace('/login'));
+    return resp.data;
+  }
+)
+
+export const login = createAsyncThunk(
+  'user/login',
+  async ({ email, password }, { dispatch }) => {
+    let resp;
+    try {
+      resp = await axios.post('/api/login', { email, password });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(showWarning('账号或密码错误'));
+      } else {
+        dispatch(showError('登录失败：发生未知错误，请重试'));
+      }
+      throw error;
+    }
+    dispatch(showSuccess('登陆成功'));
+    dispatch(replace('/'));
+    return resp.data;
+  }
+)
+
 export const sendPasscode = createAsyncThunk(
-  'main/sendPasscode',
+  'user/sendPasscode',
   async ({ email }, { dispatch }) => {
     let resp;
     try {
@@ -22,7 +62,7 @@ export const sendPasscode = createAsyncThunk(
 )
 
 export const setDisableTimeClock = createAsyncThunk(
-  'main/setDisableTimeClock',
+  'user/setDisableTimeClock',
   async ({ seconds }, { dispatch }) => {
     dispatch(changeDisableTime(seconds));
     for (; seconds !== 0; seconds--) {
@@ -34,7 +74,7 @@ export const setDisableTimeClock = createAsyncThunk(
 )
 
 export const resetPassword = createAsyncThunk(
-  'main/resetPassword',
+  'user/resetPassword',
   async ({ email, passcode, password }, { dispatch }) => {
     let resp;
     try {
@@ -50,8 +90,8 @@ export const resetPassword = createAsyncThunk(
   }
 )
 
-const resetPasswordSlice = createSlice({
-  name: 'resetPassword',
+const userSlice = createSlice({
+  name: 'user',
   initialState: {
     disableTime: 0, // 秒
   },
@@ -64,6 +104,6 @@ const resetPasswordSlice = createSlice({
 
 export const {
   changeDisableTime,
-} = resetPasswordSlice.actions;
+} = userSlice.actions;
 
-export default resetPasswordSlice.reducer;
+export default userSlice.reducer;

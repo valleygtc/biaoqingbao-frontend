@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
 
 import Copyright from './Copyright';
-import { registerUser } from './mainSlice';
+import { registerUser } from './userSlice';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

@@ -1,50 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
-import { push, replace } from 'connected-react-router';
+import { push } from 'connected-react-router';
 import { showSuccess, showWarning, showError } from './msgSlice';
 import { GROUP_ALL, ORDER } from './constants';
 // import { imageList, groups } from 'mock';
-
-export const registerUser = createAsyncThunk(
-  'main/registerUser',
-  async ({ email, password }, { dispatch }) => {
-    let resp;
-    try {
-      resp = await axios.post('/api/register', { email, password });
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        dispatch(showWarning('此邮箱已被使用'));
-      } else {
-        dispatch(showError('注册失败：发生未知错误，请重试'));
-      }
-      throw error;
-    }
-    dispatch(showSuccess('注册成功，请登录'));
-    dispatch(replace('/login'));
-    return resp.data;
-  }
-)
-
-export const login = createAsyncThunk(
-  'main/login',
-  async ({ email, password }, { dispatch }) => {
-    let resp;
-    try {
-      resp = await axios.post('/api/login', { email, password });
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        dispatch(showWarning('账号或密码错误'));
-      } else {
-        dispatch(showError('登录失败：发生未知错误，请重试'));
-      }
-      throw error;
-    }
-    dispatch(showSuccess('登陆成功'));
-    dispatch(replace('/'));
-    return resp.data;
-  }
-)
 
 export const getImageList = createAsyncThunk(
   'main/getImageList',
