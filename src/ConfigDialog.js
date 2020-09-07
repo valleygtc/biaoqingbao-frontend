@@ -11,8 +11,12 @@ import Divider from '@material-ui/core/Divider';
 import DialogContent from '@material-ui/core/DialogContent';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Link from '@material-ui/core/Link';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import { toggleDarkMode, changeOrder } from './configSlice';
@@ -103,15 +107,41 @@ function ConfigDialog({
         </ButtonBase>
         <Divider />
         <Box my={2} />
-        <ButtonBase onClick={() => console.log('click about.')}>
-          <Box display="flex" alignItems="center" width="100%" py={2}>
-            <Typography variant="body1">
-              关于
-            </Typography>
-            <Box flexGrow={1} />
-            <KeyboardArrowRightIcon />
-          </Box>
-        </ButtonBase>
+        <Box display="flex" alignItems="center" py={1}>
+          <Accordion style={{ width: '100%' }} elevation={0}>
+            <AccordionSummary
+              style={{ padding: '0' }}
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="about"
+              id="about"
+            >
+              <Typography variant="body1">关于</Typography>
+            </AccordionSummary>
+            <AccordionDetails
+              style={{
+                display: 'flex',
+                padding: '0',
+                flexDirection: 'column',
+              }}
+            >
+              <Typography variant="body2" style={{ marginBottom: '12px' }}>
+                作者邮箱：gutianci@qq.com
+              </Typography>
+              <Typography variant="body2" style={{ marginBottom: '12px' }}>
+                代码仓库：
+                <Link
+                  href="https://github.com/valleygtc/biaoqingbao"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="body2"
+                  color="inherit"
+                >
+                  https://github.com/valleygtc/biaoqingbao
+                </Link>
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
         <Divider />
         <Box display="flex" justifyContent="center" alignItems="center" mt={4} py={1}>
           <Button fullWidth variant="contained" color="secondary" onClick={() => logout()}>
