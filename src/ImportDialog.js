@@ -90,21 +90,21 @@ function ImportDialog({
   }
 
   const buttonItem = (() => {
-    if (loading) {
-      return (
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => stop()}
-        >停止</Button>
-      );
-    } else if (isEmpty(imageStatusObj)) {
+    if (isEmpty(imageStatusObj)) {
       return (
         <Button
           variant="contained"
           color="primary"
           type="submit"
         >提交</Button>
+      );
+    } else if (loading) {
+      return (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => stop()}
+        >停止</Button>
       );
     } else if (Object.values(imageStatusObj).some((status) => status === 'error')) {
       return (
