@@ -59,7 +59,10 @@ function ImportDialog({
     });
   }
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    // fix: 如果不加 event.preventDefault 那么点击导入完成后点击“完成”按钮，会调用 onSubmit。
+    // 不知道为什么，猜测原因可能是 reset imageStatusObj 后重新渲染出“提交”按钮了，然后按点击“提交”按钮处理了？
+    event.preventDefault();
     if (loading) {
       showWarning('上传过程中禁止关闭对话框');
       return;
@@ -103,13 +106,21 @@ function ImportDialog({
           type="submit"
         >提交</Button>
       );
-    } else {
+    } else if (Object.values(imageStatusObj).some((status) => status === 'error')) {
       return (
         <Button
           variant="contained"
           color="primary"
           onClick={handleContinue}
         >续传</Button>
+      );
+    } else {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClose}
+        >完成</Button>
       );
     }
   })()
