@@ -124,10 +124,10 @@ function ConfigDialog({
                 flexDirection: 'column',
               }}
             >
-              <Typography variant="body2" style={{ marginBottom: '12px' }}>
+              <Typography variant="body2" style={{ marginBottom: '16px' }}>
                 作者邮箱：gutianci@qq.com
               </Typography>
-              <Typography variant="body2" style={{ marginBottom: '12px' }}>
+              <Typography variant="body2" style={{ marginBottom: '16px' }}>
                 代码仓库：
                 <Link
                   href="https://github.com/valleygtc/biaoqingbao"
