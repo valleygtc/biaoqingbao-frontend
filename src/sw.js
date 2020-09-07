@@ -19,6 +19,7 @@ workbox.routing.registerRoute(
   ({ url }) => url.pathname.startsWith('/api/images/') || url.pathname.startsWith('/api/groups/'),
   new workbox.strategies.NetworkFirst({
     cacheName: 'requests',
+    networkTimeoutSeconds: 3,
     plugins: [
       new workbox.cacheableResponse.Plugin({
         statuses: [0, 200],
