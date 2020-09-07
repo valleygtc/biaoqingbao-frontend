@@ -67,7 +67,8 @@ export const addImage = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        dispatch(showError('添加图片失败，请重试'));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -87,8 +88,8 @@ export const deleteImage = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`删除图片失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -112,8 +113,8 @@ export const updateImage = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`更新图片失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -144,8 +145,8 @@ export const addTag = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`添加标签失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -171,8 +172,8 @@ export const updateTag = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`编辑标签失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -192,8 +193,8 @@ export const deleteTag = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`删除标签失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -218,8 +219,7 @@ export const getGroups = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`获取组列表失败：${data.error || '未知错误'}`));
+        dispatch(showError('获取组列表失败，请刷新页面重试'));
       }
       throw error;
     }
@@ -242,8 +242,8 @@ export const addGroup = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`添加组失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -262,8 +262,8 @@ export const deleteGroups = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`删除组失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -288,8 +288,8 @@ export const updateGroup = createAsyncThunk(
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
-        const data = error.response.data;
-        dispatch(showError(`重命名组失败：${data.error || '未知错误'}`));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -320,7 +320,12 @@ export const shareImage = createAsyncThunk(
         image = resp.data;
         console.debug('get image: ', image);
       } catch (error) {
-        dispatch(showWarning('网络异常'));
+        if (error.code === 'ECONNABORTED') {
+          dispatch(showError('网络异常'));
+        } else {
+          const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+          dispatch(showError(errMsg));
+        }
         throw error;
       }
     }

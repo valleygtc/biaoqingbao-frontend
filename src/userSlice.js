@@ -17,7 +17,8 @@ export const registerUser = createAsyncThunk(
       } else if (error.response && error.response.status === 409) {
         dispatch(showWarning('此邮箱已被使用'));
       } else {
-        dispatch(showError('注册失败：发生未知错误，请重试'));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -39,7 +40,8 @@ export const login = createAsyncThunk(
       } else if (error.response && error.response.status === 401) {
         dispatch(showWarning('账号或密码错误'));
       } else {
-        dispatch(showError('登录失败：发生未知错误，请重试'));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
@@ -59,7 +61,8 @@ export const logout = createAsyncThunk(
       if (error.code === 'ECONNABORTED') {
         dispatch(showError('网络异常'));
       } else {
-        dispatch(showError('退出登录失败：发生未知错误，请重试'));
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
       }
       throw error;
     }
