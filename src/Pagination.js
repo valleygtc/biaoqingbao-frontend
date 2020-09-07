@@ -1,18 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import MuiPagination from '@material-ui/lab/Pagination';
+import Box from '@material-ui/core/Box';
 
 import { changePage, getImageList } from './mainSlice';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    margin: theme.spacing(2, 0),
-  }
-}));
 
 function Pagination({
   pages,
@@ -20,7 +13,6 @@ function Pagination({
   changePage,
   getImageList,
 }) {
-  const classes = useStyles();
   const theme = useTheme();
   const bigScreen = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -30,14 +22,14 @@ function Pagination({
   };
 
   return (
-    <div className={classes.root}>
+    <Box display="flex" justifyContent="center" my={2}>
       <MuiPagination
         size={bigScreen ? 'large' : 'medium'}
         count={pages}
         page={page}
         onChange={handleChangePage}
       />
-    </div>
+    </Box>
   );
 }
 
