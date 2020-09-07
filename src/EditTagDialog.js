@@ -44,7 +44,7 @@ function EditTagDialog({
         编辑标签
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+        <form noValidate autoComplete="off">
           <TextField
             fullWidth
             required

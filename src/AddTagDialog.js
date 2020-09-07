@@ -40,7 +40,7 @@ function AddTagDialog({
         添加标签
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <form noValidate>
           <TextField
             fullWidth
             required

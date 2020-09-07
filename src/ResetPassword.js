@@ -154,8 +154,8 @@ function ResetPassword({
             }}
           />
           <Button
-            type="submit"
             fullWidth
+            type="submit"
             variant="contained"
             color="primary"
             className={classes.submit}
