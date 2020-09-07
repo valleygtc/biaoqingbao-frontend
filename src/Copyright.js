@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 
 export default function Copyright() {
   return (
@@ -11,36 +12,27 @@ export default function Copyright() {
         </Typography>
       </Grid>
       <Grid item>
-        <a
-          style={{
-            textDecoration: 'none',
-          }}
+        <Link
+          href="https://beian.miit.gov.cn/"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://beian.miit.gov.cn/"
+          variant="body2"
+          color="textSecondary"
         >
-          <Typography variant="body2" color="textSecondary">
-            京ICP备20030760号
-          </Typography>
-        </a>
+          京ICP备20030760号
+        </Link>
       </Grid>
       <Grid item>
-        <a
-          style={{
-            textDecoration: 'none',
-          }}
+        <Link
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=13068202000127"
           target="_blank"
           rel="noopener noreferrer"
-          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=13068202000127"
+          variant="body2"
+          color="textSecondary"
         >
           <img src="/police.png" style={{ float: 'left' }} alt="Chinese Public Security Badge"/>
-          <Typography style={{
-            float: 'left',
-            margin: '0px 0px 0px 5px',
-          }} variant="body2" color="textSecondary">
-            冀公网安备 13068202000127 号
-          </Typography>
-        </a>
+          <span style={{ marginLeft: '5px' }}>冀公网安备 13068202000127 号</span>
+        </Link>
       </Grid>
     </Grid>
   );
