@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { replace, push } from 'connected-react-router';
-import { showSuccess, showWarning, showError } from './msgSlice';
 
+import requests from './requests';
+import { showSuccess, showWarning, showError } from './msgSlice';
 import { delay } from './utils';
 
 export const registerUser = createAsyncThunk(
@@ -10,7 +10,7 @@ export const registerUser = createAsyncThunk(
   async ({ email, password }, { dispatch }) => {
     let resp;
     try {
-      resp = await axios.post('/api/register', { email, password });
+      resp = await requests.post('/api/register', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 409) {
         dispatch(showWarning('此邮箱已被使用'));
@@ -30,7 +30,7 @@ export const login = createAsyncThunk(
   async ({ email, password }, { dispatch }) => {
     let resp;
     try {
-      resp = await axios.post('/api/login', { email, password });
+      resp = await requests.post('/api/login', { email, password });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(showWarning('账号或密码错误'));
@@ -50,7 +50,7 @@ export const logout = createAsyncThunk(
   async (_, { dispatch }) => {
     let resp;
     try {
-      resp = await axios.get('/api/logout');
+      resp = await requests.get('/api/logout');
     } catch (error) {
       dispatch(showError('退出登录失败：发生未知错误，请重试'));
       throw error;
@@ -66,7 +66,7 @@ export const sendPasscode = createAsyncThunk(
   async ({ email }, { dispatch }) => {
     let resp;
     try {
-      resp = await axios.post('/api/send-passcode', { email });
+      resp = await requests.post('/api/send-passcode', { email });
     } catch (error) {
       const errMsg = error.response?.data?.error || '发生未知错误，请重试';
       dispatch(showError(errMsg));
@@ -94,7 +94,7 @@ export const resetPassword = createAsyncThunk(
   async ({ email, passcode, password }, { dispatch }) => {
     let resp;
     try {
-      resp = await axios.post('/api/reset-password', { email, passcode, password });
+      resp = await requests.post('/api/reset-password', { email, passcode, password });
     } catch (error) {
       const errMsg = error.response?.data?.error || '发生未知错误，请重试';
       dispatch(showError(errMsg));

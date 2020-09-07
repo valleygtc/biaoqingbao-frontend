@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { isEmpty } from 'lodash';
 
+import requests from './requests';
 import { getFilenameWithoutExt } from './utils';
 
 export const importImages = createAsyncThunk(
@@ -25,7 +25,7 @@ export const importImages = createAsyncThunk(
       }
       formData.set('metadata', JSON.stringify(metadata));
       try {
-        await axios.post('/api/images/add', formData);
+        await requests.post('/api/images/add', formData);
         dispatch(importOk(key));
       } catch (error) {
         dispatch(importError(key));

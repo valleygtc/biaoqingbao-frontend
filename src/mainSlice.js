@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-import axios from 'axios';
 import { push } from 'connected-react-router';
+
+import requests from './requests';
 import { showSuccess, showWarning, showError } from './msgSlice';
 import { GROUP_ALL, ORDER } from './constants';
 // import { imageList, groups } from 'mock';
@@ -31,7 +31,7 @@ export const getImageList = createAsyncThunk(
     }
 
     try {
-      const resp = await axios.get('/api/images/', { params });
+      const resp = await requests.get('/api/images/', { params });
       return resp.data;
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -56,7 +56,7 @@ export const addImage = createAsyncThunk(
       tags,
     }));
     try {
-      const resp = await axios.post('/api/images/add', formData);
+      const resp = await requests.post('/api/images/add', formData);
       return resp.data;
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -75,7 +75,7 @@ export const deleteImage = createAsyncThunk(
   async (id, { dispatch }) => {
     let resp
     try {
-      resp = await axios.post('/api/images/delete', { id });
+      resp = await requests.post('/api/images/delete', { id });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
@@ -95,7 +95,7 @@ export const updateImage = createAsyncThunk(
   'main/updateImage',
   async ({ id, group }, { dispatch }) => {
     try {
-      await axios.post('/api/images/update', {
+      await requests.post('/api/images/update', {
         id,
         group_id: group.id,
       });
@@ -120,7 +120,7 @@ export const addTag = createAsyncThunk(
   'main/addTag',
   async ({ imageId, text }, { dispatch }) => {
     try {
-      const resp = await axios.post('/api/tags/add', {
+      const resp = await requests.post('/api/tags/add', {
         text,
         image_id: imageId,
       });
@@ -146,7 +146,7 @@ export const updateTag = createAsyncThunk(
   'main/updateTag',
   async ({ id, text }, { dispatch }) => {
     try {
-      await axios.post('/api/tags/update', {
+      await requests.post('/api/tags/update', {
         id,
         text,
       });
@@ -171,7 +171,7 @@ export const deleteTag = createAsyncThunk(
   'main/deleteTag',
   async (id, { dispatch }) => {
     try {
-      await axios.post('/api/tags/delete', { id });
+      await requests.post('/api/tags/delete', { id });
       return { id };
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -195,7 +195,7 @@ export const getGroups = createAsyncThunk(
     // };
 
     try {
-      const resp = await axios.get('/api/groups/');
+      const resp = await requests.get('/api/groups/');
       return resp.data;
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -214,7 +214,7 @@ export const addGroup = createAsyncThunk(
   'main/addGroup',
   async (name, { dispatch }) => {
     try {
-      const resp = await axios.post('/api/groups/add', { name });
+      const resp = await requests.post('/api/groups/add', { name });
       return {
         name,
         id: resp.data.id
@@ -236,7 +236,7 @@ export const deleteGroups = createAsyncThunk(
   'main/deleteGroups',
   async (ids, { getState, dispatch }) => {
     try {
-      await axios.post('/api/groups/delete', { ids });
+      await requests.post('/api/groups/delete', { ids });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
@@ -260,7 +260,7 @@ export const updateGroup = createAsyncThunk(
   'main/updateGroup',
   async ({ id, name }, { dispatch }) => {
     try {
-      await axios.post('/api/groups/update', { id, name });
+      await requests.post('/api/groups/update', { id, name });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
@@ -294,7 +294,7 @@ export const shareImage = createAsyncThunk(
     if (!image) {
       console.debug('no cache found, retrive through network');
       try {
-        const resp = await axios.get(`/api/images/${imageData.id}`, { responseType: 'blob' });
+        const resp = await requests.get(`/api/images/${imageData.id}`, { responseType: 'blob' });
         image = resp.data;
         console.debug('get image: ', image);
       } catch (error) {
