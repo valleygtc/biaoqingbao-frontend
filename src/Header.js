@@ -11,6 +11,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import CheckIcon from '@material-ui/icons/Check';
+import Box from '@material-ui/core/Box';
 
 import GroupSelect from './GroupSelect';
 import AddImageDialog from './AddImageDialog';
@@ -31,9 +32,6 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-  },
-  grow: {
-    flexGrow: 1,
   },
 }));
 
@@ -99,9 +97,9 @@ function Header({
           表情宝
         </Typography>
         <div className={classes.groupContainer} >
-          <GroupSelect groups={['全部', '中老年表情包', 'xxxxxx']} />
+          <GroupSelect />
         </div>
-        <div className={classes.grow}></div>
+        <Box flexGrow={1} />
         <Tooltip title="添加图片">
           <IconButton aria-label="add image" color="inherit" onClick={openAddImageDialog}>
             <AddCircleIcon />

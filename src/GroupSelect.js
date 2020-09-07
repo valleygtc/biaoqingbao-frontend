@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Popover from '@material-ui/core/Popover';
+import Box from '@material-ui/core/Box';
 
 import GroupItem from './GroupItem';
 import AddGroupDialog from './AddGroupDialog';
@@ -19,13 +20,6 @@ const useStyles = makeStyles((theme) => ({
     width: '600px',
     maxWidth: `calc(100% - ${theme.spacing(6)}px)`,
   },
-  actionArea: {
-    padding: theme.spacing(1),
-    display: 'flex',
-  },
-  actionAreaGrow: {
-    flexGrow: 1,
-  }
 }));
 
 function GroupSelect({
@@ -130,7 +124,7 @@ function GroupSelect({
             onEdit={() => console.log('edit button click')}
           />
         ))}
-        <div className={classes.actionArea}>
+        <Box display="flex" padding={1}>
           {editMode
             ? (<Button
                 disableElevation
@@ -147,7 +141,7 @@ function GroupSelect({
               >编辑</Button>
             )
           }
-          <div className={classes.actionAreaGrow}></div>
+          <Box flexGrow={1} />
           {editMode
             ? (<Button
                 disableElevation
@@ -165,7 +159,7 @@ function GroupSelect({
               >新建组</Button>
             )
           }
-        </div>
+        </Box>
       </Popover>
       <AddGroupDialog open={addDialogOpen} onClose={closeAddDialog} />
     </div>
