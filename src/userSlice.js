@@ -12,7 +12,9 @@ export const registerUser = createAsyncThunk(
     try {
       resp = await requests.post('/api/register', { email, password });
     } catch (error) {
-      if (error.response && error.response.status === 409) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 409) {
         dispatch(showWarning('此邮箱已被使用'));
       } else {
         dispatch(showError('注册失败：发生未知错误，请重试'));
@@ -32,7 +34,9 @@ export const login = createAsyncThunk(
     try {
       resp = await requests.post('/api/login', { email, password });
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(showWarning('账号或密码错误'));
       } else {
         dispatch(showError('登录失败：发生未知错误，请重试'));
@@ -52,7 +56,11 @@ export const logout = createAsyncThunk(
     try {
       resp = await requests.get('/api/logout');
     } catch (error) {
-      dispatch(showError('退出登录失败：发生未知错误，请重试'));
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else {
+        dispatch(showError('退出登录失败：发生未知错误，请重试'));
+      }
       throw error;
     }
     dispatch(showSuccess('已退出登录'));
@@ -68,8 +76,12 @@ export const sendPasscode = createAsyncThunk(
     try {
       resp = await requests.post('/api/send-passcode', { email });
     } catch (error) {
-      const errMsg = error.response?.data?.error || '发生未知错误，请重试';
-      dispatch(showError(errMsg));
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else {
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
+      }
       throw error;
     }
     dispatch(showSuccess('验证码已发送至电子邮箱'));

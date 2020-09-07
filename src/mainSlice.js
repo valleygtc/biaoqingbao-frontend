@@ -34,7 +34,9 @@ export const getImageList = createAsyncThunk(
       const resp = await requests.get('/api/images/', { params });
       return resp.data;
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -59,7 +61,9 @@ export const addImage = createAsyncThunk(
       const resp = await requests.post('/api/images/add', formData);
       return resp.data;
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -77,7 +81,9 @@ export const deleteImage = createAsyncThunk(
     try {
       resp = await requests.post('/api/images/delete', { id });
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -100,7 +106,9 @@ export const updateImage = createAsyncThunk(
         group_id: group.id,
       });
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -130,7 +138,9 @@ export const addTag = createAsyncThunk(
         id: resp.data.id,
       };
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -155,7 +165,9 @@ export const updateTag = createAsyncThunk(
         text,
       };
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -174,7 +186,9 @@ export const deleteTag = createAsyncThunk(
       await requests.post('/api/tags/delete', { id });
       return { id };
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -198,7 +212,9 @@ export const getGroups = createAsyncThunk(
       const resp = await requests.get('/api/groups/');
       return resp.data;
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -220,7 +236,9 @@ export const addGroup = createAsyncThunk(
         id: resp.data.id
       };
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -238,7 +256,9 @@ export const deleteGroups = createAsyncThunk(
     try {
       await requests.post('/api/groups/delete', { ids });
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
@@ -262,7 +282,9 @@ export const updateGroup = createAsyncThunk(
     try {
       await requests.post('/api/groups/update', { id, name });
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络异常'));
+      } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
       } else {
