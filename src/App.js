@@ -14,6 +14,7 @@ import Register from './Register';
 import Login from './Login';
 import ResetPassword from './ResetPassword';
 import Message from './Message';
+import ServiceWorkerWrapper from './ServiceWorkerWrapper';
 import { loadConfig } from './configSlice';
 import { history } from './store';
 
@@ -62,6 +63,7 @@ function App({
         </Switch>
       </ConnectedRouter>
       <Message />
+      <ServiceWorkerWrapper />
     </ThemeProvider>
   );
 }
