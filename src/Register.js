@@ -60,7 +60,7 @@ function Register({
                 fullWidth
                 variant="outlined"
                 id="email"
-                label="Email Address"
+                label="电子邮箱"
                 type="email"
                 autoComplete="email"
                 name="email"
@@ -73,7 +73,7 @@ function Register({
                 fullWidth
                 variant="outlined"
                 id="password"
-                label="Password"
+                label="密码"
                 type="password"
                 autoComplete="new-password"
                 name="password"

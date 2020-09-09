@@ -59,7 +59,7 @@ function Login({
             variant="outlined"
             margin="normal"
             id="email"
-            label="Email Address"
+            label="电子邮箱"
             type="email"
             autoComplete="email"
             autoFocus
@@ -71,7 +71,7 @@ function Login({
             fullWidth
             variant="outlined"
             margin="normal"
-            label="Password"
+            label="密码"
             type="password"
             id="password"
             autoComplete="current-password"
