@@ -16,6 +16,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
 import { addImage, getImageList } from './mainSlice';
+import { delay } from './utils';
 import { GROUP_ALL } from './constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,12 +65,14 @@ function AddImageDialog({
     setImageUrl(URL.createObjectURL(image));
   }
 
-  const handleClose = () => {
+  const handleClose = async () => {
+    onClose();
+    await delay(100);
+    // clear image after dialog closed
     if (imageUrl) {
       URL.revokeObjectURL(imageUrl);
     }
     setImageUrl(null);
-    onClose();
   }
 
   const onSubmit = async (data) => {
