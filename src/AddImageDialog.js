@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import FormControl from '@material-ui/core/FormControl';
@@ -18,6 +18,16 @@ import DialogContent from './DialogContent';
 import { addImage, getImageList } from './mainSlice';
 import { GROUP_ALL } from './constants';
 
+const useStyles = makeStyles((theme) => ({
+  image: {
+    maxWidth: '50vw',
+    maxHeight: '50vh',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  }
+}));
+
 const defaultValues = {
   group: GROUP_ALL,
 }
@@ -30,9 +40,11 @@ function AddImageDialog({
   addImage,
   getImageList,
 }) {
+  const classes = useStyles();
   const theme = useTheme();
   const dialogFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const [ imageUrl, setImageUrl ] = useState(null);
   const { register, handleSubmit, control, errors, setValue } = useForm({
     defaultValues,
   });
@@ -42,6 +54,23 @@ function AddImageDialog({
     // https://stackoverflow.com/a/59547360/7499223
     setTimeout(() => setValue('group', currentGroup), 0);
   }, [currentGroup, open]);
+
+  const handlePickImage = (event) => {
+    if (imageUrl) {
+      URL.revokeObjectURL(imageUrl);
+    }
+
+    const image = event.target.files[0];
+    setImageUrl(URL.createObjectURL(image));
+  }
+
+  const handleClose = () => {
+    if (imageUrl) {
+      URL.revokeObjectURL(imageUrl);
+    }
+    setImageUrl(null);
+    onClose();
+  }
 
   const onSubmit = async (data) => {
     const image = data['image'][0];
@@ -53,7 +82,7 @@ function AddImageDialog({
       group_id: data.group.id,
       tags,
     });
-    onClose();
+    handleClose();
     if (!resultAction.error) {
       getImageList();
     }
@@ -65,10 +94,10 @@ function AddImageDialog({
       maxWidth="sm"
       fullScreen={dialogFullScreen}
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       aria-labelledby="add-image"
     >
-      <DialogTitleWithCloseIcon id="add-image" onClose={onClose}>
+      <DialogTitleWithCloseIcon id="add-image" onClose={handleClose}>
         添加图片
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
@@ -83,9 +112,14 @@ function AddImageDialog({
               }}
               name="image"
               inputRef={register({ required: true })}
+              onChange={handlePickImage}
             />
             {errors.image && <FormHelperText>必须选择一个图片</FormHelperText>}
           </FormControl>
+          {imageUrl
+            ? <img className={classes.image} src={imageUrl} />
+            : null
+          }
           <FormControl required fullWidth margin="normal" error={Boolean(errors.group)}>
             <InputLabel id="group">组</InputLabel>
             <Controller
