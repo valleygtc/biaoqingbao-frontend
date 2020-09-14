@@ -4,8 +4,9 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from '@material-ui/icons/Cancel';
+
+import IconButton from './IconButton';
 import { changePage, changeSearchTag, getImageList } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({

@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Tooltip from '@material-ui/core/Tooltip';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -14,6 +13,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
 
 import GroupSelect from './GroupSelect';
+import IconButton from './IconButton';
 import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
 import ExportDialog from './ExportDialog';

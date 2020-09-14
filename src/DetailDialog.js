@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ShareIcon from '@material-ui/icons/Share';
@@ -13,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 
 import Move2GroupSelect from './Move2GroupSelect';
+import IconButton from './IconButton';
 import DialogContent from './DialogContent';
 import DialogActions from './DialogActions';
 import Tags from './Tags';
