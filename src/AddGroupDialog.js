@@ -36,7 +36,7 @@ function AddGroupDialog({
         新建组
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate autoComplete="off">
+        <form noValidate id="add-group-form" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             required
@@ -52,7 +52,12 @@ function AddGroupDialog({
         </form>
       </DialogContent>
       <MuiDialogActions>
-        <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>确认</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          form="add-group-form"
+        >确认</Button>
       </MuiDialogActions>
     </Dialog>
   );

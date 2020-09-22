@@ -40,7 +40,7 @@ function AddTagDialog({
         添加标签
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate>
+        <form noValidate id="add-tag-form" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             required
@@ -56,7 +56,12 @@ function AddTagDialog({
         </form>
       </DialogContent>
       <MuiDialogActions>
-        <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>确认</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          form="add-tag-form"
+        >确认</Button>
       </MuiDialogActions>
     </Dialog>
   );

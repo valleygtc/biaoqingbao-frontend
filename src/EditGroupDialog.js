@@ -44,7 +44,7 @@ function EditGroupDialog({
         编辑组名
       </DialogTitleWithCloseIcon>
       <DialogContent dividers>
-        <form noValidate autoComplete="off">
+        <form noValidate id="edit-group-form" autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
             required
@@ -60,7 +60,12 @@ function EditGroupDialog({
         </form>
       </DialogContent>
       <MuiDialogActions>
-        <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>确认</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          form="edit-group-form"
+        >确认</Button>
       </MuiDialogActions>
     </Dialog>
   )
