@@ -35,7 +35,7 @@ export const getImageList = createAsyncThunk(
       return resp.data;
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -62,7 +62,7 @@ export const addImage = createAsyncThunk(
       return resp.data;
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -83,7 +83,7 @@ export const deleteImage = createAsyncThunk(
       resp = await requests.post('/api/images/delete', { id });
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -108,7 +108,7 @@ export const updateImage = createAsyncThunk(
       });
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -140,7 +140,7 @@ export const addTag = createAsyncThunk(
       };
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -167,7 +167,7 @@ export const updateTag = createAsyncThunk(
       };
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -188,7 +188,7 @@ export const deleteTag = createAsyncThunk(
       return { id };
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -214,7 +214,7 @@ export const getGroups = createAsyncThunk(
       return resp.data;
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -237,7 +237,7 @@ export const addGroup = createAsyncThunk(
       };
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -257,7 +257,7 @@ export const deleteGroups = createAsyncThunk(
       await requests.post('/api/groups/delete', { ids });
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -283,7 +283,7 @@ export const updateGroup = createAsyncThunk(
       await requests.post('/api/groups/update', { id, name });
     } catch (error) {
       if (error.code === 'ECONNABORTED') {
-        dispatch(showError('网络异常'));
+        dispatch(showError('网络请求超时'));
       } else if (error.response && error.response.status === 401) {
         dispatch(push('/login'));
         dispatch(showWarning('请先登录'));
@@ -321,7 +321,7 @@ export const shareImage = createAsyncThunk(
         console.debug('get image: ', image);
       } catch (error) {
         if (error.code === 'ECONNABORTED') {
-          dispatch(showError('网络异常'));
+          dispatch(showError('网络请求超时'));
         } else {
           const errMsg = error.response?.data?.error || '发生未知错误，请重试';
           dispatch(showError(errMsg));
