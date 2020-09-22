@@ -58,7 +58,7 @@ export const addImage = createAsyncThunk(
       tags,
     }));
     try {
-      const resp = await requests.post('/api/images/add', formData);
+      const resp = await requests.post('/api/images/add', formData, { timeout: 10000 }); // timeout 10s
       return resp.data;
     } catch (error) {
       if (error.code === 'ECONNABORTED') {

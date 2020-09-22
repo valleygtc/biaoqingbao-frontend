@@ -25,7 +25,7 @@ export const importImages = createAsyncThunk(
       }
       formData.set('metadata', JSON.stringify(metadata));
       try {
-        await requests.post('/api/images/add', formData);
+        await requests.post('/api/images/add', formData, { timeout: 10000 }); // timeout 10s
         dispatch(importOk(key));
       } catch (error) {
         dispatch(importError(key));
