@@ -1,3 +1,6 @@
+## 简介
+“表情宝”前端，地址：[https://bqb.plus](https://bqb.plus)
+
 ## 开发：
 ```bash
 $ yarn # 安装依赖
