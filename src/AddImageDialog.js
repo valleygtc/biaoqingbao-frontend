@@ -7,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useForm, Controller } from "react-hook-form";
@@ -15,6 +14,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
+import ButtonWithLoader from './ButtonWithLoader';
 import { addImage, getImageList } from './mainSlice';
 import { GROUP_ALL } from './constants';
 
@@ -35,6 +35,7 @@ const defaultValues = {
 function AddImageDialog({
   groups,
   currentGroup,
+  loading,
   open,
   onClose,
   addImage,
@@ -146,7 +147,9 @@ function AddImageDialog({
           </FormControl>
           <TextField id="标签" label="标签" fullWidth margin="normal" name="tag" inputRef={register} />
           <FormControl margin="normal">
-            <Button variant="contained" color="primary" type="submit">提交</Button>
+            <ButtonWithLoader variant="contained" color="primary" type="submit" loading={loading}>
+              提交
+            </ButtonWithLoader>
           </FormControl>
         </form>
       </DialogContent>
@@ -157,6 +160,7 @@ function AddImageDialog({
 const mapStateToProps = (state) => ({
   groups: state.main.groups,
   currentGroup: state.main.groups.find((g) => g.id === state.main.currentGroupId),
+  loading: state.main.loading.addImage,
 });
 
 const mapDispatchToProps = { addImage, getImageList };

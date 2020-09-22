@@ -369,6 +369,9 @@ const mainSlice = createSlice({
     groups: [GROUP_ALL],
     currentGroupId: GROUP_ALL.id,
     searchTag: '',
+    loading: {
+      addImage: false,
+    }
   },
   reducers: {
     changePage: (state, action) => {
@@ -386,6 +389,15 @@ const mainSlice = createSlice({
       const data = action.payload;
       state.pages = data.pagination.pages;
       state.imageList = data.data;
+    },
+    [addImage.pending]: (state, action) => {
+      state.loading.addImage = true;
+    },
+    [addImage.fulfilled]: (state, action) => {
+      state.loading.addImage = false;
+    },
+    [addImage.rejected]: (state, action) => {
+      state.loading.addImage = false;
     },
     [deleteImage.fulfilled]: (state, action) => {
       // TODO
