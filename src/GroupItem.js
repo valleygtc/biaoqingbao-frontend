@@ -68,54 +68,12 @@ export default function GroupItem({
     }
   }
 
-  const getStartIcon = () => {
-    if (group.name === '全部') {
-      return (
-        <IconButton disabled size="small" aria-label="icon">
-          <FolderSpecialOutlinedIcon />
-        </IconButton>
-      );
-    } else if (editing) {
-      if (checked) {
-        return (
-          <IconButton size="small" aria-label="checkbox" onClick={handleUncheck}>
-            <CheckBoxIcon />
-          </IconButton>
-        );
-      } else {
-        return (
-          <IconButton size="small" aria-label="checkedbox" onClick={handleCheck}>
-            <CheckBoxOutlineBlankIcon />
-          </IconButton>
-        );
-      }
-    } else {
-      return (
-        <IconButton disabled size="small" aria-label="icon">
-          <FolderOutlinedIcon />
-        </IconButton>
-      );
-    }
-  }
-
-  const getEndIcon = () => {
-    if (selected && !editing) {
-      return (<CheckIcon color="inherit" />);
-    } else if (editing && group.name !== '全部') {
-      return (
-        <IconButton size="small" aria-label="edit" onClick={handleOpenEditDialog}>
-          <EditIcon />
-        </IconButton>
-      );
-    }
-  }
-
   return (
     <div>
       <div className={classes.item} onClick={handleClick}>
-        {getStartIcon()}
+        {getStartIcon(group, editing, checked, handleCheck, handleUncheck)}
         <Typography className={classes.text}>{group.name} <span className={classes.imageNumber}>{group.image_number}</span></Typography>
-        {getEndIcon()}
+        {getEndIcon(group, selected, editing, handleOpenEditDialog)}
       </div>
       <Divider />
       <EditGroupDialog
@@ -125,4 +83,46 @@ export default function GroupItem({
       />
     </div>
   )
+}
+
+const getStartIcon = (group, editing, checked, handleCheck, handleUncheck) => {
+  if (group.name === '全部') {
+    return (
+      <IconButton disabled size="small" aria-label="icon">
+        <FolderSpecialOutlinedIcon />
+      </IconButton>
+    );
+  } else if (editing) {
+    if (checked) {
+      return (
+        <IconButton size="small" aria-label="checkbox" onClick={handleUncheck}>
+          <CheckBoxIcon />
+        </IconButton>
+      );
+    } else {
+      return (
+        <IconButton size="small" aria-label="checkedbox" onClick={handleCheck}>
+          <CheckBoxOutlineBlankIcon />
+        </IconButton>
+      );
+    }
+  } else {
+    return (
+      <IconButton disabled size="small" aria-label="icon">
+        <FolderOutlinedIcon />
+      </IconButton>
+    );
+  }
+}
+
+const getEndIcon = (group, selected, editing, handleOpenEditDialog) => {
+  if (selected && !editing) {
+    return (<CheckIcon color="inherit" />);
+  } else if (editing && group.name !== '全部') {
+    return (
+      <IconButton size="small" aria-label="edit" onClick={handleOpenEditDialog}>
+        <EditIcon />
+      </IconButton>
+    );
+  }
 }
