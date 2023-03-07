@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     flexGrow: 1,
+  },
+  imageNumber: {
+    marginLeft: '6px',
+    color: '#808080',
+    fontSize: '0.9em'
   }
 }));
 
@@ -109,7 +114,7 @@ export default function GroupItem({
     <div>
       <div className={classes.item} onClick={handleClick}>
         {getStartIcon()}
-        <Typography className={classes.text}>{group.name}</Typography>
+        <Typography className={classes.text}>{group.name} <span className={classes.imageNumber}>{group.image_number}</span></Typography>
         {getEndIcon()}
       </div>
       <Divider />

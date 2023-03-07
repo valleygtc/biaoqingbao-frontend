@@ -15,7 +15,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
 import ButtonWithLoader from './ButtonWithLoader';
-import { addImage, getImageList } from './mainSlice';
+import { addImage, getImageList, getGroups } from './mainSlice';
 import { GROUP_ALL } from './constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +40,7 @@ function AddImageDialog({
   onClose,
   addImage,
   getImageList,
+  getGroups,
 }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -91,6 +92,7 @@ function AddImageDialog({
     onClose();
     if (!resultAction.error) {
       getImageList();
+      getGroups();
     }
   }
 
@@ -163,7 +165,7 @@ const mapStateToProps = (state) => ({
   loading: state.main.loading.addImage,
 });
 
-const mapDispatchToProps = { addImage, getImageList };
+const mapDispatchToProps = { addImage, getImageList, getGroups };
 
 export default connect(
   mapStateToProps,

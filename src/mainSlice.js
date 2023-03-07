@@ -439,10 +439,7 @@ const mainSlice = createSlice({
     },
     [getGroups.fulfilled]: (state, action) => {
       const data = action.payload;
-      state.groups = [
-        GROUP_ALL,
-        ...data.data,
-      ];
+      state.groups = data.data;
     },
     [addGroup.fulfilled]: (state, action) => {
       state.groups.push(action.payload);

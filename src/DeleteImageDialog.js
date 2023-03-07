@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 
 import DialogTitleWithCloseIcon from './DialogTitleWithCloseIcon';
 import DialogContent from './DialogContent';
-import { deleteImage, changePage, getImageList } from './mainSlice';
+import { deleteImage, changePage, getImageList, getGroups } from './mainSlice';
 
 const useStyles = makeStyles((theme) => ({
   paperFullWidth: {
@@ -35,6 +35,7 @@ function DeleteImageDialog({
   deleteImage,
   changePage,
   getImageList,
+  getGroups,
 }){
   const classes = useStyles();
 
@@ -47,6 +48,7 @@ function DeleteImageDialog({
         changePage(page - 1);
       }
       getImageList();
+      getGroups();
     }
   }
 
@@ -79,7 +81,7 @@ const mapStateToProps = (state) => ({
   page: state.main.page,
 });
 
-const mapDispatchToProps = { deleteImage, changePage, getImageList };
+const mapDispatchToProps = { deleteImage, changePage, getImageList, getGroups };
 
 export default connect(
   mapStateToProps,
