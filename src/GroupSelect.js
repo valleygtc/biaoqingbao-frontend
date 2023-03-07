@@ -7,8 +7,10 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import Popover from '@material-ui/core/Popover';
 import Box from '@material-ui/core/Box';
 
+import GroupItemAll from './GroupItemAll';
 import GroupItem from './GroupItem';
 import AddGroupDialog from './AddGroupDialog';
+import { getGroupAll, getNormalGroups } from './group';
 import { changeGroup, changePage, getImageList, deleteGroups } from './mainSlice';
 import { useHeapedDialog } from './hooks';
 
@@ -81,6 +83,8 @@ function GroupSelect({
     handleClose: closeAddDialog,
   } = useHeapedDialog('add-group');
 
+  const groupAll = getGroupAll(groups);
+  const normalGroups = getNormalGroups(groups);
   return (
     <div>
       <Button
@@ -111,7 +115,13 @@ function GroupSelect({
           horizontal: 'center',
         }}
       >
-        {groups.map((g) => (
+        <GroupItemAll
+          group={groupAll}
+          editing={editMode}
+          selected={groupAll.id === currentGroup.id}
+          onSelect={() => handleSelect(groupAll)}
+        />
+        {normalGroups.map((g) => (
           <GroupItem
             key={g.id}
             group={g}

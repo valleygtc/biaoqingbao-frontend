@@ -8,7 +8,6 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import FolderOutlinedIcon from '@material-ui/icons/FolderOutlined';
-import FolderSpecialOutlinedIcon from '@material-ui/icons/FolderSpecialOutlined';
 
 import EditGroupDialog from './EditGroupDialog';
 
@@ -71,9 +70,9 @@ export default function GroupItem({
   return (
     <div>
       <div className={classes.item} onClick={handleClick}>
-        {getStartIcon(group, editing, checked, handleCheck, handleUncheck)}
+        {getStartIcon(editing, checked, handleCheck, handleUncheck)}
         <Typography className={classes.text}>{group.name} <span className={classes.imageNumber}>{group.image_number}</span></Typography>
-        {getEndIcon(group, selected, editing, handleOpenEditDialog)}
+        {getEndIcon(selected, editing, handleOpenEditDialog)}
       </div>
       <Divider />
       <EditGroupDialog
@@ -85,14 +84,8 @@ export default function GroupItem({
   )
 }
 
-const getStartIcon = (group, editing, checked, handleCheck, handleUncheck) => {
-  if (group.name === '全部') {
-    return (
-      <IconButton disabled size="small" aria-label="icon">
-        <FolderSpecialOutlinedIcon />
-      </IconButton>
-    );
-  } else if (editing) {
+const getStartIcon = (editing, checked, handleCheck, handleUncheck) => {
+  if (editing) {
     if (checked) {
       return (
         <IconButton size="small" aria-label="checkbox" onClick={handleUncheck}>
@@ -115,14 +108,16 @@ const getStartIcon = (group, editing, checked, handleCheck, handleUncheck) => {
   }
 }
 
-const getEndIcon = (group, selected, editing, handleOpenEditDialog) => {
-  if (selected && !editing) {
-    return (<CheckIcon color="inherit" />);
-  } else if (editing && group.name !== '全部') {
+const getEndIcon = (selected, editing, handleOpenEditDialog) => {
+  if (editing) {
     return (
       <IconButton size="small" aria-label="edit" onClick={handleOpenEditDialog}>
         <EditIcon />
       </IconButton>
     );
+  } else if (selected) {
+    return (<CheckIcon color="inherit" />);
+  } else {
+    return null;
   }
 }
