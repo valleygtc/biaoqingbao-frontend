@@ -195,12 +195,15 @@ function ImportDialog({
   );
 }
 
-const mapStateToProps = (state) => ({
-  groups: state.main.groups,
-  currentGroup: state.main.groups.find((g) => g.id === state.main.currentGroupId),
-  loading: state.import.loading,
-  imageStatusObj: state.import.imageStatusObj,
-});
+const mapStateToProps = (state) => {
+  const displayGroups = [state.main.groupAll, ...state.main.normalGroups];
+  return {
+    groups: displayGroups,
+    currentGroup: displayGroups.find((g) => g.id === state.main.currentGroupId),
+    loading: state.import.loading,
+    imageStatusObj: state.import.imageStatusObj,
+  }
+};
 
 const mapDispatchToProps = { importImages, stop, reset, getImageList, showWarning };
 

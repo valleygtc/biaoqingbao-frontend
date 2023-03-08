@@ -3,6 +3,7 @@ import { push } from 'connected-react-router';
 
 import requests from './requests';
 import { showSuccess, showWarning, showError } from './msgSlice';
+import { getGroupAll, getNormalGroups } from './group';
 import { GROUP_ALL, ORDER } from './constants';
 // import { imageList, groups } from 'mock';
 
@@ -366,7 +367,8 @@ const mainSlice = createSlice({
     pages: 1,
     page: 1,
     imageList: [],
-    groups: [GROUP_ALL],
+    groupAll: GROUP_ALL,
+    normalGroups: [],
     currentGroupId: GROUP_ALL.id,
     searchTag: '',
     loading: {
@@ -439,16 +441,17 @@ const mainSlice = createSlice({
     },
     [getGroups.fulfilled]: (state, action) => {
       const data = action.payload;
-      state.groups = data.data;
+      state.groupAll = getGroupAll(data.data);
+      state.normalGroups = getNormalGroups(data.data);
     },
     [addGroup.fulfilled]: (state, action) => {
-      state.groups.push(action.payload);
+      state.normalGroups.push(action.payload);
     },
     [deleteGroups.fulfilled]: (state, action) => {
-      state.groups = state.groups.filter((g) => !action.payload.ids.includes(g.id));
+      state.normalGroups = state.normalGroups.filter((g) => !action.payload.ids.includes(g.id));
     },
     [updateGroup.fulfilled]: (state, action) => {
-      const group = state.groups.find((g) => g.id === action.payload.id);
+      const group = state.normalGroups.find((g) => g.id === action.payload.id);
       group.name = action.payload.name;
     },
   }

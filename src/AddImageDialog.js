@@ -159,11 +159,14 @@ function AddImageDialog({
   );
 }
 
-const mapStateToProps = (state) => ({
-  groups: state.main.groups,
-  currentGroup: state.main.groups.find((g) => g.id === state.main.currentGroupId),
-  loading: state.main.loading.addImage,
-});
+const mapStateToProps = (state) => {
+  const displayGroups = [state.main.groupAll, ...state.main.normalGroups];
+  return {
+    groups: displayGroups,
+    currentGroup: displayGroups.find((g) => g.id === state.main.currentGroupId),
+    loading: state.main.loading.addImage,
+  }
+};
 
 const mapDispatchToProps = { addImage, getImageList, getGroups };
 

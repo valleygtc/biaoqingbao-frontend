@@ -90,7 +90,7 @@ function Move2GroupSelect({
 }
 
 const mapStateToProps = (state) => ({
-  groups: state.main.groups,
+  groups: [state.main.groupAll, ...state.main.normalGroups],
 });
 
 const mapDispatchToProps = { updateImage };

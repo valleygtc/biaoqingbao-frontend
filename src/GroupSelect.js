@@ -176,12 +176,13 @@ function GroupSelect({
   );
 }
 
-const mapStateToProps = (state) => ({
-  groups: state.main.groups,
-  currentGroup: state.main.groups.find(
-    (g) => g.id === state.main.currentGroupId
-  ),
-});
+const mapStateToProps = (state) => {
+  const displayGroups = [state.main.groupAll, ...state.main.normalGroups];
+  return {
+    groups: displayGroups,
+    currentGroup: displayGroups.find((g) => g.id === state.main.currentGroupId),
+  }
+};
 
 const mapDispatchToProps = { changeGroup, changePage, getImageList, deleteGroups };
 

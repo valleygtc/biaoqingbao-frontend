@@ -88,9 +88,12 @@ function ExportDialog({
   );
 }
 
-const mapStateToProps = (state) => ({
-  groups: state.main.groups,
-});
+const mapStateToProps = (state) => {
+  const displayGroups = [state.main.groupAll, ...state.main.normalGroups];
+  return {
+    groups: displayGroups,
+  }
+};
 
 export default connect(
   mapStateToProps,
