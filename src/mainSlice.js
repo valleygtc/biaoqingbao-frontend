@@ -272,6 +272,7 @@ export const deleteGroups = createAsyncThunk(
     if (ids.includes(currentGroupId)) {
       dispatch(changeGroup(GROUP_ALL));
       dispatch(getImageList());
+      dispatch(getGroups());
     }
     return { ids };
   }
@@ -446,9 +447,6 @@ const mainSlice = createSlice({
     },
     [addGroup.fulfilled]: (state, action) => {
       state.normalGroups.push(action.payload);
-    },
-    [deleteGroups.fulfilled]: (state, action) => {
-      state.normalGroups = state.normalGroups.filter((g) => !action.payload.ids.includes(g.id));
     },
     [updateGroup.fulfilled]: (state, action) => {
       const group = state.normalGroups.find((g) => g.id === action.payload.id);
