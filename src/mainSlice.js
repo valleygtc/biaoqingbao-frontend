@@ -3,8 +3,8 @@ import { push } from 'connected-react-router';
 
 import requests from './requests';
 import { showSuccess, showWarning, showError } from './msgSlice';
-import { getGroupAll, getNormalGroups } from './group';
-import { GROUP_ALL, ORDER } from './constants';
+import { getGroupAll, getNormalGroups, getRecycleBin } from './group';
+import { GROUP_ALL, GROUP_RECYCLE_BIN, ORDER } from './constants';
 // import { imageList, groups } from 'mock';
 
 export const getImageList = createAsyncThunk(
@@ -95,6 +95,75 @@ export const deleteImage = createAsyncThunk(
       throw error;
     }
     dispatch(showSuccess('成功删除图片'));
+    return resp.data;
+  }
+)
+
+export const permanentDeleteImage = createAsyncThunk(
+  'main/permanentDeleteImage',
+  async (id, { dispatch }) => {
+    let resp
+    try {
+      resp = await requests.post('/api/images/permanentDelete', { id });
+    } catch (error) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络请求超时'));
+      } else if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(showWarning('请先登录'));
+      } else {
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
+      }
+      throw error;
+    }
+    dispatch(showSuccess('成功删除图片'));
+    return resp.data;
+  }
+)
+
+export const restoreImage = createAsyncThunk(
+  'main/restoreImage',
+  async (id, { dispatch }) => {
+    let resp
+    try {
+      resp = await requests.post('/api/images/restore', { id });
+    } catch (error) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络请求超时'));
+      } else if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(showWarning('请先登录'));
+      } else {
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
+      }
+      throw error;
+    }
+    dispatch(showSuccess('成功恢复图片'));
+    return resp.data;
+  }
+)
+
+export const clearRecycleBin = createAsyncThunk(
+  'main/clearRecycleBin',
+  async (_, { dispatch }) => {
+    let resp
+    try {
+      resp = await requests.post('/api/clearRecycleBin');
+    } catch (error) {
+      if (error.code === 'ECONNABORTED') {
+        dispatch(showError('网络请求超时'));
+      } else if (error.response && error.response.status === 401) {
+        dispatch(push('/login'));
+        dispatch(showWarning('请先登录'));
+      } else {
+        const errMsg = error.response?.data?.error || '发生未知错误，请重试';
+        dispatch(showError(errMsg));
+      }
+      throw error;
+    }
+    dispatch(showSuccess('成功清空回收站'));
     return resp.data;
   }
 )
@@ -369,6 +438,7 @@ const mainSlice = createSlice({
     page: 1,
     imageList: [],
     groupAll: GROUP_ALL,
+    groupRecycleBin: GROUP_RECYCLE_BIN,
     normalGroups: [],
     currentGroupId: GROUP_ALL.id,
     searchTag: '',
@@ -443,6 +513,7 @@ const mainSlice = createSlice({
     [getGroups.fulfilled]: (state, action) => {
       const data = action.payload;
       state.groupAll = getGroupAll(data.data);
+      state.groupRecycleBin = getRecycleBin(data.data);
       state.normalGroups = getNormalGroups(data.data);
     },
     [addGroup.fulfilled]: (state, action) => {

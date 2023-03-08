@@ -32,8 +32,16 @@ function Move2GroupSelect({
   updateImage,
 }) {
   const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = useState(null);
+  if (imageData.is_deleted) {
+    return (
+      <Button disableElevation className={classes.button}>
+        <Typography>回收站</Typography>
+        <ArrowDropDownIcon/>
+      </Button>
+    );
+  }
+
   const handleClickSelector = (event) => {
     setAnchorEl(event.currentTarget);
   };

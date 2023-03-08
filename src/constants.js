@@ -4,6 +4,12 @@ export const GROUP_ALL = {
   image_number: 0,
 }
 
+export const GROUP_RECYCLE_BIN = {
+  id: -1,
+  name: '回收站',
+  image_number: 0,
+}
+
 export const ORDER = {
   asc: 'asc',
   desc: 'desc',

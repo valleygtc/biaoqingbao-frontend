@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import CheckIcon from '@material-ui/icons/Check';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 
 import GroupSelect from './GroupSelect';
 import IconButton from './IconButton';
@@ -18,8 +19,10 @@ import AddImageDialog from './AddImageDialog';
 import ImportDialog from './ImportDialog';
 import ExportDialog from './ExportDialog';
 import ConfigDialog from './ConfigDialog';
+import ClearRecycleBinDialog from './ClearRecycleBinDialog';
 import { toggleCompactMode } from './configSlice';
 import { useDialog } from './hooks';
+import { isRecycleBinId } from 'group';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Header({
   compactMode,
+  currentGroupId,
   toggleCompactMode,
 }) {
   const classes = useStyles();
@@ -85,6 +89,12 @@ function Header({
     closeMenu();
   }
 
+  const {
+    open: clearDialogOpen,
+    handleOpen: openClearDialog,
+    handleClose: closeClearDialog,
+  } = useDialog('clear-recycle-bin-dialog');
+
   const handleToggleCompactMode = () => {
     toggleCompactMode();
     closeMenu();
@@ -100,11 +110,7 @@ function Header({
           <GroupSelect />
         </div>
         <Box flexGrow={1} />
-        <Tooltip title="添加图片">
-          <IconButton aria-label="add image" color="inherit" onClick={openAddImageDialog}>
-            <AddCircleIcon />
-          </IconButton>
-        </Tooltip>
+        {getActionButton(currentGroupId, openAddImageDialog, openClearDialog)}
         <IconButton aria-label="more-operation" edge="end" color="inherit" onClick={openMenu}>
           <MoreIcon />
         </IconButton>
@@ -131,12 +137,37 @@ function Header({
       <ImportDialog open={importDialogOpen} onClose={closeImportDialog} />
       <ExportDialog open={exportDialogOpen} onClose={closeExportDialog} />
       <ConfigDialog open={configDialogOpen} onClose={closeConfigDialog} />
+      <ClearRecycleBinDialog
+        open={clearDialogOpen}
+        onClose={closeClearDialog}
+      />
     </AppBar>
   );
 }
 
+const getActionButton = (currentGroupId, openAddImageDialog, openClearDialog) => {
+  if (isRecycleBinId(currentGroupId)) {
+    return (
+      <Tooltip title="清空回收站">
+        <Button variant="contained" color="secondary" size="small" onClick={openClearDialog}>
+          清 空
+        </Button>
+      </Tooltip>
+    );
+  } else {
+    return (
+      <Tooltip title="添加图片">
+        <IconButton aria-label="add image" color="inherit" onClick={openAddImageDialog}>
+          <AddCircleIcon />
+        </IconButton>
+      </Tooltip>
+    );
+  }
+}
+
 const mapStateToProps = (state) => ({
   compactMode: state.config.compactMode,
+  currentGroupId: state.main.currentGroupId,
 });
 
 const mapDispatchToProps = { toggleCompactMode };

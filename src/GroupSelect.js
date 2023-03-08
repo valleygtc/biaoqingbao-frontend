@@ -10,9 +10,10 @@ import Box from '@material-ui/core/Box';
 import GroupItemAll from './GroupItemAll';
 import GroupItem from './GroupItem';
 import AddGroupDialog from './AddGroupDialog';
-import { getGroupAll, getNormalGroups } from './group';
+import { getGroupAll, getNormalGroups, getRecycleBin } from './group';
 import { changeGroup, changePage, getImageList, deleteGroups } from './mainSlice';
 import { useHeapedDialog } from './hooks';
+import GroupItemRecycleBin from 'GroupItemRecycleBin';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -84,6 +85,7 @@ function GroupSelect({
   } = useHeapedDialog('add-group');
 
   const groupAll = getGroupAll(groups);
+  const recycleBin = getRecycleBin(groups);
   const normalGroups = getNormalGroups(groups);
   return (
     <div>
@@ -118,8 +120,14 @@ function GroupSelect({
         <GroupItemAll
           group={groupAll}
           editing={editMode}
-          selected={groupAll.id === currentGroup.id}
+          selected={currentGroup.id === groupAll.id}
           onSelect={() => handleSelect(groupAll)}
+        />
+        <GroupItemRecycleBin
+          group={recycleBin}
+          editing={editMode}
+          selected={currentGroup.id === recycleBin.id}
+          onSelect={() => handleSelect(recycleBin)}
         />
         {normalGroups.map((g) => (
           <GroupItem
@@ -177,7 +185,7 @@ function GroupSelect({
 }
 
 const mapStateToProps = (state) => {
-  const displayGroups = [state.main.groupAll, ...state.main.normalGroups];
+  const displayGroups = [state.main.groupAll, state.main.groupRecycleBin, ...state.main.normalGroups];
   return {
     groups: displayGroups,
     currentGroup: displayGroups.find((g) => g.id === state.main.currentGroupId),
